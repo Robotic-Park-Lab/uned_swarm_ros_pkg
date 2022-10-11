@@ -148,6 +148,7 @@ def generate_launch_description():
         name='driver',
         node_namespace='khepera01',
         additional_env={'WEBOTS_ROBOT_NAME': 'khepera01'},
+        # arguments=['--ros-args', '--log-level', 'debug'],
         parameters=[
             {'robot_description': khepera_description,
              'use_sim_time': use_sim_time,

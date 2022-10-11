@@ -398,7 +398,7 @@ Khepera4 {
 }
 
 Khepera4 {
-  translation -2.31 -1.9 0.0
+  translation -1.4 -1.6 0.0
   rotation 1.78221999971205e-05 -2.346349999620905e-06 0.9999999998384319 0.261803
   name "khepera03"
   controller "<extern>"
