@@ -44,7 +44,8 @@ def generate_launch_description():
         arguments=['joint_state_broadcaster'] + controller_manager_timeout,
     )
 
-    mappings = [('/diffdrive_controller/cmd_vel_unstamped', '/cmd_vel')]
+    mappings = [('/diffdrive_controller/cmd_vel_unstamped', '/cmd_vel'),
+                ('/TurtleBot3Burger/gps', '/turtlebot01/driver/gps')]
     if 'ROS_DISTRO' in os.environ and os.environ['ROS_DISTRO'] in ['humble', 'rolling']:
         mappings.append(('/diffdrive_controller/odom', '/odom'))
 
@@ -156,7 +157,7 @@ def generate_launch_description():
 
     robot01_task = Node(
         package='uned_kheperaiv_task',
-        executable='shape_based_formation_control',
+        executable='distance_based_formation_control',
         output='screen',
         name='formation_control',
         namespace='khepera01',
@@ -168,8 +169,7 @@ def generate_launch_description():
             {'use_sim_time': use_sim_time},
             {"config_file": 'path'},
             {"agents": 'khepera02, khepera03'},
-            {"agent_x": '0.4, 0.5'},
-            {"agent_y": '0.0, 0.5'},
+            {"distance": '0.4, 0.5'},
         ]
     )
 
@@ -189,7 +189,7 @@ def generate_launch_description():
 
     robot02_task = Node(
         package='uned_kheperaiv_task',
-        executable='shape_based_formation_control',
+        executable='distance_based_formation_control',
         output='screen',
         name='formation_control',
         namespace='khepera02',
@@ -201,8 +201,7 @@ def generate_launch_description():
             {'use_sim_time': use_sim_time},
             {"config_file": 'path'},
             {"agents": 'khepera01, khepera03'},
-            {"agent_x": '-0.4, 0.1'},
-            {"agent_y": ' 0.0, 0.5'},
+            {"distance": '0.4, 0.3'},
         ]
     )
 
@@ -210,9 +209,9 @@ def generate_launch_description():
         package='webots_ros2_driver',
         executable='driver',
         output='screen',
-        name='khepera03',
+        name='driver',
+        namespace='khepera03',
         additional_env={'WEBOTS_ROBOT_NAME': 'khepera03'},
-        node_namespace='khepera03',
         parameters=[
             {'robot_description': khepera_description,
              'use_sim_time': use_sim_time,
@@ -222,20 +221,20 @@ def generate_launch_description():
 
     robot03_task = Node(
         package='uned_kheperaiv_task',
-        executable='shape_based_formation_control',
+        executable='distance_based_formation_control',
         output='screen',
         name='formation_control',
         namespace='khepera03',
         remappings=[
             ('/khepera03/khepera02/pose', '/khepera02/pose'),
             ('/khepera03/khepera01/pose', '/khepera01/pose'),
+            ('/khepera03/turtlebot01/pose', '/turtlebot01/pose'),
             ('/khepera03/swarm/status', '/swarm/status')],
         parameters=[
             {'use_sim_time': use_sim_time},
             {"config_file": 'path'},
-            {"agents": 'khepera01, khepera02'},
-            {"agent_x": '-0.5, -0.1'},
-            {"agent_y": '-0.5, -0.5'},
+            {"agents": 'khepera01, khepera02, turtlebot01'},
+            {"distance": '0.5, 0.3, 0.4'},
         ]
     )
 
@@ -263,7 +262,7 @@ def generate_launch_description():
         #arguments=['--ros-args', '--log-level', 'info'],
         parameters=[
             {'use_sim_time': use_sim_time},
-            {"agents": 'dron01, dron02, dron03, dron04, khepera01, khepera02, khepera03'},
+            {"agents": 'turtlebot01, khepera01, khepera02, khepera03'},
         ]
     )
 
