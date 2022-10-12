@@ -75,11 +75,11 @@ def generate_launch_description():
         package='webots_ros2_driver',
         executable='driver',
         output='screen',
-        name='dron01',
-        # namespace='dron01',
+        name='driver',
+        node_namespace='dron01',
         additional_env={'WEBOTS_ROBOT_NAME': 'dron01'},
         parameters=[
-            {# 'robot_description': dron_description,
+            {'robot_description': dron_description,
              'use_sim_time': use_sim_time,
              'set_robot_state_publisher': True},
         ]
@@ -89,10 +89,11 @@ def generate_launch_description():
         package='webots_ros2_driver',
         executable='driver',
         output='screen',
-        name='dron02',
+        name='driver',
+        node_namespace='dron02',
         additional_env={'WEBOTS_ROBOT_NAME': 'dron02'},
         parameters=[
-            {# 'robot_description': dron_description,
+            {'robot_description': dron_description,
              'use_sim_time': use_sim_time,
              'set_robot_state_publisher': True},
         ]
@@ -102,10 +103,11 @@ def generate_launch_description():
         package='webots_ros2_driver',
         executable='driver',
         output='screen',
-        name='dron03',
+        name='driver',
+        node_namespace='dron03',
         additional_env={'WEBOTS_ROBOT_NAME': 'dron03'},
         parameters=[
-            {# 'robot_description': dron_description,
+            {'robot_description': dron_description,
              'use_sim_time': use_sim_time,
              'set_robot_state_publisher': True},
         ]
@@ -115,10 +117,11 @@ def generate_launch_description():
         package='webots_ros2_driver',
         executable='driver',
         output='screen',
-        name='dron04',
+        name='driver',
+        node_namespace='dron04',
         additional_env={'WEBOTS_ROBOT_NAME': 'dron04'},
         parameters=[
-            {# 'robot_description': dron_description,
+            {'robot_description': dron_description,
              'use_sim_time': use_sim_time,
              'set_robot_state_publisher': True},
         ]
@@ -138,7 +141,8 @@ def generate_launch_description():
             {'cf_control_mode': 'HighLevel, HighLevel, HighLevel, HighLevel'},
             {'cf_controller_type': 'Continuous, Continuous, Continuous, Continuous'},
             {'cf_role': 'consensus, consensus, consensus, consensus'},
-            {'cf_relationship':'dron01_dron02_-0.3/-0.3/0.2, dron01_dron03_-0.4/0.0/0.1, dron02_dron01_0.3/0.3/-0.2, dron02_dron03_-0.1/0.3/-0.1, dron03_dron01_0.4/0.0/-0.1, dron03_dron02_0.1/-0.3/0.1, dron04_dron03_0.4/-0.2/0.2, dron01_khepera01_0.0/0.0/0.9'},
+            {'cf_constrains_mode': 'distance_hover'},
+            {'cf_relationship':'dron01_khepera01_1.2, dron01_khepera02_1.2, dron01_khepera03_1.2, dron01_dron02_0.6, dron02_dron01_0.6, dron03_dron02_0.6, dron02_dron03_0.6, dron02_dron04_0.6, dron04_dron02_0.6, , dron01_dron03_0.6, dron03_dron01_0.6'},
         ])
 
     robot01_driver = Node(
@@ -165,12 +169,13 @@ def generate_launch_description():
         remappings=[
             ('/khepera01/khepera02/pose', '/khepera02/pose'),
             ('/khepera01/khepera03/pose', '/khepera03/pose'),
+            ('/khepera01/turtlebot01/pose', '/turtlebot01/pose'),
             ('/khepera01/swarm/status', '/swarm/status')],
         parameters=[
             {'use_sim_time': use_sim_time},
             {"config_file": 'path'},
-            {"agents": 'khepera02, khepera03'},
-            {"distance": '0.4, 0.5'},
+            {"agents": 'khepera02, khepera03, turtlebot01'},
+            {"distance": '0.6, 0.6, 0.4'},
         ]
     )
 
@@ -197,12 +202,13 @@ def generate_launch_description():
         remappings=[
             ('/khepera02/khepera01/pose', '/khepera01/pose'),
             ('/khepera02/khepera03/pose', '/khepera03/pose'),
+            ('/khepera02/turtlebot01/pose', '/turtlebot01/pose'),
             ('/khepera02/swarm/status', '/swarm/status')],
         parameters=[
             {'use_sim_time': use_sim_time},
             {"config_file": 'path'},
-            {"agents": 'khepera01, khepera03'},
-            {"distance": '0.4, 0.3'},
+            {"agents": 'khepera01, khepera03, turtlebot01'},
+            {"distance": '0.6, 0.6, 0.4'},
         ]
     )
 
@@ -235,7 +241,7 @@ def generate_launch_description():
             {'use_sim_time': use_sim_time},
             {"config_file": 'path'},
             {"agents": 'khepera01, khepera02, turtlebot01'},
-            {"distance": '0.5, 0.3, 0.4'},
+            {"distance": '0.6, 0.6, 0.4'},
         ]
     )
 
@@ -263,7 +269,7 @@ def generate_launch_description():
         #arguments=['--ros-args', '--log-level', 'info'],
         parameters=[
             {'use_sim_time': use_sim_time},
-            {"agents": 'turtlebot01, khepera01, khepera02, khepera03'},
+            {"agents": 'turtlebot01, khepera01, khepera02, khepera03, dron01, dron02, dron03, dron04'},
         ]
     )
 
@@ -272,11 +278,11 @@ def generate_launch_description():
         joint_state_broadcaster_spawner,
         diffdrive_controller_spawner,
         webots,
-        # dron01_driver,
-        # dron02_driver,
-        # dron03_driver,
-        # dron04_driver,
-        # swarm_node,
+        dron01_driver,
+        dron02_driver,
+        dron03_driver,
+        dron04_driver,
+        swarm_node,
         robot01_driver,
         robot01_task,
         robot02_driver,
