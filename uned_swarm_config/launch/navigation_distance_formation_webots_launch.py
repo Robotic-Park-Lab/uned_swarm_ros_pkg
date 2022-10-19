@@ -14,6 +14,7 @@ def generate_launch_description():
     dron_package_dir = get_package_share_directory('uned_crazyflie_webots')
     robot_package_dir = get_package_share_directory('uned_kheperaiv_webots')
     package_dir = get_package_share_directory('webots_ros2_turtlebot')
+    default_rviz_config_path = os.path.join(swarm_package_dir, 'rviz', 'test.rviz')
     dron_description = pathlib.Path(os.path.join(dron_package_dir, 'resource', 'crazyflie.urdf')).read_text()
     khepera_description = pathlib.Path(os.path.join(robot_package_dir, 'resource', 'kheperaiv.urdf')).read_text()
     robot_description = pathlib.Path(os.path.join(package_dir, 'resource', 'turtlebot_webots.urdf')).read_text()
@@ -76,7 +77,7 @@ def generate_launch_description():
         executable='driver',
         output='screen',
         name='driver',
-        node_namespace='dron01',
+        namespace='dron01',
         additional_env={'WEBOTS_ROBOT_NAME': 'dron01'},
         parameters=[
             {'robot_description': dron_description,
@@ -133,7 +134,6 @@ def generate_launch_description():
         name='CFFormationControl',
         output='screen',
         shell=True,
-        emulate_tty=True,
         parameters=[
             {'use_sim_time': use_sim_time},
             {'cf_first_uri': 'radio://0/80/2M/E7E7E7E701'},
@@ -142,7 +142,8 @@ def generate_launch_description():
             {'cf_controller_type': 'Continuous, Continuous, Continuous, Continuous'},
             {'cf_role': 'consensus, consensus, consensus, consensus'},
             {'cf_constrains_mode': 'distance_hover'},
-            {'cf_relationship':'dron01_khepera01_1.2, dron01_khepera02_1.2, dron01_khepera03_1.2, dron01_dron02_0.6, dron02_dron01_0.6, dron03_dron02_0.6, dron02_dron03_0.6, dron02_dron04_0.6, dron04_dron02_0.6, , dron01_dron03_0.6, dron03_dron01_0.6'},
+            {'cf_relationship':'dron01_khepera01_1.2, dron01_khepera02_1.2, dron01_khepera03_1.2, dron02_dron01_0.6, dron03_dron02_0.6, dron02_dron03_0.6, dron02_dron04_0.6, dron04_dron02_0.6, , dron03_dron01_0.6, dron03_khepera01_1.5, dron03_khepera02_1.5'},
+            # {'cf_relationship':'dron01_khepera01_1.2, dron01_khepera02_1.2, dron01_khepera03_1.2, dron01_dron02_0.6, dron02_dron01_0.6, dron03_dron02_0.6, dron02_dron03_0.6, dron02_dron04_0.6, dron04_dron02_0.6, , dron01_dron03_0.6, dron03_dron01_0.6, dron03_khepera01_1.5, dron03_khepera02_1.5'},
         ])
 
     robot01_driver = Node(
@@ -150,7 +151,7 @@ def generate_launch_description():
         executable='driver',
         output='screen',
         name='driver',
-        node_namespace='khepera01',
+        namespace='khepera01',
         additional_env={'WEBOTS_ROBOT_NAME': 'khepera01'},
         # arguments=['--ros-args', '--log-level', 'debug'],
         parameters=[
@@ -174,6 +175,7 @@ def generate_launch_description():
         parameters=[
             {'use_sim_time': use_sim_time},
             {"config_file": 'path'},
+            {"robot": 'khepera01'},
             {"agents": 'khepera02, khepera03, turtlebot01'},
             {"distance": '0.6, 0.6, 0.4'},
         ]
@@ -207,6 +209,7 @@ def generate_launch_description():
         parameters=[
             {'use_sim_time': use_sim_time},
             {"config_file": 'path'},
+            {"robot": 'khepera02'},
             {"agents": 'khepera01, khepera03, turtlebot01'},
             {"distance": '0.6, 0.6, 0.4'},
         ]
@@ -240,6 +243,7 @@ def generate_launch_description():
         parameters=[
             {'use_sim_time': use_sim_time},
             {"config_file": 'path'},
+            {"robot": 'khepera03'},
             {"agents": 'khepera01, khepera02, turtlebot01'},
             {"distance": '0.6, 0.6, 0.4'},
         ]
@@ -249,7 +253,9 @@ def generate_launch_description():
         package='tf2_ros',
         executable='static_transform_publisher',
         output='screen',
-        arguments=['0', '0', '0', '0', '0', '0', 'base_link', 'base_footprint'],
+        arguments=[{'-1.7', '-1.6', '0', '0', '-1', '0', 'base_link', 'world'},
+                   # {'-2.1', '-1.4', '0', '0', '-1', '0', 'dron01/base_link', 'map'},
+                ],
     )
 
     rqt_node = Node(
@@ -259,6 +265,15 @@ def generate_launch_description():
         parameters=[
             {'use_sim_time': use_sim_time},
         ],
+    )
+
+    rviz_node = Node(
+        package='rviz2',
+        executable='rviz2',
+        name='rviz2',
+        output='screen',
+        arguments=['-d', default_rviz_config_path],
+
     )
 
     vicon_node = Node(
@@ -290,10 +305,10 @@ def generate_launch_description():
         robot03_driver,
         robot03_task,
         robot_state_publisher,
-        # dron_state_publisher,
         turtlebot_driver,
         footprint_publisher,
         rqt_node,
+        rviz_node,
         vicon_node,
         launch.actions.RegisterEventHandler(
             event_handler=launch.event_handlers.OnProcessExit(
