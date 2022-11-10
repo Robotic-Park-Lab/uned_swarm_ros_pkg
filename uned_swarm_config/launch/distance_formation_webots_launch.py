@@ -66,20 +66,6 @@ def generate_launch_description():
         remappings=mappings
     )
 
-    turtlebot_task = Node(
-        package='uned_kheperaiv_task',
-        executable='distance_based_formation_control',
-        output='screen',
-        name='formation_control',
-        parameters=[
-            {'use_sim_time': use_sim_time},
-            {"config_file": 'path'},
-            {"robot": 'turtlebot01'},
-            {"agents": 'khepera01, khepera03'},
-            {"distance": '0.4, 0.4'},
-        ]
-    )
-
     robot_state_publisher = Node(
         package='robot_state_publisher',
         executable='robot_state_publisher',
@@ -323,8 +309,7 @@ def generate_launch_description():
         robot03_task,
         robot_state_publisher,
         turtlebot_driver,
-        turtlebot_task,
-        # footprint_publisher,
+        footprint_publisher,
         rqt_node,
         rviz_node,
         vicon_node,

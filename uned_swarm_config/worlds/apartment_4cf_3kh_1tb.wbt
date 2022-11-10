@@ -6,370 +6,19 @@ WorldInfo {
   basicTimeStep 16
 }
 Viewpoint {
-  orientation -0.245925 0.261751 0.933278 1.78068
-  position -1.29197 -5.62548 2.62253
+  orientation -0.32725317447456603 0.3284336610524905 0.8860229625037812 1.7028761054086579
+  position -0.06687940056233216 -3.5733662656538034 3.238832553115791
   exposure 0.5
 }
 TexturedBackground {
-  texture "empty_office"
-  skybox FALSE
-  skyColor [
-    0.2 0.2 0.2
-  ]
 }
-DEF FLOOR Solid {
-  translation -4.95 -3.3 0
-  children [
-    Shape {
-      appearance Parquetry {
-        textureTransform TextureTransform {
-          scale 6 9
-        }
-      }
-      geometry DEF FLOOR_PLANE Plane {
-        size 9.9 6.6
-      }
-    }
-  ]
-  name "floor"
-  boundingObject USE FLOOR_PLANE
-  locked TRUE
+TexturedBackgroundLight {
 }
-DEF ROOF Solid {
-  translation -4.95 -3.3 2.3999
-  rotation 1 0 0 3.14159
-  children [
-    Shape {
-      appearance PBRAppearance {
-        baseColor 0.8 0.8 0.8
-        baseColorMap ImageTexture {
-          url [
-            "https://raw.githubusercontent.com/cyberbotics/webots/R2022a/projects/default/worlds/textures/roughcast.jpg"
-          ]
-        }
-        roughness 0.5
-        metalness 0
-        textureTransform TextureTransform {
-          scale 8 8
-        }
-      }
-      geometry USE FLOOR_PLANE
-    }
-  ]
-  name "roof"
-  boundingObject USE FLOOR_PLANE
-  locked TRUE
+Floor {
 }
-Wall {
-  translation 0 -0.65 0
-  name "wall 1"
-  size 0.3 1 2.4
-}
-Window {
-  translation 0 -1.65 0
-  name "window 1"
-  size 0.3 1 2.4
-  frameAppearance PaintedWood {
-    colorOverride 0.13333333333333333 0.13333333333333333 0.13333333333333333
-  }
-}
-Wall {
-  translation 0 -4.3 0
-  name "wall 2"
-  size 0.3 4.3 2.4
-}
-Wall {
-  translation -9.9 -2.3 0
-  name "wall 3"
-  size 0.3 4.3 2.4
-}
-Wall {
-  translation -9.9 -5.95 0
-  name "wall 4"
-  size 0.3 1 2.4
-}
-Door {
-  translation -9.9 -4.95 0
-  name "door 1"
-  size 0.3 1 2.4
-  canBeOpen FALSE
-  frameAppearance PaintedWood {
-    colorOverride 0.13333333333333333 0.13333333333333333 0.13333333333333333
-  }
-  doorHandle DoorLever {
-    hasStaticParent TRUE
-  }
-}
-Wall {
-  translation -3.8 0 0
-  rotation 0 0 1 1.5708
-  name "wall 5"
-  size 0.3 7.9 2.4
-}
-Wall {
-  translation -9.4 0 0
-  rotation 0 0 1 1.5708
-  name "wall 6"
-  size 0.3 1.3 2.4
-}
-Window {
-  translation -8.25 0 0
-  rotation 0 0 1 1.5708
-  name "window 2"
-  size 0.3 1 2.4
-  frameAppearance PaintedWood {
-    colorOverride 0.13333333333333333 0.13333333333333333 0.13333333333333333
-  }
-}
-Wall {
-  translation -9.4 -6.6 0
-  rotation 0 0 1 1.5708
-  name "wall 7"
-  size 0.3 1.3 2.4
-}
-Door {
-  translation -8.25 -6.6 0
-  rotation 0 0 1 1.5708
-  name "door 2"
-  size 0.3 1 2.4
-  canBeOpen FALSE
-  frameAppearance PaintedWood {
-    colorOverride 0.13333333333333333 0.13333333333333333 0.13333333333333333
-  }
-  doorHandle DoorLever {
-    rotation -0.0012868889344011497 0.9999991719580925 0 0
-    hasStaticParent TRUE
-  }
-}
-Wall {
-  translation -3.8 -6.6 0
-  rotation 0 0 1 1.5708
-  name "wall 8"
-  size 0.3 7.9 2.4
-}
-Wall {
-  translation -3.3 -1.8 0
-  name "wall 9"
-  size 0.3 3.3 2.4
-}
-Cabinet {
-  translation -1.31 -0.15 0
-  rotation 0 0 -1 1.5708
-  name "cabinet 1"
-  depth 0.68
-  outerThickness 0.02
-  rowsHeights [
-    0.22, 0.21, 0.21
-  ]
-  columnsWidths [
-    0.42, 0.42
-  ]
-  layout [
-    "Drawer (1, 1, 1, 1, 1.5)"
-    "Drawer (1, 2, 1, 1, 1.5)"
-    "Drawer (1, 3, 1, 1, 1.5)"
-    "Shelf  (1, 2, 2, 0)"
-    "Shelf  (1, 3, 2, 0)"
-    "Shelf (1, 1, 0, 3)"
-  ]
-  handle CabinetHandle {
-    handleLength 0.09
-    handleRadius 0.008
-  }
-  primaryAppearance PaintedWood {
-    colorOverride 0.13333333333333333 0.13333333333333333 0.13333333333333333
-  }
-  secondaryAppearance PaintedWood {
-    colorOverride 0.13333333333333333 0.13333333333333333 0.13333333333333333
-  }
-}
-Cabinet {
-  translation -1.31 -0.15 1.12
-  rotation 0 0 1 -1.5707953071795862
-  name "cabinet 2"
-  outerThickness 0.02
-  rowsHeights [
-    0.22, 0.21, 0.21
-  ]
-  columnsWidths [
-    0.42, 0.42
-  ]
-  layout [
-    "RightSidedDoor (1, 1, 1, 3, 1.5)"
-    "LeftSidedDoor (2, 1, 1, 3, 1.5)"
-    "Shelf  (1, 2, 2, 0)"
-    "Shelf  (1, 3, 2, 0)"
-    "Shelf (1, 1, 0, 3)"
-  ]
-  handle CabinetHandle {
-    translation 0 -0.2 0
-    handleLength 0.09
-    handleRadius 0.008
-  }
-  primaryAppearance PaintedWood {
-    colorOverride 0.13333333333333333 0.13333333333333333 0.13333333333333333
-  }
-  secondaryAppearance PaintedWood {
-    colorOverride 0.13333333333333333 0.13333333333333333 0.13333333333333333
-  }
-}
-Cabinet {
-  translation -2.19 -0.15 0
-  rotation 0 0 1 -1.5707953071795862
-  name "cabinet 3"
-  depth 0.68
-  outerThickness 0.02
-  rowsHeights [
-    0.22, 0.21, 0.21
-  ]
-  columnsWidths [
-    0.42, 0.42
-  ]
-  layout [
-    "LeftSidedDoor (2, 1, 1, 3, 1.5)"
-    "Shelf  (1, 2, 2, 0)"
-    "Shelf  (1, 3, 2, 0)"
-    "Shelf (1, 1, 0, 3)"
-  ]
-  handle CabinetHandle {
-    translation 0 0.2 0
-    handleLength 0.09
-    handleRadius 0.008
-  }
-  primaryAppearance PaintedWood {
-    colorOverride 0.13333333333333333 0.13333333333333333 0.13333333333333333
-  }
-  secondaryAppearance PaintedWood {
-    colorOverride 0.13333333333333333 0.13333333333333333 0.13333333333333333
-  }
-}
-Table {
-  translation -1.0743 -4.9444 0
-  rotation 0 0 1 1.5708
-  name "table(1)"
-}
-Chair {
-  translation -1.4606 -5.4128 -0.0023
-  rotation 0 0 1 1.5708
-  name "chair 1"
-  color 0.13333333333333333 0.13333333333333333 0.13333333333333333
-  physics Physics {
-    centerOfMass [
-      0 0 0.45
-    ]
-  }
-}
-Chair {
-  translation -0.6425 -4.4443 -0.0023
-  rotation 0 0 1 -1.5707953071795862
-  name "chair 2"
-  color 0.13333333333333333 0.13333333333333333 0.13333333333333333
-  physics Physics {
-    centerOfMass [
-      0 0 0.45
-    ]
-  }
-}
-Chair {
-  translation -1.3943 -4.4875 -0.0023
-  rotation 0 0 1 -1.5707953071795862
-  name "chair 3"
-  color 0.13333333333333333 0.13333333333333333 0.13333333333333333
-  physics Physics {
-    centerOfMass [
-      0 0 0.45
-    ]
-  }
-}
-Chair {
-  translation -0.7069 -5.3809 -0.0023
-  rotation 0 0 1 1.5708
-  name "chair 4"
-  color 0.13333333333333333 0.13333333333333333 0.13333333333333333
-  physics Physics {
-    centerOfMass [
-      0 0 0.45
-    ]
-  }
-}
-Desk {
-  translation -5.125 -0.5126 0
-  rotation 0 0 1 1.5708
-}
-WoodenChair {
-  translation -5.15 -0.9 0
-  rotation 0 0 1 1.5708
-  physics Physics {
-    centerOfMass [
-      0 0 0.45
-    ]
-  }
-}
-Table {
-  translation -7.163 -2.5554 0.0199
-  size 0.8 1.2 0.53
-}
-Armchair {
-  translation -5.8922 -3.8267 0
-  rotation 0 0 1 2.30591
-  color 0.13333333333333333 0.13333333333333333 0.13333333333333333
-}
-Sofa {
-  translation -7.0533 -0.8042 0
-  rotation 2.3464099999870814e-06 -2.3464099999870814e-06 0.9999999999944944 -1.5707953071795862
-  color 0.13333333333333333 0.13333333333333333 0.13333333333333333
-}
-Sofa {
-  translation -8.9573 -2.4973 0
-  name "sofa 2"
-  color 0.13333333333333333 0.13333333333333333 0.13333333333333333
-}
-Cabinet {
-  translation -3.4681 -6.4326 0
-  rotation 0 0 -1 -1.5707953071795862
-  name "cabinet 4"
-  depth 0.4
-  outerThickness 0.02
-  rowsHeights [
-    0.52, 0.44, 0.44, 0.44, 0.44
-  ]
-  columnsWidths [
-    0.96
-  ]
-  layout [
-    "Shelf  (1, 2, 1, 0)"
-    "Shelf  (1, 3, 1, 0)"
-    "Shelf  (1, 4, 1, 0)"
-    "Shelf  (1, 5, 1, 0)"
-  ]
-  primaryAppearance PaintedWood {
-    colorOverride 0.13333333333333333 0.13333333333333333 0.13333333333333333
-  }
-  secondaryAppearance PaintedWood {
-    colorOverride 0.13333333333333333 0.13333333333333333 0.13333333333333333
-  }
-}
-CeilingLight {
-  translation -1.3341 -2.4706 2.4
-  name "ceiling light 1"
-  pointLightIntensity 5
-}
-CeilingLight {
-  translation -7.1011 -2.4432 2.4
-  name "ceiling light 2"
-  pointLightIntensity 8
-}
-FloorLight {
-  translation -4.0043 -0.7456 0
-  pointLightIntensity 2
-}
-
 TurtleBot3Burger {
-  translation -1.7 -1.6 0.0
   rotation 0 0 -1 1.5708
   controller "<extern>"
-  # name "turtlebot01"
-  # controller "turtlebot3_ostacle_avoidance"
   extensionSlot [
     Solid {
       name "imu_link"
@@ -383,45 +32,29 @@ TurtleBot3Burger {
     }
   ]
 }
-
 Khepera4 {
-  translation -2.5 -1.0 0.0
+  translation -0.8 0.6 0
   rotation 0 0 -1 1.5708
   name "khepera01"
   controller "<extern>"
 }
-
 Khepera4 {
-  translation -1.7 -1.0 0.0
+  translation 0 0.6 0
   rotation 0 0 -1 1.5708
   name "khepera02"
   controller "<extern>"
 }
-
 Khepera4 {
-  translation -0.9 -1.0 0.0
+  translation 0.8 0.6 0
   rotation 0 0 -1 1.5708
   name "khepera03"
   controller "<extern>"
 }
-
 Robot {
-  translation -2.1 -1.4 0.015
-  selfCollision FALSE
-  synchronization TRUE
+  translation -0.4 0.2 0.015
   children [
-    #Lidar {
-    #horizontalResolution 5
-    #fieldOfView 6.28318
-    #numberOfLayers 1
-    #near 0.07
-    #minRange 0.12
-    #maxRange 3.5
-    #  name "lidar"
-    #  spherical TRUE
-    #}
     DEF Multiranger Transform {
-      translation 0.0 0 0.02
+      translation 0 0 0.02
       children [
         DistanceSensor {
           rotation 0 0 1 -1.57
@@ -444,7 +77,7 @@ Robot {
           name "range_left"
           lookupTable [
             0 0 0
-          3.5 3500 0
+            3.5 3500 0
           ]
         }
         DistanceSensor {
@@ -456,12 +89,6 @@ Robot {
         }
       ]
     }
-    # Camera {
-    #   translation 0.03 0 0.01
-    #   fieldOfView 0.87
-    #   width 324
-    #   height 324
-    # }
     Solid {
       translation 0 0 -0.015
       children [
@@ -655,24 +282,11 @@ Robot {
   }
   controller "<extern>"
 }
-
 Robot {
-  translation -1.3 -1.4 0.015
-  selfCollision FALSE
-  synchronization TRUE
+  translation 0.4 0.2 0.015
   children [
-    #Lidar {
-    #horizontalResolution 5
-    #fieldOfView 6.28318
-    #numberOfLayers 1
-    #near 0.07
-    #minRange 0.12
-    #maxRange 3.5
-    #  name "lidar"
-    #  spherical TRUE
-    #}
     DEF Multiranger Transform {
-      translation 0.0 0 0.02
+      translation 0 0 0.02
       children [
         DistanceSensor {
           rotation 0 0 1 -1.57
@@ -695,7 +309,7 @@ Robot {
           name "range_left"
           lookupTable [
             0 0 0
-          3.5 3500 0
+            3.5 3500 0
           ]
         }
         DistanceSensor {
@@ -707,12 +321,6 @@ Robot {
         }
       ]
     }
-    # Camera {
-    #   translation 0.03 0 0.01
-    #   fieldOfView 0.87
-    #   width 324
-    #   height 324
-    # }
     Solid {
       translation 0 0 -0.015
       children [
@@ -906,24 +514,11 @@ Robot {
   }
   controller "<extern>"
 }
-
 Robot {
-  translation -2.1 -2.0 0.015
-  selfCollision FALSE
-  synchronization TRUE
+  translation -0.4 -0.4 0.015
   children [
-    #Lidar {
-    #horizontalResolution 5
-    #fieldOfView 6.28318
-    #numberOfLayers 1
-    #near 0.07
-    #minRange 0.12
-    #maxRange 3.5
-    #  name "lidar"
-    #  spherical TRUE
-    #}
     DEF Multiranger Transform {
-      translation 0.0 0 0.02
+      translation 0 0 0.02
       children [
         DistanceSensor {
           rotation 0 0 1 -1.57
@@ -946,7 +541,7 @@ Robot {
           name "range_left"
           lookupTable [
             0 0 0
-          3.5 3500 0
+            3.5 3500 0
           ]
         }
         DistanceSensor {
@@ -958,12 +553,6 @@ Robot {
         }
       ]
     }
-    # Camera {
-    #   translation 0.03 0 0.01
-    #   fieldOfView 0.87
-    #   width 324
-    #   height 324
-    # }
     Solid {
       translation 0 0 -0.015
       children [
@@ -1157,24 +746,11 @@ Robot {
   }
   controller "<extern>"
 }
-
 Robot {
-  translation -1.3 -2.0 0.015
-  selfCollision FALSE
-  synchronization TRUE
+  translation 0.4 -0.4 0.015
   children [
-    #Lidar {
-    #horizontalResolution 5
-    #fieldOfView 6.28318
-    #numberOfLayers 1
-    #near 0.07
-    #minRange 0.12
-    #maxRange 3.5
-    #  name "lidar"
-    #  spherical TRUE
-    #}
     DEF Multiranger Transform {
-      translation 0.0 0 0.02
+      translation 0 0 0.02
       children [
         DistanceSensor {
           rotation 0 0 1 -1.57
@@ -1197,7 +773,7 @@ Robot {
           name "range_left"
           lookupTable [
             0 0 0
-          3.5 3500 0
+            3.5 3500 0
           ]
         }
         DistanceSensor {
@@ -1209,12 +785,6 @@ Robot {
         }
       ]
     }
-    # Camera {
-    #   translation 0.03 0 0.01
-    #   fieldOfView 0.87
-    #   width 324
-    #   height 324
-    # }
     Solid {
       translation 0 0 -0.015
       children [

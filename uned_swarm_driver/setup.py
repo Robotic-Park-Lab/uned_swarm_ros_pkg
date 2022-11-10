@@ -1,6 +1,6 @@
 from setuptools import setup
 
-package_name = 'uned_swarm_task'
+package_name = 'uned_swarm_driver'
 
 setup(
     name=package_name,
@@ -20,8 +20,7 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
-            'shape_control = uned_swarm_task.shape_control:main',
-            'turtlebot_distance_control = uned_swarm_task.turtlebot_distance_control:main',
+            'swarm_driver = uned_swarm_driver.swarm_driver:main'
         ],
     },
 )
