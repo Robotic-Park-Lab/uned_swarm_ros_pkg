@@ -6,7 +6,8 @@ from launch import LaunchDescription
 from ament_index_python.packages import get_package_share_directory
 from launch.substitutions import EnvironmentVariable, LaunchConfiguration
 from launch.actions import SetEnvironmentVariable
-from webots_ros2_driver.webots_launcher import WebotsLauncher
+from webots_ros2_driver.webots_launcher import WebotsLauncher, Ros2SupervisorLauncher
+from webots_ros2_driver.utils import controller_url_prefix
 
 
 def generate_launch_description():
@@ -57,6 +58,8 @@ def generate_launch_description():
         package='webots_ros2_driver',
         executable='driver',
         output='screen',
+        additional_env={'WEBOTS_CONTROLLER_URL': controller_url_prefix() + 'turtlebot01',
+                        'WEBOTS_ROBOT_NAME': 'turtlebot01'},
         parameters=[
             {'robot_description': robot_description,
              'use_sim_time': use_sim_time,
@@ -65,6 +68,8 @@ def generate_launch_description():
         ],
         remappings=mappings
     )
+
+    ros2_supervisor = Ros2SupervisorLauncher()
 
     turtlebot_task = Node(
         package='uned_kheperaiv_task',
@@ -95,7 +100,8 @@ def generate_launch_description():
         output='screen',
         name='driver',
         namespace='dron01',
-        additional_env={'WEBOTS_ROBOT_NAME': 'dron01'},
+        additional_env={'WEBOTS_CONTROLLER_URL': controller_url_prefix() + 'dron01',
+                        'WEBOTS_ROBOT_NAME': 'dron01'},
         parameters=[
             {'robot_description': dron01_description,
              'use_sim_time': use_sim_time,
@@ -109,7 +115,8 @@ def generate_launch_description():
         output='screen',
         name='driver',
         namespace='dron02',
-        additional_env={'WEBOTS_ROBOT_NAME': 'dron02'},
+        additional_env={'WEBOTS_CONTROLLER_URL': controller_url_prefix() + 'dron02',
+                        'WEBOTS_ROBOT_NAME': 'dron02'},
         parameters=[
             {'robot_description': dron02_description,
              'use_sim_time': use_sim_time,
@@ -123,7 +130,8 @@ def generate_launch_description():
         output='screen',
         name='driver',
         namespace='dron03',
-        additional_env={'WEBOTS_ROBOT_NAME': 'dron03'},
+        additional_env={'WEBOTS_CONTROLLER_URL': controller_url_prefix() + 'dron03',
+                        'WEBOTS_ROBOT_NAME': 'dron03'},
         parameters=[
             {'robot_description': dron03_description,
              'use_sim_time': use_sim_time,
@@ -137,7 +145,8 @@ def generate_launch_description():
         output='screen',
         name='driver',
         namespace='dron04',
-        additional_env={'WEBOTS_ROBOT_NAME': 'dron04'},
+        additional_env={'WEBOTS_CONTROLLER_URL': controller_url_prefix() + 'dron04',
+                        'WEBOTS_ROBOT_NAME': 'dron04'},
         parameters=[
             {'robot_description': dron04_description,
              'use_sim_time': use_sim_time,
@@ -162,7 +171,8 @@ def generate_launch_description():
         output='screen',
         name='driver',
         namespace='khepera01',
-        additional_env={'WEBOTS_ROBOT_NAME': 'khepera01'},
+        additional_env={'WEBOTS_CONTROLLER_URL': controller_url_prefix() + 'khepera01',
+                        'WEBOTS_ROBOT_NAME': 'khepera01'},
         # arguments=['--ros-args', '--log-level', 'debug'],
         parameters=[
             {'robot_description': khepera_description,
@@ -199,7 +209,8 @@ def generate_launch_description():
         output='screen',
         name='driver',
         namespace='khepera02',
-        additional_env={'WEBOTS_ROBOT_NAME': 'khepera02'},
+        additional_env={'WEBOTS_CONTROLLER_URL': controller_url_prefix() + 'khepera02',
+                        'WEBOTS_ROBOT_NAME': 'khepera02'},
         parameters=[
             {'robot_description': khepera_description,
              'use_sim_time': use_sim_time,
@@ -235,7 +246,8 @@ def generate_launch_description():
         output='screen',
         name='driver',
         namespace='khepera03',
-        additional_env={'WEBOTS_ROBOT_NAME': 'khepera03'},
+        additional_env={'WEBOTS_CONTROLLER_URL': controller_url_prefix() + 'khepera03',
+                        'WEBOTS_ROBOT_NAME': 'khepera03'},
         parameters=[
             {'robot_description': khepera_description,
              'use_sim_time': use_sim_time,
@@ -310,6 +322,7 @@ def generate_launch_description():
         joint_state_broadcaster_spawner,
         diffdrive_controller_spawner,
         webots,
+        ros2_supervisor,
         dron01_driver,
         dron02_driver,
         dron03_driver,
