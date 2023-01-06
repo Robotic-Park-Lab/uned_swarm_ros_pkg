@@ -21,38 +21,14 @@ def generate_launch_description():
     dron03_description = pathlib.Path(os.path.join(dron_package_dir, 'resource', 'MRS_dron03.urdf')).read_text()
     dron04_description = pathlib.Path(os.path.join(dron_package_dir, 'resource', 'MRS_dron04.urdf')).read_text()
     khepera_description = pathlib.Path(os.path.join(robot_package_dir, 'resource', 'kheperaiv.urdf')).read_text()
-    robot_description = pathlib.Path(os.path.join(package_dir, 'resource', 'turtlebot_webots.urdf')).read_text()
+    robot_description = pathlib.Path(os.path.join(robot_package_dir, 'resource', 'turtlebot3burger.urdf')).read_text()
     ros2_control_params = os.path.join(package_dir, 'resource', 'ros2control.yml')
     use_sim_time = LaunchConfiguration('use_sim_time', default=True)
     webots = WebotsLauncher(
         world=os.path.join(swarm_package_dir, 'worlds', 'RoboticPark_4cf_3kh_1tb.wbt')
     )
-    
-    # TODO: Revert once the https://github.com/ros-controls/ros2_control/pull/444 PR gets into the release
-    controller_manager_timeout = ['--controller-manager-timeout', '50']
-    controller_manager_prefix = 'python.exe' if os.name == 'nt' else ''
-    use_deprecated_spawner_py = 'ROS_DISTRO' in os.environ and os.environ['ROS_DISTRO'] == 'foxy'
 
-    diffdrive_controller_spawner = Node(
-        package='controller_manager',
-        executable='spawner' if not use_deprecated_spawner_py else 'spawner.py',
-        output='screen',
-        prefix=controller_manager_prefix,
-        arguments=['diffdrive_controller'] + controller_manager_timeout,
-    )
-
-    joint_state_broadcaster_spawner = Node(
-        package='controller_manager',
-        executable='spawner' if not use_deprecated_spawner_py else 'spawner.py',
-        output='screen',
-        prefix=controller_manager_prefix,
-        arguments=['joint_state_broadcaster'] + controller_manager_timeout,
-    )
-
-    mappings = [('/diffdrive_controller/cmd_vel_unstamped', '/cmd_vel'),
-                ('/TurtleBot3Burger/gps', '/turtlebot01/driver/gps')]
-    if 'ROS_DISTRO' in os.environ and os.environ['ROS_DISTRO'] in ['humble', 'rolling']:
-        mappings.append(('/diffdrive_controller/odom', '/odom'))
+    mappings = [('/TurtleBot3Burger/gps', '/turtlebot01/driver/gps')]
 
     turtlebot_driver = Node(
         package='webots_ros2_driver',
@@ -188,12 +164,13 @@ def generate_launch_description():
         name='formation_control',
         namespace='khepera01',
         remappings=[
-            ('/khepera01/khepera02/pose', '/khepera02/pose'),
-            ('/khepera01/khepera03/pose', '/khepera03/pose'),
-            ('/khepera01/turtlebot01/pose', '/turtlebot01/pose'),
-            ('/khepera01/dron01/pose', '/dron01/pose'),
-            ('/khepera01/dron03/pose', '/dron03/pose'),
-            ('/khepera01/swarm/status', '/swarm/status')],
+            ('/khepera01/khepera02/local_pose', '/khepera02/local_pose'),
+            ('/khepera01/khepera03/local_pose', '/khepera03/local_pose'),
+            ('/khepera01/turtlebot01/local_pose', '/turtlebot01/local_pose'),
+            ('/khepera01/dron01/local_pose', '/dron01/local_pose'),
+            ('/khepera01/dron03/local_pose', '/dron03/local_pose'),
+            ('/khepera01/swarm/status', '/swarm/status'),
+            ('/khepera01/swarm/order', '/swarm/order')],
         parameters=[
             {'use_sim_time': use_sim_time},
             {"config_file": 'path'},
@@ -225,12 +202,13 @@ def generate_launch_description():
         name='formation_control',
         namespace='khepera02',
         remappings=[
-            ('/khepera02/khepera01/pose', '/khepera01/pose'),
-            ('/khepera02/khepera03/pose', '/khepera03/pose'),
-            ('/khepera02/turtlebot01/pose', '/turtlebot01/pose'),
-            ('/khepera02/dron01/pose', '/dron01/pose'),
-            ('/khepera02/dron02/pose', '/dron02/pose'),
-            ('/khepera02/swarm/status', '/swarm/status')],
+            ('/khepera02/khepera01/local_pose', '/khepera01/local_pose'),
+            ('/khepera02/khepera03/local_pose', '/khepera03/local_pose'),
+            ('/khepera02/turtlebot01/local_pose', '/turtlebot01/local_pose'),
+            ('/khepera02/dron01/local_pose', '/dron01/local_pose'),
+            ('/khepera02/dron02/local_pose', '/dron02/local_pose'),
+            ('/khepera02/swarm/status', '/swarm/status'),
+            ('/khepera02/swarm/order', '/swarm/order')],
         parameters=[
             {'use_sim_time': use_sim_time},
             {"config_file": 'path'},
@@ -262,12 +240,13 @@ def generate_launch_description():
         name='formation_control',
         namespace='khepera03',
         remappings=[
-            ('/khepera03/khepera02/pose', '/khepera02/pose'),
-            ('/khepera03/khepera01/pose', '/khepera01/pose'),
-            ('/khepera03/turtlebot01/pose', '/turtlebot01/pose'),
-            ('/khepera03/dron04/pose', '/dron04/pose'),
-            ('/khepera03/dron02/pose', '/dron02/pose'),
-            ('/khepera03/swarm/status', '/swarm/status')],
+            ('/khepera03/khepera02/local_pose', '/khepera02/local_pose'),
+            ('/khepera03/khepera01/local_pose', '/khepera01/local_pose'),
+            ('/khepera03/turtlebot01/local_pose', '/turtlebot01/local_pose'),
+            ('/khepera03/dron04/local_pose', '/dron04/local_pose'),
+            ('/khepera03/dron02/local_pose', '/dron02/local_pose'),
+            ('/khepera03/swarm/status', '/swarm/status'),
+            ('/khepera03/swarm/order', '/swarm/order')],
         parameters=[
             {'use_sim_time': use_sim_time},
             {"config_file": 'path'},
@@ -319,8 +298,8 @@ def generate_launch_description():
 
 
     return LaunchDescription([
-        joint_state_broadcaster_spawner,
-        diffdrive_controller_spawner,
+        # joint_state_broadcaster_spawner,
+        # diffdrive_controller_spawner,
         webots,
         ros2_supervisor,
         dron01_driver,
@@ -340,7 +319,7 @@ def generate_launch_description():
         # footprint_publisher,
         rqt_node,
         rviz_node,
-        vicon_node,
+        # vicon_node,
         launch.actions.RegisterEventHandler(
             event_handler=launch.event_handlers.OnProcessExit(
                 target_action=webots,
