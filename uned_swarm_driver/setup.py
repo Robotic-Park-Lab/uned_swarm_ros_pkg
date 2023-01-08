@@ -20,7 +20,8 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
-            'swarm_driver = uned_swarm_driver.swarm_driver:main'
+            'swarm_driver = uned_swarm_driver.swarm_driver:main',
+            'turtlebot_driver = uned_swarm_driver.turtlebot_driver:main'
         ],
     },
 )

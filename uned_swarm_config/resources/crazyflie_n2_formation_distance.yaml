@@ -1,0 +1,50 @@
+# Crazyflie parameters to ros2 formation experience
+dron01:
+  local_pose:
+    enable: True
+    T: 20
+  local_twist:
+    enable: False
+    T: 20
+  data_attitude:
+    enable: False
+    T: 20
+  data_rate: 
+    enable: False
+    T: 20
+  data_motor: 
+    enable: False
+    T: 20
+  data:
+    enable: False
+    T: 20
+  task: 
+    enable: True
+    role: consensus
+    type: distance
+    relationship: 'khepera01_1.2, khepera02_1.2, dron02_0.6'
+
+dron02:
+  local_pose:
+    enable: True
+    T: 20
+  local_twist:
+    enable: False
+    T: 20
+  data_attitude:
+    enable: False
+    T: 20
+  data_rate: 
+    enable: False
+    T: 20
+  data_motor: 
+    enable: False
+    T: 20
+  data:
+    enable: False
+    T: 20
+  task: 
+    enable: True
+    role: consensus
+    type: distance
+    relationship: 'dron01_0.6, khepera01_1.2, khepera02_1.2'
