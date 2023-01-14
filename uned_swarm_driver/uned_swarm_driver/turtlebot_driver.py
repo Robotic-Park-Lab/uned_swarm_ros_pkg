@@ -41,6 +41,7 @@ class TurtlebotDriver(Node):
         self.goal_pose = Pose()
         self.pose = Pose()
         self.init_pose = False
+        self.pose_offset = Pose()
 
     def order_callback(self, msg):
         self.get_logger().info('TurtlebotDriver::Order: "%s"' % msg.data)
@@ -56,17 +57,20 @@ class TurtlebotDriver(Node):
             self.goal_pose = self.pose
 
     def odom_callback(self, msg):
-        self.pose = msg.pose.pose
-        self.publisher_pose_.publish(self.pose)
-        if not self.init_pose:
-            self.init_pose = True
-            self.goal_pose = self.pose
+        if self.init_pose:
+            self.pose.position.x = -(msg.pose.pose.position.y-self.pose_offset.position.y)
+            self.pose.position.y = -(msg.pose.pose.position.x-self.pose_offset.position.x)
+            self.publisher_pose_.publish(self.pose)
+            self.get_logger().info('Local pose: X: %.2f Y: %.2f' % (self.pose.position.x, self.pose.position.y))
+        else:
+            self.pose_offset = msg.pose.pose
 
     def iterate(self):
         if self.init_pose:
             cmd_vel = Twist()
             cmd_vel = self.position_controller()
-            self.get_logger().debug('Pose Vx: %.3f W: %.3f' % (cmd_vel.linear.x, cmd_vel.angular.z))
+            self.get_logger().info('CMD Vx: %.3f W: %.3f' % (cmd_vel.linear.x, cmd_vel.angular.z))
+            self.publisher_twist_.publish(cmd_vel)
 
     def position_controller(self):
         Kp = 1
@@ -83,7 +87,7 @@ class TurtlebotDriver(Node):
 
         alfa = atan2(self.goal_pose.position.y-self.pose.position.y,self.goal_pose.position.x-self.pose.position.x)
         oc = alfa - yaw
-        w = Kw * oc # sin(oc)
+        w = -Kw * oc # sin(oc)
         
         self.get_logger().debug('alfa: %.2f theta: %.2f oc: %.2f e_x: %.3f e_y: %.3f' % (alfa, yaw, oc, error_x, error_y))
         v = error_x * Kp * Vmax
