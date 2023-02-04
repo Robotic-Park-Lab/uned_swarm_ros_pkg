@@ -30,7 +30,7 @@ dron01:
     enable: True
     role: consensus
     type: distance
-    relationship: 'khepera02_0.86, khepera01_0.86, dron02_0.6, dron03_0.6'
+    relationship: 'khepera02_0.86, turtlebot01_0.86, dron02_0.6, dron03_0.6'
 
 dron02:
   name: dron02
@@ -64,7 +64,7 @@ dron02:
     enable: True
     role: consensus
     type: distance
-    relationship: 'khepera02_0.86, khepera03_0.86, dron01_0.6, dron03_0.6'
+    relationship: 'khepera04_0.86, khepera03_0.86, dron01_0.6, dron03_0.6'
 
 dron03:
   name: dron03
@@ -100,11 +100,10 @@ dron03:
     type: distance
     relationship: 'dron01_0.6, dron02_0.6'
 
-khepera01:
-  id: khepera01
-  agent_ip: '192.168.0.21'
-  port_number: 50000
-  init_theta: 1.5707
+turtlebot01:
+  id: turtlebot01
+  agent_ip: '192.168.0.23'
+  init_theta: 0.0
   communication:
     type: Continuous
     threshold:
@@ -115,11 +114,45 @@ khepera01:
     enable: True
     role: consensus
     type: distance
-    relationship: 'khepera02_0.6, khepera03_0.6, dron01_0.8485'
+    relationship: 'khepera02_0.6, khepera04_0.6'
+
+dron04:
+  name: turtlebot01
+  control_mode: None
+  controller_type: Continuous
+  communication:
+    type: Continuous
+    threshold:
+      type: Null
+      co: Null
+      ai: Null
+  local_pose:
+    enable: True
+    T: 20
+  local_twist:
+    enable: False
+    T: 20
+  data_attitude:
+    enable: False
+    T: 20
+  data_rate: 
+    enable: False
+    T: 20
+  data_motor: 
+    enable: False
+    T: 20
+  data:
+    enable: False
+    T: 20
+  task: 
+    enable: False
+    role: Null
+    type: Null
+    relationship: Null
 
 khepera02:
   id: khepera02
-  agent_ip: '192.168.0.22'
+  agent_ip: '192.168.0.21'
   port_number: 50000
   init_theta: -1.5707
   communication:
@@ -132,7 +165,7 @@ khepera02:
     enable: True
     role: consensus
     type: distance
-    relationship: 'khepera01_0.6, khepera03_0.6, dron01_0.8485, dron02_0.8485'
+    relationship: 'turtlebot01_0.6, dron01_0.86, khepera03_0.6, khepera04_0.8485'
 
 khepera03:
   id: khepera03
@@ -149,4 +182,21 @@ khepera03:
     enable: True
     role: consensus
     type: distance
-    relationship: 'khepera02_0.6, khepera01_0.6, dron02_0.8485'
+    relationship: 'dron02_0.86, khepera02_0.6, khepera04_0.6'
+
+khepera04:
+  id: khepera04
+  agent_ip: '192.168.0.20'
+  port_number: 50000
+  init_theta: -1.5707
+  communication:
+    type: Continuous
+    threshold:
+      type: Null
+      co: Null
+      ai: Null
+  task: 
+    enable: True
+    role: consensus
+    type: distance
+    relationship: 'dron02_0.86, khepera02_0.8485, khepera03_0.6, turtlebot01_0.6'
