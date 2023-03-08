@@ -17,7 +17,7 @@ def generate_launch_description():
     rviz_config_path = os.path.join(config_package_dir, 'rviz', 'AB01_formation.rviz')
     use_sim_time = LaunchConfiguration('use_sim_time', default=True)
     webots = WebotsLauncher(
-        world=os.path.join(config_package_dir, 'worlds', 'AB01_RoboticPark_n10.wbt')
+        world=os.path.join(config_package_dir, 'worlds', 'AB01_RoboticPark_n06.wbt')
     )
 
     ros2_supervisor = Ros2SupervisorLauncher()
@@ -32,7 +32,7 @@ def generate_launch_description():
         parameters=[
             {'first_uri': 'radio://0/80/2M/E7E7E7E701'},
             {'use_sim_time': use_sim_time},
-            {'n': 4},
+            {'n': 8},
             {'config': config_path}
         ]
     )
@@ -274,10 +274,13 @@ def generate_launch_description():
         webots,
         ros2_supervisor,
         swarm_node,
-        dron05_driver,
-        dron06_driver,
-        dron07_driver,
-        dron08_driver,
+        # dron02_driver,
+        # dron03_driver,
+        # dron04_driver,
+        # dron05_driver,
+        # dron06_driver,
+        # dron07_driver,
+        # dron08_driver,
         dron09_driver,
         dron10_driver,
         dron11_driver,

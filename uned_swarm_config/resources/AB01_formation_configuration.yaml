@@ -5,10 +5,10 @@ dron01:
   positioning: Intern
   controller_type: PID_Continuous
   communication:
-    type: Continuous
+    type: EventBased
     threshold:
-      type: Null
-      co: Null
+      type: Constant
+      co: 0.01
       ai: Null
   local_pose:
     enable: True
@@ -40,10 +40,10 @@ dron02:
   positioning: Intern
   controller_type: PID_Continuous
   communication:
-    type: Continuous
+    type: EventBased
     threshold:
-      type: Null
-      co: Null
+      type: Constant
+      co: 0.01
       ai: Null
   local_pose:
     enable: True
@@ -75,10 +75,10 @@ dron03:
   positioning: Intern
   controller_type: PID_Continuous
   communication:
-    type: Continuous
+    type: EventBased
     threshold:
-      type: Null
-      co: Null
+      type: Constant
+      co: 0.01
       ai: Null
   local_pose:
     enable: True
@@ -110,10 +110,10 @@ dron04:
   positioning: Intern
   controller_type: PID_Continuous
   communication:
-    type: Continuous
+    type: EventBased
     threshold:
-      type: Null
-      co: Null
+      type: Constant
+      co: 0.01
       ai: Null
   local_pose:
     enable: True
@@ -145,10 +145,10 @@ dron05:
   positioning: Intern
   controller_type: PID_Continuous
   communication:
-    type: Continuous
+    type: EventBased
     threshold:
-      type: Null
-      co: Null
+      type: Constant
+      co: 0.01
       ai: Null
   local_pose:
     enable: True
@@ -180,10 +180,10 @@ dron06:
   positioning: Intern
   controller_type: PID_Continuous
   communication:
-    type: Continuous
+    type: EventBased
     threshold:
-      type: Null
-      co: Null
+      type: Constant
+      co: 0.01
       ai: Null
   local_pose:
     enable: True
@@ -215,10 +215,10 @@ dron07:
   positioning: Intern
   controller_type: PID_Continuous
   communication:
-    type: Continuous
+    type: EventBased
     threshold:
-      type: Null
-      co: Null
+      type: Constant
+      co: 0.01
       ai: Null
   local_pose:
     enable: True
@@ -250,10 +250,10 @@ dron08:
   positioning: Intern
   controller_type: PID_Continuous
   communication:
-    type: Continuous
+    type: EventBased
     threshold:
-      type: Null
-      co: Null
+      type: Constant
+      co: 0.01
       ai: Null
   local_pose:
     enable: True
@@ -285,10 +285,10 @@ dron09:
   positioning: Intern
   controller_type: PID_Continuous
   communication:
-    type: Continuous
+    type: EventBased
     threshold:
-      type: Null
-      co: Null
+      type: Constant
+      co: 0.01
       ai: Null
   local_pose:
     enable: True
@@ -320,10 +320,10 @@ dron10:
   positioning: Intern
   controller_type: PID_Continuous
   communication:
-    type: Continuous
+    type: EventBased
     threshold:
-      type: Null
-      co: Null
+      type: Constant
+      co: 0.01
       ai: Null
   local_pose:
     enable: True
@@ -355,10 +355,10 @@ dron11:
   positioning: Intern
   controller_type: PID_Continuous
   communication:
-    type: Continuous
+    type: EventBased
     threshold:
-      type: Null
-      co: Null
+      type: Constant
+      co: 0.01
       ai: Null
   local_pose:
     enable: True
@@ -390,10 +390,10 @@ dron12:
   positioning: Intern
   controller_type: PID_Continuous
   communication:
-    type: Continuous
+    type: EventBased
     threshold:
-      type: Null
-      co: Null
+      type: Constant
+      co: 0.01
       ai: Null
   local_pose:
     enable: True
@@ -425,10 +425,10 @@ dron13:
   positioning: Intern
   controller_type: PID_Continuous
   communication:
-    type: Continuous
+    type: EventBased
     threshold:
-      type: Null
-      co: Null
+      type: Constant
+      co: 0.01
       ai: Null
   local_pose:
     enable: True
@@ -460,10 +460,10 @@ dron14:
   positioning: Intern
   controller_type: PID_Continuous
   communication:
-    type: Continuous
+    type: EventBased
     threshold:
-      type: Null
-      co: Null
+      type: Constant
+      co: 0.01
       ai: Null
   local_pose:
     enable: True
