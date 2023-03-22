@@ -1,0 +1,540 @@
+khepera01:
+  name: khepera01
+  config_path: MRS90_khepera01.yaml
+  description: khepera
+  type: virtual
+
+khepera02:
+  name: khepera02
+  config_path: MRS90_khepera02.yaml
+  description: khepera
+  type: virtual
+
+khepera03:
+  name: khepera03
+  config_path: MRS90_khepera03.yaml
+  description: khepera
+  type: virtual
+
+khepera04:
+  name: khepera04
+  config_path: MRS90_khepera04.yaml
+  description: khepera
+  type: virtual
+
+khepera05:
+  name: khepera05
+  config_path: MRS90_khepera05.yaml
+  description: khepera
+  type: virtual
+
+khepera06:
+  name: khepera06
+  config_path: MRS90_khepera06.yaml
+  description: khepera
+  type: virtual
+
+khepera07:
+  name: khepera07
+  config_path: MRS90_khepera07.yaml
+  description: khepera
+  type: virtual
+
+khepera08:
+  name: khepera08
+  config_path: MRS90_khepera08.yaml
+  description: khepera
+  type: virtual
+
+khepera09:
+  name: khepera09
+  config_path: MRS90_khepera09.yaml
+  description: khepera
+  type: virtual
+
+khepera10:
+  name: khepera10
+  config_path: MRS90_khepera10.yaml
+  description: khepera
+  type: virtual
+
+khepera11:
+  name: khepera11
+  config_path: MRS90_khepera11.yaml
+  description: khepera
+  type: virtual
+
+khepera12:
+  name: khepera12
+  config_path: MRS90_khepera12.yaml
+  description: khepera
+  type: virtual
+
+khepera13:
+  name: khepera13
+  config_path: MRS90_khepera13.yaml
+  description: khepera
+  type: virtual
+
+khepera14:
+  name: khepera14
+  config_path: MRS90_khepera14.yaml
+  description: khepera
+  type: virtual
+
+khepera15:
+  name: khepera15
+  config_path: MRS90_khepera15.yaml
+  description: khepera
+  type: virtual
+
+khepera16:
+  name: khepera16
+  config_path: MRS90_khepera16.yaml
+  description: khepera
+  type: virtual
+
+khepera17:
+  name: khepera17
+  config_path: MRS90_khepera17.yaml
+  description: khepera
+  type: virtual
+
+khepera18:
+  name: khepera18
+  config_path: MRS90_khepera18.yaml
+  description: khepera
+  type: virtual
+
+khepera19:
+  name: khepera19
+  config_path: MRS90_khepera19.yaml
+  description: khepera
+  type: virtual
+
+khepera20:
+  name: khepera20
+  config_path: MRS90_khepera20.yaml
+  description: khepera
+  type: virtual
+
+khepera21:
+  name: khepera21
+  config_path: MRS90_khepera21.yaml
+  description: khepera
+  type: virtual
+
+dron01:
+  name: dron01
+  config_path: MRS90_dron01.yaml
+  description: crazyflie
+  type: virtual
+
+dron02:
+  name: dron02
+  config_path: MRS90_dron02.yaml
+  description: crazyflie
+  type: virtual
+
+dron03:
+  name: dron03
+  config_path: MRS90_dron03.yaml
+  description: crazyflie
+  type: virtual
+
+dron04:
+  name: dron04
+  config_path: MRS90_dron04.yaml
+  description: crazyflie
+  type: virtual
+
+dron05:
+  name: dron05
+  config_path: MRS90_dron05.yaml
+  description: crazyflie
+  type: virtual
+
+dron06:
+  name: dron06
+  config_path: MRS90_dron06.yaml
+  description: crazyflie
+  type: virtual
+
+dron07:
+  name: dron07
+  config_path: MRS90_dron07.yaml
+  description: crazyflie
+  type: virtual
+
+dron08:
+  name: dron08
+  config_path: MRS90_dron08.yaml
+  description: crazyflie
+  type: virtual
+
+dron09:
+  name: dron09
+  config_path: MRS90_dron09.yaml
+  description: crazyflie
+  type: virtual
+
+dron10:
+  name: dron10
+  config_path: MRS90_dron10.yaml
+  description: crazyflie
+  type: virtual
+
+dron11:
+  name: dron11
+  config_path: MRS90_dron11.yaml
+  description: crazyflie
+  type: virtual
+
+dron12:
+  name: dron12
+  config_path: MRS90_dron12.yaml
+  description: crazyflie
+  type: virtual
+
+dron13:
+  name: dron13
+  config_path: MRS90_dron13.yaml
+  description: crazyflie
+  type: virtual
+
+dron14:
+  name: dron14
+  config_path: MRS90_dron14.yaml
+  description: crazyflie
+  type: virtual
+
+dron15:
+  name: dron15
+  config_path: MRS90_dron15.yaml
+  description: crazyflie
+  type: virtual
+
+dron16:
+  name: dron16
+  config_path: MRS90_dron16.yaml
+  description: crazyflie
+  type: virtual
+
+dron17:
+  name: dron17
+  config_path: MRS90_dron17.yaml
+  description: crazyflie
+  type: virtual
+
+dron18:
+  name: dron18
+  config_path: MRS90_dron18.yaml
+  description: crazyflie
+  type: virtual
+
+dron19:
+  name: dron19
+  config_path: MRS90_dron19.yaml
+  description: crazyflie
+  type: virtual
+
+dron20:
+  name: dron20
+  config_path: MRS90_dron20.yaml
+  description: crazyflie
+  type: virtual
+
+dron21:
+  name: dron21
+  config_path: MRS90_dron21.yaml
+  description: crazyflie
+  type: virtual
+
+dron22:
+  name: dron22
+  config_path: MRS90_dron22.yaml
+  description: crazyflie
+  type: virtual
+
+dron23:
+  name: dron23
+  config_path: MRS90_dron23.yaml
+  description: crazyflie
+  type: virtual
+
+dron24:
+  name: dron24
+  config_path: MRS90_dron24.yaml
+  description: crazyflie
+  type: virtual
+
+dron25:
+  name: dron25
+  config_path: MRS90_dron25.yaml
+  description: crazyflie
+  type: virtual
+
+dron26:
+  name: dron26
+  config_path: MRS90_dron26.yaml
+  description: crazyflie
+  type: virtual
+
+dron27:
+  name: dron27
+  config_path: MRS90_dron27.yaml
+  description: crazyflie
+  type: virtual
+
+dron28:
+  name: dron28
+  config_path: MRS90_dron28.yaml
+  description: crazyflie
+  type: virtual
+
+dron29:
+  name: dron29
+  config_path: MRS90_dron29.yaml
+  description: crazyflie
+  type: virtual
+
+dron30:
+  name: dron30
+  config_path: MRS90_dron30.yaml
+  description: crazyflie
+  type: virtual
+
+dron31:
+  name: dron31
+  config_path: MRS90_dron31.yaml
+  description: crazyflie
+  type: virtual
+
+dron32:
+  name: dron32
+  config_path: MRS90_dron32.yaml
+  description: crazyflie
+  type: virtual
+
+dron33:
+  name: dron33
+  config_path: MRS90_dron33.yaml
+  description: crazyflie
+  type: virtual
+
+dron34:
+  name: dron34
+  config_path: MRS90_dron34.yaml
+  description: crazyflie
+  type: virtual
+
+dron35:
+  name: dron35
+  config_path: MRS90_dron35.yaml
+  description: crazyflie
+  type: virtual
+
+dron36:
+  name: dron36
+  config_path: MRS90_dron36.yaml
+  description: crazyflie
+  type: virtual
+
+dron37:
+  name: dron37
+  config_path: MRS90_dron37.yaml
+  description: crazyflie
+  type: virtual
+
+dron38:
+  name: dron38
+  config_path: MRS90_dron38.yaml
+  description: crazyflie
+  type: virtual
+
+dron39:
+  name: dron39
+  config_path: MRS90_dron39.yaml
+  description: crazyflie
+  type: virtual
+
+dron40:
+  name: dron40
+  config_path: MRS90_dron40.yaml
+  description: crazyflie
+  type: virtual
+
+dron41:
+  name: dron41
+  config_path: MRS90_dron41.yaml
+  description: crazyflie
+  type: virtual
+
+dron42:
+  name: dron42
+  config_path: MRS90_dron42.yaml
+  description: crazyflie
+  type: virtual
+
+dron43:
+  name: dron43
+  config_path: MRS90_dron43.yaml
+  description: crazyflie
+  type: virtual
+
+dron44:
+  name: dron44
+  config_path: MRS90_dron44.yaml
+  description: crazyflie
+  type: virtual
+
+dron45:
+  name: dron45
+  config_path: MRS90_dron45.yaml
+  description: crazyflie
+  type: virtual
+
+dron46:
+  name: dron46
+  config_path: MRS90_dron46.yaml
+  description: crazyflie
+  type: virtual
+
+dron47:
+  name: dron47
+  config_path: MRS90_dron47.yaml
+  description: crazyflie
+  type: virtual
+
+dron48:
+  name: dron48
+  config_path: MRS90_dron48.yaml
+  description: crazyflie
+  type: virtual
+
+dron49:
+  name: dron49
+  config_path: MRS90_dron49.yaml
+  description: crazyflie
+  type: virtual
+
+dron50:
+  name: dron50
+  config_path: MRS90_dron50.yaml
+  description: crazyflie
+  type: virtual
+
+dron51:
+  name: dron51
+  config_path: MRS90_dron51.yaml
+  description: crazyflie
+  type: virtual
+
+dron52:
+  name: dron52
+  config_path: MRS90_dron52.yaml
+  description: crazyflie
+  type: virtual
+
+dron53:
+  name: dron53
+  config_path: MRS90_dron53.yaml
+  description: crazyflie
+  type: virtual
+
+dron54:
+  name: dron54
+  config_path: MRS90_dron54.yaml
+  description: crazyflie
+  type: virtual
+
+dron55:
+  name: dron55
+  config_path: MRS90_dron55.yaml
+  description: crazyflie
+  type: virtual
+
+dron56:
+  name: dron56
+  config_path: MRS90_dron56.yaml
+  description: crazyflie
+  type: virtual
+
+dron57:
+  name: dron57
+  config_path: MRS90_dron57.yaml
+  description: crazyflie
+  type: virtual
+
+dron58:
+  name: dron58
+  config_path: MRS90_dron58.yaml
+  description: crazyflie
+  type: virtual
+
+dron59:
+  name: dron59
+  config_path: MRS90_dron59.yaml
+  description: crazyflie
+  type: virtual
+
+dron60:
+  name: dron60
+  config_path: MRS90_dron60.yaml
+  description: crazyflie
+  type: virtual
+
+dron61:
+  name: dron61
+  config_path: MRS90_dron61.yaml
+  description: crazyflie
+  type: virtual
+
+dron62:
+  name: dron62
+  config_path: MRS90_dron62.yaml
+  description: crazyflie
+  type: virtual
+
+dron63:
+  name: dron63
+  config_path: MRS90_dron63.yaml
+  description: crazyflie
+  type: virtual
+
+dron64:
+  name: dron64
+  config_path: MRS90_dron64.yaml
+  description: crazyflie
+  type: virtual
+
+dron65:
+  name: dron65
+  config_path: MRS90_dron65.yaml
+  description: crazyflie
+  type: virtual
+
+dron66:
+  name: dron66
+  config_path: MRS90_dron66.yaml
+  description: crazyflie
+  type: virtual
+
+dron67:
+  name: dron67
+  config_path: MRS90_dron67.yaml
+  description: crazyflie
+  type: virtual
+
+dron68:
+  name: dron68
+  config_path: MRS90_dron68.yaml
+  description: crazyflie
+  type: virtual
+
+dron69:
+  name: dron69
+  config_path: MRS90_dron69.yaml
+  description: crazyflie
+  type: virtual
+
