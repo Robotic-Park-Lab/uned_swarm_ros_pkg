@@ -21,7 +21,8 @@ setup(
     entry_points={
         'console_scripts': [
             'swarm_driver = uned_swarm_driver.swarm_driver:main',
-            'turtlebot_driver = uned_swarm_driver.turtlebot_driver:main'
+            'turtlebot_driver = uned_swarm_driver.turtlebot_driver:main',
+            'tello_gazebo_driver = uned_swarm_driver.tello_gazebo_driver:main'
         ],
     },
 )
