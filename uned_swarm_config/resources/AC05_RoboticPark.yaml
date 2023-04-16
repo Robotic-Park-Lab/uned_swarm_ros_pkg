@@ -1,0 +1,36 @@
+khepera01:
+  name: khepera01
+  config_path: MRS05_khepera01.yaml
+  description: khepera
+  type: virtual
+  pose: 1.5, 1.5
+
+khepera02:
+  name: khepera02
+  config_path: MRS05_khepera02.yaml
+  description: khepera
+  type: virtual
+  pose: -1.5, -1.5
+
+khepera03:
+  name: khepera03
+  config_path: MRS05_khepera03.yaml
+  description: khepera
+  type: virtual
+  pose: -1.5, 1.5
+
+khepera04:
+  name: khepera04
+  config_path: MRS05_khepera04.yaml
+  description: khepera
+  type: virtual
+  pose: 1.5, -1.5
+
+dron01:
+  name: dron01
+  config_path: MRS05_dron01.yaml
+  description: crazyflie
+  type: virtual
+  uri: radio://0/80/2M/E7E7E7E701
+  pose: 0.0, 0.0
+

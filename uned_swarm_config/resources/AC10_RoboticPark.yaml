@@ -1,0 +1,70 @@
+khepera01:
+  name: khepera01
+  config_path: MRS10_khepera01.yaml
+  description: khepera
+  type: virtual
+  pose: 1.53, -0.02
+
+khepera02:
+  name: khepera02
+  config_path: MRS10_khepera02.yaml
+  description: khepera
+  type: virtual
+  pose: 0.75, 1.32
+
+khepera03:
+  name: khepera03
+  config_path: MRS10_khepera03.yaml
+  description: khepera
+  type: virtual
+  pose: -0.71, 1.34
+
+khepera04:
+  name: khepera04
+  config_path: MRS10_khepera04.yaml
+  description: khepera
+  type: virtual
+  pose: -1.50, -0.04
+
+khepera05:
+  name: khepera05
+  config_path: MRS10_khepera05.yaml
+  description: khepera
+  type: virtual
+  pose: -0.79, -1.32
+
+khepera06:
+  name: khepera06
+  config_path: MRS10_khepera06.yaml
+  description: khepera
+  type: virtual
+  pose: 0.78, -1.32
+
+dron01:
+  name: dron01
+  config_path: MRS10_dron01.yaml
+  description: crazyflie
+  type: digital_twin
+  uri: radio://0/80/2M/E7E7E7E701
+
+dron02:
+  name: dron02
+  config_path: MRS10_dron02.yaml
+  description: crazyflie
+  type: digital_twin
+  uri: radio://0/80/2M/E7E7E7E702
+
+dron03:
+  name: dron03
+  config_path: MRS10_dron03.yaml
+  description: crazyflie
+  type: digital_twin
+  uri: radio://0/80/2M/E7E7E7E703
+
+dron04:
+  name: dron04
+  config_path: MRS10_dron04.yaml
+  description: crazyflie
+  type: digital_twin
+  uri: radio://0/80/2M/E7E7E7E704
+

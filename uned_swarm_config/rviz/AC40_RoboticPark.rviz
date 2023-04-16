@@ -80,12 +80,6 @@ Visualization Manager:
           Value: true
         khepera14:
           Value: true
-        khepera15:
-          Value: true
-        khepera16:
-          Value: true
-        khepera17:
-          Value: true
         dron01:
           Value: true
         dron02:
@@ -138,40 +132,6 @@ Visualization Manager:
           Value: true
         dron26:
           Value: true
-        dron27:
-          Value: true
-        dron28:
-          Value: true
-        dron29:
-          Value: true
-        dron30:
-          Value: true
-        dron31:
-          Value: true
-        dron32:
-          Value: true
-        dron33:
-          Value: true
-        dron34:
-          Value: true
-        dron35:
-          Value: true
-        dron36:
-          Value: true
-        dron37:
-          Value: true
-        dron38:
-          Value: true
-        dron39:
-          Value: true
-        dron40:
-          Value: true
-        dron41:
-          Value: true
-        dron42:
-          Value: true
-        dron43:
-          Value: true
         map:
           Value: true
       Marker Scale: 0.5
@@ -208,12 +168,6 @@ Visualization Manager:
           khepera13:
             {}
           khepera14:
-            {}
-          khepera15:
-            {}
-          khepera16:
-            {}
-          khepera17:
             {}
           dron01:
             {}
@@ -267,40 +221,6 @@ Visualization Manager:
             {}
           dron26:
             {}
-          dron27:
-            {}
-          dron28:
-            {}
-          dron29:
-            {}
-          dron30:
-            {}
-          dron31:
-            {}
-          dron32:
-            {}
-          dron33:
-            {}
-          dron34:
-            {}
-          dron35:
-            {}
-          dron36:
-            {}
-          dron37:
-            {}
-          dron38:
-            {}
-          dron39:
-            {}
-          dron40:
-            {}
-          dron41:
-            {}
-          dron42:
-            {}
-          dron43:
-            {}
       Update Interval: 0
       Value: true
     - Class: rviz_default_plugins/Marker
@@ -318,7 +238,7 @@ Visualization Manager:
       Value: true
     - Class: rviz_default_plugins/Marker
       Enabled: true
-      Name: khepera01-khepera17
+      Name: khepera01-khepera14
       Namespaces:
         "": true
       Topic:
@@ -327,7 +247,7 @@ Visualization Manager:
         Filter size: 10
         History Policy: Keep Last
         Reliability Policy: Reliable
-        Value: /khepera01/khepera17/marker
+        Value: /khepera01/khepera14/marker
       Value: true
     - Class: rviz_default_plugins/Marker
       Enabled: true
@@ -812,7 +732,7 @@ Visualization Manager:
       Value: true
     - Class: rviz_default_plugins/Marker
       Enabled: true
-      Name: khepera14-khepera15
+      Name: khepera14-dron01
       Namespaces:
         "": true
       Topic:
@@ -821,7 +741,7 @@ Visualization Manager:
         Filter size: 10
         History Policy: Keep Last
         Reliability Policy: Reliable
-        Value: /khepera14/khepera15/marker
+        Value: /khepera14/dron01/marker
       Value: true
     - Class: rviz_default_plugins/Marker
       Enabled: true
@@ -838,123 +758,6 @@ Visualization Manager:
       Value: true
     - Class: rviz_default_plugins/Marker
       Enabled: true
-      Name: khepera14-dron14
-      Namespaces:
-        "": true
-      Topic:
-        Depth: 5
-        Durability Policy: Volatile
-        Filter size: 10
-        History Policy: Keep Last
-        Reliability Policy: Reliable
-        Value: /khepera14/dron14/marker
-      Value: true
-    - Class: rviz_default_plugins/Marker
-      Enabled: true
-      Name: khepera15-khepera16
-      Namespaces:
-        "": true
-      Topic:
-        Depth: 5
-        Durability Policy: Volatile
-        Filter size: 10
-        History Policy: Keep Last
-        Reliability Policy: Reliable
-        Value: /khepera15/khepera16/marker
-      Value: true
-    - Class: rviz_default_plugins/Marker
-      Enabled: true
-      Name: khepera15-dron14
-      Namespaces:
-        "": true
-      Topic:
-        Depth: 5
-        Durability Policy: Volatile
-        Filter size: 10
-        History Policy: Keep Last
-        Reliability Policy: Reliable
-        Value: /khepera15/dron14/marker
-      Value: true
-    - Class: rviz_default_plugins/Marker
-      Enabled: true
-      Name: khepera15-dron15
-      Namespaces:
-        "": true
-      Topic:
-        Depth: 5
-        Durability Policy: Volatile
-        Filter size: 10
-        History Policy: Keep Last
-        Reliability Policy: Reliable
-        Value: /khepera15/dron15/marker
-      Value: true
-    - Class: rviz_default_plugins/Marker
-      Enabled: true
-      Name: khepera16-khepera17
-      Namespaces:
-        "": true
-      Topic:
-        Depth: 5
-        Durability Policy: Volatile
-        Filter size: 10
-        History Policy: Keep Last
-        Reliability Policy: Reliable
-        Value: /khepera16/khepera17/marker
-      Value: true
-    - Class: rviz_default_plugins/Marker
-      Enabled: true
-      Name: khepera16-dron15
-      Namespaces:
-        "": true
-      Topic:
-        Depth: 5
-        Durability Policy: Volatile
-        Filter size: 10
-        History Policy: Keep Last
-        Reliability Policy: Reliable
-        Value: /khepera16/dron15/marker
-      Value: true
-    - Class: rviz_default_plugins/Marker
-      Enabled: true
-      Name: khepera16-dron16
-      Namespaces:
-        "": true
-      Topic:
-        Depth: 5
-        Durability Policy: Volatile
-        Filter size: 10
-        History Policy: Keep Last
-        Reliability Policy: Reliable
-        Value: /khepera16/dron16/marker
-      Value: true
-    - Class: rviz_default_plugins/Marker
-      Enabled: true
-      Name: khepera17-dron01
-      Namespaces:
-        "": true
-      Topic:
-        Depth: 5
-        Durability Policy: Volatile
-        Filter size: 10
-        History Policy: Keep Last
-        Reliability Policy: Reliable
-        Value: /khepera17/dron01/marker
-      Value: true
-    - Class: rviz_default_plugins/Marker
-      Enabled: true
-      Name: khepera17-dron16
-      Namespaces:
-        "": true
-      Topic:
-        Depth: 5
-        Durability Policy: Volatile
-        Filter size: 10
-        History Policy: Keep Last
-        Reliability Policy: Reliable
-        Value: /khepera17/dron16/marker
-      Value: true
-    - Class: rviz_default_plugins/Marker
-      Enabled: true
       Name: dron01-dron02
       Namespaces:
         "": true
@@ -968,7 +771,7 @@ Visualization Manager:
       Value: true
     - Class: rviz_default_plugins/Marker
       Enabled: true
-      Name: dron01-dron16
+      Name: dron01-dron13
       Namespaces:
         "": true
       Topic:
@@ -977,11 +780,11 @@ Visualization Manager:
         Filter size: 10
         History Policy: Keep Last
         Reliability Policy: Reliable
-        Value: /dron01/dron16/marker
+        Value: /dron01/dron13/marker
       Value: true
     - Class: rviz_default_plugins/Marker
       Enabled: true
-      Name: dron01-dron17
+      Name: dron01-dron14
       Namespaces:
         "": true
       Topic:
@@ -990,7 +793,7 @@ Visualization Manager:
         Filter size: 10
         History Policy: Keep Last
         Reliability Policy: Reliable
-        Value: /dron01/dron17/marker
+        Value: /dron01/dron14/marker
       Value: true
     - Class: rviz_default_plugins/Marker
       Enabled: true
@@ -1007,7 +810,7 @@ Visualization Manager:
       Value: true
     - Class: rviz_default_plugins/Marker
       Enabled: true
-      Name: dron02-dron17
+      Name: dron02-dron14
       Namespaces:
         "": true
       Topic:
@@ -1016,11 +819,11 @@ Visualization Manager:
         Filter size: 10
         History Policy: Keep Last
         Reliability Policy: Reliable
-        Value: /dron02/dron17/marker
+        Value: /dron02/dron14/marker
       Value: true
     - Class: rviz_default_plugins/Marker
       Enabled: true
-      Name: dron02-dron18
+      Name: dron02-dron15
       Namespaces:
         "": true
       Topic:
@@ -1029,7 +832,7 @@ Visualization Manager:
         Filter size: 10
         History Policy: Keep Last
         Reliability Policy: Reliable
-        Value: /dron02/dron18/marker
+        Value: /dron02/dron15/marker
       Value: true
     - Class: rviz_default_plugins/Marker
       Enabled: true
@@ -1046,7 +849,7 @@ Visualization Manager:
       Value: true
     - Class: rviz_default_plugins/Marker
       Enabled: true
-      Name: dron03-dron18
+      Name: dron03-dron15
       Namespaces:
         "": true
       Topic:
@@ -1055,11 +858,11 @@ Visualization Manager:
         Filter size: 10
         History Policy: Keep Last
         Reliability Policy: Reliable
-        Value: /dron03/dron18/marker
+        Value: /dron03/dron15/marker
       Value: true
     - Class: rviz_default_plugins/Marker
       Enabled: true
-      Name: dron03-dron19
+      Name: dron03-dron16
       Namespaces:
         "": true
       Topic:
@@ -1068,7 +871,7 @@ Visualization Manager:
         Filter size: 10
         History Policy: Keep Last
         Reliability Policy: Reliable
-        Value: /dron03/dron19/marker
+        Value: /dron03/dron16/marker
       Value: true
     - Class: rviz_default_plugins/Marker
       Enabled: true
@@ -1085,7 +888,7 @@ Visualization Manager:
       Value: true
     - Class: rviz_default_plugins/Marker
       Enabled: true
-      Name: dron04-dron19
+      Name: dron04-dron16
       Namespaces:
         "": true
       Topic:
@@ -1094,20 +897,7 @@ Visualization Manager:
         Filter size: 10
         History Policy: Keep Last
         Reliability Policy: Reliable
-        Value: /dron04/dron19/marker
-      Value: true
-    - Class: rviz_default_plugins/Marker
-      Enabled: true
-      Name: dron04-dron20
-      Namespaces:
-        "": true
-      Topic:
-        Depth: 5
-        Durability Policy: Volatile
-        Filter size: 10
-        History Policy: Keep Last
-        Reliability Policy: Reliable
-        Value: /dron04/dron20/marker
+        Value: /dron04/dron16/marker
       Value: true
     - Class: rviz_default_plugins/Marker
       Enabled: true
@@ -1124,7 +914,7 @@ Visualization Manager:
       Value: true
     - Class: rviz_default_plugins/Marker
       Enabled: true
-      Name: dron05-dron20
+      Name: dron05-dron16
       Namespaces:
         "": true
       Topic:
@@ -1133,11 +923,11 @@ Visualization Manager:
         Filter size: 10
         History Policy: Keep Last
         Reliability Policy: Reliable
-        Value: /dron05/dron20/marker
+        Value: /dron05/dron16/marker
       Value: true
     - Class: rviz_default_plugins/Marker
       Enabled: true
-      Name: dron05-dron21
+      Name: dron05-dron17
       Namespaces:
         "": true
       Topic:
@@ -1146,7 +936,7 @@ Visualization Manager:
         Filter size: 10
         History Policy: Keep Last
         Reliability Policy: Reliable
-        Value: /dron05/dron21/marker
+        Value: /dron05/dron17/marker
       Value: true
     - Class: rviz_default_plugins/Marker
       Enabled: true
@@ -1163,7 +953,7 @@ Visualization Manager:
       Value: true
     - Class: rviz_default_plugins/Marker
       Enabled: true
-      Name: dron06-dron21
+      Name: dron06-dron17
       Namespaces:
         "": true
       Topic:
@@ -1172,11 +962,11 @@ Visualization Manager:
         Filter size: 10
         History Policy: Keep Last
         Reliability Policy: Reliable
-        Value: /dron06/dron21/marker
+        Value: /dron06/dron17/marker
       Value: true
     - Class: rviz_default_plugins/Marker
       Enabled: true
-      Name: dron06-dron22
+      Name: dron06-dron18
       Namespaces:
         "": true
       Topic:
@@ -1185,7 +975,7 @@ Visualization Manager:
         Filter size: 10
         History Policy: Keep Last
         Reliability Policy: Reliable
-        Value: /dron06/dron22/marker
+        Value: /dron06/dron18/marker
       Value: true
     - Class: rviz_default_plugins/Marker
       Enabled: true
@@ -1202,7 +992,7 @@ Visualization Manager:
       Value: true
     - Class: rviz_default_plugins/Marker
       Enabled: true
-      Name: dron07-dron22
+      Name: dron07-dron18
       Namespaces:
         "": true
       Topic:
@@ -1211,20 +1001,7 @@ Visualization Manager:
         Filter size: 10
         History Policy: Keep Last
         Reliability Policy: Reliable
-        Value: /dron07/dron22/marker
-      Value: true
-    - Class: rviz_default_plugins/Marker
-      Enabled: true
-      Name: dron07-dron23
-      Namespaces:
-        "": true
-      Topic:
-        Depth: 5
-        Durability Policy: Volatile
-        Filter size: 10
-        History Policy: Keep Last
-        Reliability Policy: Reliable
-        Value: /dron07/dron23/marker
+        Value: /dron07/dron18/marker
       Value: true
     - Class: rviz_default_plugins/Marker
       Enabled: true
@@ -1241,7 +1018,7 @@ Visualization Manager:
       Value: true
     - Class: rviz_default_plugins/Marker
       Enabled: true
-      Name: dron08-dron23
+      Name: dron08-dron18
       Namespaces:
         "": true
       Topic:
@@ -1250,11 +1027,11 @@ Visualization Manager:
         Filter size: 10
         History Policy: Keep Last
         Reliability Policy: Reliable
-        Value: /dron08/dron23/marker
+        Value: /dron08/dron18/marker
       Value: true
     - Class: rviz_default_plugins/Marker
       Enabled: true
-      Name: dron08-dron24
+      Name: dron08-dron19
       Namespaces:
         "": true
       Topic:
@@ -1263,7 +1040,7 @@ Visualization Manager:
         Filter size: 10
         History Policy: Keep Last
         Reliability Policy: Reliable
-        Value: /dron08/dron24/marker
+        Value: /dron08/dron19/marker
       Value: true
     - Class: rviz_default_plugins/Marker
       Enabled: true
@@ -1280,7 +1057,7 @@ Visualization Manager:
       Value: true
     - Class: rviz_default_plugins/Marker
       Enabled: true
-      Name: dron09-dron24
+      Name: dron09-dron19
       Namespaces:
         "": true
       Topic:
@@ -1289,7 +1066,20 @@ Visualization Manager:
         Filter size: 10
         History Policy: Keep Last
         Reliability Policy: Reliable
-        Value: /dron09/dron24/marker
+        Value: /dron09/dron19/marker
+      Value: true
+    - Class: rviz_default_plugins/Marker
+      Enabled: true
+      Name: dron09-dron20
+      Namespaces:
+        "": true
+      Topic:
+        Depth: 5
+        Durability Policy: Volatile
+        Filter size: 10
+        History Policy: Keep Last
+        Reliability Policy: Reliable
+        Value: /dron09/dron20/marker
       Value: true
     - Class: rviz_default_plugins/Marker
       Enabled: true
@@ -1306,7 +1096,7 @@ Visualization Manager:
       Value: true
     - Class: rviz_default_plugins/Marker
       Enabled: true
-      Name: dron10-dron24
+      Name: dron10-dron20
       Namespaces:
         "": true
       Topic:
@@ -1315,11 +1105,11 @@ Visualization Manager:
         Filter size: 10
         History Policy: Keep Last
         Reliability Policy: Reliable
-        Value: /dron10/dron24/marker
+        Value: /dron10/dron20/marker
       Value: true
     - Class: rviz_default_plugins/Marker
       Enabled: true
-      Name: dron10-dron25
+      Name: dron10-dron21
       Namespaces:
         "": true
       Topic:
@@ -1328,7 +1118,7 @@ Visualization Manager:
         Filter size: 10
         History Policy: Keep Last
         Reliability Policy: Reliable
-        Value: /dron10/dron25/marker
+        Value: /dron10/dron21/marker
       Value: true
     - Class: rviz_default_plugins/Marker
       Enabled: true
@@ -1345,7 +1135,7 @@ Visualization Manager:
       Value: true
     - Class: rviz_default_plugins/Marker
       Enabled: true
-      Name: dron11-dron25
+      Name: dron11-dron21
       Namespaces:
         "": true
       Topic:
@@ -1354,20 +1144,7 @@ Visualization Manager:
         Filter size: 10
         History Policy: Keep Last
         Reliability Policy: Reliable
-        Value: /dron11/dron25/marker
-      Value: true
-    - Class: rviz_default_plugins/Marker
-      Enabled: true
-      Name: dron11-dron26
-      Namespaces:
-        "": true
-      Topic:
-        Depth: 5
-        Durability Policy: Volatile
-        Filter size: 10
-        History Policy: Keep Last
-        Reliability Policy: Reliable
-        Value: /dron11/dron26/marker
+        Value: /dron11/dron21/marker
       Value: true
     - Class: rviz_default_plugins/Marker
       Enabled: true
@@ -1384,7 +1161,7 @@ Visualization Manager:
       Value: true
     - Class: rviz_default_plugins/Marker
       Enabled: true
-      Name: dron12-dron26
+      Name: dron12-dron21
       Namespaces:
         "": true
       Topic:
@@ -1393,11 +1170,11 @@ Visualization Manager:
         Filter size: 10
         History Policy: Keep Last
         Reliability Policy: Reliable
-        Value: /dron12/dron26/marker
+        Value: /dron12/dron21/marker
       Value: true
     - Class: rviz_default_plugins/Marker
       Enabled: true
-      Name: dron12-dron27
+      Name: dron12-dron22
       Namespaces:
         "": true
       Topic:
@@ -1406,7 +1183,7 @@ Visualization Manager:
         Filter size: 10
         History Policy: Keep Last
         Reliability Policy: Reliable
-        Value: /dron12/dron27/marker
+        Value: /dron12/dron22/marker
       Value: true
     - Class: rviz_default_plugins/Marker
       Enabled: true
@@ -1423,7 +1200,7 @@ Visualization Manager:
       Value: true
     - Class: rviz_default_plugins/Marker
       Enabled: true
-      Name: dron13-dron27
+      Name: dron13-dron22
       Namespaces:
         "": true
       Topic:
@@ -1432,20 +1209,7 @@ Visualization Manager:
         Filter size: 10
         History Policy: Keep Last
         Reliability Policy: Reliable
-        Value: /dron13/dron27/marker
-      Value: true
-    - Class: rviz_default_plugins/Marker
-      Enabled: true
-      Name: dron13-dron28
-      Namespaces:
-        "": true
-      Topic:
-        Depth: 5
-        Durability Policy: Volatile
-        Filter size: 10
-        History Policy: Keep Last
-        Reliability Policy: Reliable
-        Value: /dron13/dron28/marker
+        Value: /dron13/dron22/marker
       Value: true
     - Class: rviz_default_plugins/Marker
       Enabled: true
@@ -1462,7 +1226,7 @@ Visualization Manager:
       Value: true
     - Class: rviz_default_plugins/Marker
       Enabled: true
-      Name: dron14-dron28
+      Name: dron14-dron22
       Namespaces:
         "": true
       Topic:
@@ -1471,11 +1235,11 @@ Visualization Manager:
         Filter size: 10
         History Policy: Keep Last
         Reliability Policy: Reliable
-        Value: /dron14/dron28/marker
+        Value: /dron14/dron22/marker
       Value: true
     - Class: rviz_default_plugins/Marker
       Enabled: true
-      Name: dron14-dron29
+      Name: dron14-dron23
       Namespaces:
         "": true
       Topic:
@@ -1484,7 +1248,7 @@ Visualization Manager:
         Filter size: 10
         History Policy: Keep Last
         Reliability Policy: Reliable
-        Value: /dron14/dron29/marker
+        Value: /dron14/dron23/marker
       Value: true
     - Class: rviz_default_plugins/Marker
       Enabled: true
@@ -1501,7 +1265,7 @@ Visualization Manager:
       Value: true
     - Class: rviz_default_plugins/Marker
       Enabled: true
-      Name: dron15-dron29
+      Name: dron15-dron23
       Namespaces:
         "": true
       Topic:
@@ -1510,11 +1274,11 @@ Visualization Manager:
         Filter size: 10
         History Policy: Keep Last
         Reliability Policy: Reliable
-        Value: /dron15/dron29/marker
+        Value: /dron15/dron23/marker
       Value: true
     - Class: rviz_default_plugins/Marker
       Enabled: true
-      Name: dron15-dron30
+      Name: dron15-dron24
       Namespaces:
         "": true
       Topic:
@@ -1523,7 +1287,7 @@ Visualization Manager:
         Filter size: 10
         History Policy: Keep Last
         Reliability Policy: Reliable
-        Value: /dron15/dron30/marker
+        Value: /dron15/dron24/marker
       Value: true
     - Class: rviz_default_plugins/Marker
       Enabled: true
@@ -1540,7 +1304,7 @@ Visualization Manager:
       Value: true
     - Class: rviz_default_plugins/Marker
       Enabled: true
-      Name: dron16-dron30
+      Name: dron16-dron24
       Namespaces:
         "": true
       Topic:
@@ -1549,7 +1313,7 @@ Visualization Manager:
         Filter size: 10
         History Policy: Keep Last
         Reliability Policy: Reliable
-        Value: /dron16/dron30/marker
+        Value: /dron16/dron24/marker
       Value: true
     - Class: rviz_default_plugins/Marker
       Enabled: true
@@ -1566,7 +1330,7 @@ Visualization Manager:
       Value: true
     - Class: rviz_default_plugins/Marker
       Enabled: true
-      Name: dron17-dron30
+      Name: dron17-dron24
       Namespaces:
         "": true
       Topic:
@@ -1575,11 +1339,11 @@ Visualization Manager:
         Filter size: 10
         History Policy: Keep Last
         Reliability Policy: Reliable
-        Value: /dron17/dron30/marker
+        Value: /dron17/dron24/marker
       Value: true
     - Class: rviz_default_plugins/Marker
       Enabled: true
-      Name: dron17-dron31
+      Name: dron17-dron25
       Namespaces:
         "": true
       Topic:
@@ -1588,7 +1352,7 @@ Visualization Manager:
         Filter size: 10
         History Policy: Keep Last
         Reliability Policy: Reliable
-        Value: /dron17/dron31/marker
+        Value: /dron17/dron25/marker
       Value: true
     - Class: rviz_default_plugins/Marker
       Enabled: true
@@ -1605,7 +1369,7 @@ Visualization Manager:
       Value: true
     - Class: rviz_default_plugins/Marker
       Enabled: true
-      Name: dron18-dron31
+      Name: dron18-dron25
       Namespaces:
         "": true
       Topic:
@@ -1614,20 +1378,7 @@ Visualization Manager:
         Filter size: 10
         History Policy: Keep Last
         Reliability Policy: Reliable
-        Value: /dron18/dron31/marker
-      Value: true
-    - Class: rviz_default_plugins/Marker
-      Enabled: true
-      Name: dron18-dron32
-      Namespaces:
-        "": true
-      Topic:
-        Depth: 5
-        Durability Policy: Volatile
-        Filter size: 10
-        History Policy: Keep Last
-        Reliability Policy: Reliable
-        Value: /dron18/dron32/marker
+        Value: /dron18/dron25/marker
       Value: true
     - Class: rviz_default_plugins/Marker
       Enabled: true
@@ -1644,7 +1395,7 @@ Visualization Manager:
       Value: true
     - Class: rviz_default_plugins/Marker
       Enabled: true
-      Name: dron19-dron32
+      Name: dron19-dron25
       Namespaces:
         "": true
       Topic:
@@ -1653,20 +1404,7 @@ Visualization Manager:
         Filter size: 10
         History Policy: Keep Last
         Reliability Policy: Reliable
-        Value: /dron19/dron32/marker
-      Value: true
-    - Class: rviz_default_plugins/Marker
-      Enabled: true
-      Name: dron19-dron33
-      Namespaces:
-        "": true
-      Topic:
-        Depth: 5
-        Durability Policy: Volatile
-        Filter size: 10
-        History Policy: Keep Last
-        Reliability Policy: Reliable
-        Value: /dron19/dron33/marker
+        Value: /dron19/dron25/marker
       Value: true
     - Class: rviz_default_plugins/Marker
       Enabled: true
@@ -1683,7 +1421,7 @@ Visualization Manager:
       Value: true
     - Class: rviz_default_plugins/Marker
       Enabled: true
-      Name: dron20-dron33
+      Name: dron20-dron25
       Namespaces:
         "": true
       Topic:
@@ -1692,7 +1430,20 @@ Visualization Manager:
         Filter size: 10
         History Policy: Keep Last
         Reliability Policy: Reliable
-        Value: /dron20/dron33/marker
+        Value: /dron20/dron25/marker
+      Value: true
+    - Class: rviz_default_plugins/Marker
+      Enabled: true
+      Name: dron20-dron26
+      Namespaces:
+        "": true
+      Topic:
+        Depth: 5
+        Durability Policy: Volatile
+        Filter size: 10
+        History Policy: Keep Last
+        Reliability Policy: Reliable
+        Value: /dron20/dron26/marker
       Value: true
     - Class: rviz_default_plugins/Marker
       Enabled: true
@@ -1709,7 +1460,7 @@ Visualization Manager:
       Value: true
     - Class: rviz_default_plugins/Marker
       Enabled: true
-      Name: dron21-dron33
+      Name: dron21-dron26
       Namespaces:
         "": true
       Topic:
@@ -1718,20 +1469,7 @@ Visualization Manager:
         Filter size: 10
         History Policy: Keep Last
         Reliability Policy: Reliable
-        Value: /dron21/dron33/marker
-      Value: true
-    - Class: rviz_default_plugins/Marker
-      Enabled: true
-      Name: dron21-dron34
-      Namespaces:
-        "": true
-      Topic:
-        Depth: 5
-        Durability Policy: Volatile
-        Filter size: 10
-        History Policy: Keep Last
-        Reliability Policy: Reliable
-        Value: /dron21/dron34/marker
+        Value: /dron21/dron26/marker
       Value: true
     - Class: rviz_default_plugins/Marker
       Enabled: true
@@ -1748,7 +1486,7 @@ Visualization Manager:
       Value: true
     - Class: rviz_default_plugins/Marker
       Enabled: true
-      Name: dron22-dron34
+      Name: dron22-dron26
       Namespaces:
         "": true
       Topic:
@@ -1757,20 +1495,7 @@ Visualization Manager:
         Filter size: 10
         History Policy: Keep Last
         Reliability Policy: Reliable
-        Value: /dron22/dron34/marker
-      Value: true
-    - Class: rviz_default_plugins/Marker
-      Enabled: true
-      Name: dron22-dron35
-      Namespaces:
-        "": true
-      Topic:
-        Depth: 5
-        Durability Policy: Volatile
-        Filter size: 10
-        History Policy: Keep Last
-        Reliability Policy: Reliable
-        Value: /dron22/dron35/marker
+        Value: /dron22/dron26/marker
       Value: true
     - Class: rviz_default_plugins/Marker
       Enabled: true
@@ -1787,7 +1512,7 @@ Visualization Manager:
       Value: true
     - Class: rviz_default_plugins/Marker
       Enabled: true
-      Name: dron23-dron35
+      Name: dron23-dron25
       Namespaces:
         "": true
       Topic:
@@ -1796,7 +1521,20 @@ Visualization Manager:
         Filter size: 10
         History Policy: Keep Last
         Reliability Policy: Reliable
-        Value: /dron23/dron35/marker
+        Value: /dron23/dron25/marker
+      Value: true
+    - Class: rviz_default_plugins/Marker
+      Enabled: true
+      Name: dron23-dron26
+      Namespaces:
+        "": true
+      Topic:
+        Depth: 5
+        Durability Policy: Volatile
+        Filter size: 10
+        History Policy: Keep Last
+        Reliability Policy: Reliable
+        Value: /dron23/dron26/marker
       Value: true
     - Class: rviz_default_plugins/Marker
       Enabled: true
@@ -1813,32 +1551,6 @@ Visualization Manager:
       Value: true
     - Class: rviz_default_plugins/Marker
       Enabled: true
-      Name: dron24-dron35
-      Namespaces:
-        "": true
-      Topic:
-        Depth: 5
-        Durability Policy: Volatile
-        Filter size: 10
-        History Policy: Keep Last
-        Reliability Policy: Reliable
-        Value: /dron24/dron35/marker
-      Value: true
-    - Class: rviz_default_plugins/Marker
-      Enabled: true
-      Name: dron24-dron36
-      Namespaces:
-        "": true
-      Topic:
-        Depth: 5
-        Durability Policy: Volatile
-        Filter size: 10
-        History Policy: Keep Last
-        Reliability Policy: Reliable
-        Value: /dron24/dron36/marker
-      Value: true
-    - Class: rviz_default_plugins/Marker
-      Enabled: true
       Name: dron25-dron26
       Namespaces:
         "": true
@@ -1849,539 +1561,6 @@ Visualization Manager:
         History Policy: Keep Last
         Reliability Policy: Reliable
         Value: /dron25/dron26/marker
-      Value: true
-    - Class: rviz_default_plugins/Marker
-      Enabled: true
-      Name: dron25-dron36
-      Namespaces:
-        "": true
-      Topic:
-        Depth: 5
-        Durability Policy: Volatile
-        Filter size: 10
-        History Policy: Keep Last
-        Reliability Policy: Reliable
-        Value: /dron25/dron36/marker
-      Value: true
-    - Class: rviz_default_plugins/Marker
-      Enabled: true
-      Name: dron26-dron27
-      Namespaces:
-        "": true
-      Topic:
-        Depth: 5
-        Durability Policy: Volatile
-        Filter size: 10
-        History Policy: Keep Last
-        Reliability Policy: Reliable
-        Value: /dron26/dron27/marker
-      Value: true
-    - Class: rviz_default_plugins/Marker
-      Enabled: true
-      Name: dron26-dron36
-      Namespaces:
-        "": true
-      Topic:
-        Depth: 5
-        Durability Policy: Volatile
-        Filter size: 10
-        History Policy: Keep Last
-        Reliability Policy: Reliable
-        Value: /dron26/dron36/marker
-      Value: true
-    - Class: rviz_default_plugins/Marker
-      Enabled: true
-      Name: dron26-dron37
-      Namespaces:
-        "": true
-      Topic:
-        Depth: 5
-        Durability Policy: Volatile
-        Filter size: 10
-        History Policy: Keep Last
-        Reliability Policy: Reliable
-        Value: /dron26/dron37/marker
-      Value: true
-    - Class: rviz_default_plugins/Marker
-      Enabled: true
-      Name: dron27-dron28
-      Namespaces:
-        "": true
-      Topic:
-        Depth: 5
-        Durability Policy: Volatile
-        Filter size: 10
-        History Policy: Keep Last
-        Reliability Policy: Reliable
-        Value: /dron27/dron28/marker
-      Value: true
-    - Class: rviz_default_plugins/Marker
-      Enabled: true
-      Name: dron27-dron37
-      Namespaces:
-        "": true
-      Topic:
-        Depth: 5
-        Durability Policy: Volatile
-        Filter size: 10
-        History Policy: Keep Last
-        Reliability Policy: Reliable
-        Value: /dron27/dron37/marker
-      Value: true
-    - Class: rviz_default_plugins/Marker
-      Enabled: true
-      Name: dron27-dron38
-      Namespaces:
-        "": true
-      Topic:
-        Depth: 5
-        Durability Policy: Volatile
-        Filter size: 10
-        History Policy: Keep Last
-        Reliability Policy: Reliable
-        Value: /dron27/dron38/marker
-      Value: true
-    - Class: rviz_default_plugins/Marker
-      Enabled: true
-      Name: dron28-dron29
-      Namespaces:
-        "": true
-      Topic:
-        Depth: 5
-        Durability Policy: Volatile
-        Filter size: 10
-        History Policy: Keep Last
-        Reliability Policy: Reliable
-        Value: /dron28/dron29/marker
-      Value: true
-    - Class: rviz_default_plugins/Marker
-      Enabled: true
-      Name: dron28-dron38
-      Namespaces:
-        "": true
-      Topic:
-        Depth: 5
-        Durability Policy: Volatile
-        Filter size: 10
-        History Policy: Keep Last
-        Reliability Policy: Reliable
-        Value: /dron28/dron38/marker
-      Value: true
-    - Class: rviz_default_plugins/Marker
-      Enabled: true
-      Name: dron29-dron30
-      Namespaces:
-        "": true
-      Topic:
-        Depth: 5
-        Durability Policy: Volatile
-        Filter size: 10
-        History Policy: Keep Last
-        Reliability Policy: Reliable
-        Value: /dron29/dron30/marker
-      Value: true
-    - Class: rviz_default_plugins/Marker
-      Enabled: true
-      Name: dron29-dron38
-      Namespaces:
-        "": true
-      Topic:
-        Depth: 5
-        Durability Policy: Volatile
-        Filter size: 10
-        History Policy: Keep Last
-        Reliability Policy: Reliable
-        Value: /dron29/dron38/marker
-      Value: true
-    - Class: rviz_default_plugins/Marker
-      Enabled: true
-      Name: dron29-dron39
-      Namespaces:
-        "": true
-      Topic:
-        Depth: 5
-        Durability Policy: Volatile
-        Filter size: 10
-        History Policy: Keep Last
-        Reliability Policy: Reliable
-        Value: /dron29/dron39/marker
-      Value: true
-    - Class: rviz_default_plugins/Marker
-      Enabled: true
-      Name: dron30-dron31
-      Namespaces:
-        "": true
-      Topic:
-        Depth: 5
-        Durability Policy: Volatile
-        Filter size: 10
-        History Policy: Keep Last
-        Reliability Policy: Reliable
-        Value: /dron30/dron31/marker
-      Value: true
-    - Class: rviz_default_plugins/Marker
-      Enabled: true
-      Name: dron30-dron39
-      Namespaces:
-        "": true
-      Topic:
-        Depth: 5
-        Durability Policy: Volatile
-        Filter size: 10
-        History Policy: Keep Last
-        Reliability Policy: Reliable
-        Value: /dron30/dron39/marker
-      Value: true
-    - Class: rviz_default_plugins/Marker
-      Enabled: true
-      Name: dron31-dron32
-      Namespaces:
-        "": true
-      Topic:
-        Depth: 5
-        Durability Policy: Volatile
-        Filter size: 10
-        History Policy: Keep Last
-        Reliability Policy: Reliable
-        Value: /dron31/dron32/marker
-      Value: true
-    - Class: rviz_default_plugins/Marker
-      Enabled: true
-      Name: dron31-dron39
-      Namespaces:
-        "": true
-      Topic:
-        Depth: 5
-        Durability Policy: Volatile
-        Filter size: 10
-        History Policy: Keep Last
-        Reliability Policy: Reliable
-        Value: /dron31/dron39/marker
-      Value: true
-    - Class: rviz_default_plugins/Marker
-      Enabled: true
-      Name: dron31-dron40
-      Namespaces:
-        "": true
-      Topic:
-        Depth: 5
-        Durability Policy: Volatile
-        Filter size: 10
-        History Policy: Keep Last
-        Reliability Policy: Reliable
-        Value: /dron31/dron40/marker
-      Value: true
-    - Class: rviz_default_plugins/Marker
-      Enabled: true
-      Name: dron32-dron33
-      Namespaces:
-        "": true
-      Topic:
-        Depth: 5
-        Durability Policy: Volatile
-        Filter size: 10
-        History Policy: Keep Last
-        Reliability Policy: Reliable
-        Value: /dron32/dron33/marker
-      Value: true
-    - Class: rviz_default_plugins/Marker
-      Enabled: true
-      Name: dron32-dron40
-      Namespaces:
-        "": true
-      Topic:
-        Depth: 5
-        Durability Policy: Volatile
-        Filter size: 10
-        History Policy: Keep Last
-        Reliability Policy: Reliable
-        Value: /dron32/dron40/marker
-      Value: true
-    - Class: rviz_default_plugins/Marker
-      Enabled: true
-      Name: dron32-dron41
-      Namespaces:
-        "": true
-      Topic:
-        Depth: 5
-        Durability Policy: Volatile
-        Filter size: 10
-        History Policy: Keep Last
-        Reliability Policy: Reliable
-        Value: /dron32/dron41/marker
-      Value: true
-    - Class: rviz_default_plugins/Marker
-      Enabled: true
-      Name: dron33-dron34
-      Namespaces:
-        "": true
-      Topic:
-        Depth: 5
-        Durability Policy: Volatile
-        Filter size: 10
-        History Policy: Keep Last
-        Reliability Policy: Reliable
-        Value: /dron33/dron34/marker
-      Value: true
-    - Class: rviz_default_plugins/Marker
-      Enabled: true
-      Name: dron33-dron41
-      Namespaces:
-        "": true
-      Topic:
-        Depth: 5
-        Durability Policy: Volatile
-        Filter size: 10
-        History Policy: Keep Last
-        Reliability Policy: Reliable
-        Value: /dron33/dron41/marker
-      Value: true
-    - Class: rviz_default_plugins/Marker
-      Enabled: true
-      Name: dron34-dron35
-      Namespaces:
-        "": true
-      Topic:
-        Depth: 5
-        Durability Policy: Volatile
-        Filter size: 10
-        History Policy: Keep Last
-        Reliability Policy: Reliable
-        Value: /dron34/dron35/marker
-      Value: true
-    - Class: rviz_default_plugins/Marker
-      Enabled: true
-      Name: dron34-dron41
-      Namespaces:
-        "": true
-      Topic:
-        Depth: 5
-        Durability Policy: Volatile
-        Filter size: 10
-        History Policy: Keep Last
-        Reliability Policy: Reliable
-        Value: /dron34/dron41/marker
-      Value: true
-    - Class: rviz_default_plugins/Marker
-      Enabled: true
-      Name: dron34-dron42
-      Namespaces:
-        "": true
-      Topic:
-        Depth: 5
-        Durability Policy: Volatile
-        Filter size: 10
-        History Policy: Keep Last
-        Reliability Policy: Reliable
-        Value: /dron34/dron42/marker
-      Value: true
-    - Class: rviz_default_plugins/Marker
-      Enabled: true
-      Name: dron35-dron36
-      Namespaces:
-        "": true
-      Topic:
-        Depth: 5
-        Durability Policy: Volatile
-        Filter size: 10
-        History Policy: Keep Last
-        Reliability Policy: Reliable
-        Value: /dron35/dron36/marker
-      Value: true
-    - Class: rviz_default_plugins/Marker
-      Enabled: true
-      Name: dron35-dron42
-      Namespaces:
-        "": true
-      Topic:
-        Depth: 5
-        Durability Policy: Volatile
-        Filter size: 10
-        History Policy: Keep Last
-        Reliability Policy: Reliable
-        Value: /dron35/dron42/marker
-      Value: true
-    - Class: rviz_default_plugins/Marker
-      Enabled: true
-      Name: dron36-dron37
-      Namespaces:
-        "": true
-      Topic:
-        Depth: 5
-        Durability Policy: Volatile
-        Filter size: 10
-        History Policy: Keep Last
-        Reliability Policy: Reliable
-        Value: /dron36/dron37/marker
-      Value: true
-    - Class: rviz_default_plugins/Marker
-      Enabled: true
-      Name: dron36-dron42
-      Namespaces:
-        "": true
-      Topic:
-        Depth: 5
-        Durability Policy: Volatile
-        Filter size: 10
-        History Policy: Keep Last
-        Reliability Policy: Reliable
-        Value: /dron36/dron42/marker
-      Value: true
-    - Class: rviz_default_plugins/Marker
-      Enabled: true
-      Name: dron37-dron38
-      Namespaces:
-        "": true
-      Topic:
-        Depth: 5
-        Durability Policy: Volatile
-        Filter size: 10
-        History Policy: Keep Last
-        Reliability Policy: Reliable
-        Value: /dron37/dron38/marker
-      Value: true
-    - Class: rviz_default_plugins/Marker
-      Enabled: true
-      Name: dron37-dron42
-      Namespaces:
-        "": true
-      Topic:
-        Depth: 5
-        Durability Policy: Volatile
-        Filter size: 10
-        History Policy: Keep Last
-        Reliability Policy: Reliable
-        Value: /dron37/dron42/marker
-      Value: true
-    - Class: rviz_default_plugins/Marker
-      Enabled: true
-      Name: dron37-dron43
-      Namespaces:
-        "": true
-      Topic:
-        Depth: 5
-        Durability Policy: Volatile
-        Filter size: 10
-        History Policy: Keep Last
-        Reliability Policy: Reliable
-        Value: /dron37/dron43/marker
-      Value: true
-    - Class: rviz_default_plugins/Marker
-      Enabled: true
-      Name: dron38-dron39
-      Namespaces:
-        "": true
-      Topic:
-        Depth: 5
-        Durability Policy: Volatile
-        Filter size: 10
-        History Policy: Keep Last
-        Reliability Policy: Reliable
-        Value: /dron38/dron39/marker
-      Value: true
-    - Class: rviz_default_plugins/Marker
-      Enabled: true
-      Name: dron38-dron43
-      Namespaces:
-        "": true
-      Topic:
-        Depth: 5
-        Durability Policy: Volatile
-        Filter size: 10
-        History Policy: Keep Last
-        Reliability Policy: Reliable
-        Value: /dron38/dron43/marker
-      Value: true
-    - Class: rviz_default_plugins/Marker
-      Enabled: true
-      Name: dron39-dron40
-      Namespaces:
-        "": true
-      Topic:
-        Depth: 5
-        Durability Policy: Volatile
-        Filter size: 10
-        History Policy: Keep Last
-        Reliability Policy: Reliable
-        Value: /dron39/dron40/marker
-      Value: true
-    - Class: rviz_default_plugins/Marker
-      Enabled: true
-      Name: dron39-dron43
-      Namespaces:
-        "": true
-      Topic:
-        Depth: 5
-        Durability Policy: Volatile
-        Filter size: 10
-        History Policy: Keep Last
-        Reliability Policy: Reliable
-        Value: /dron39/dron43/marker
-      Value: true
-    - Class: rviz_default_plugins/Marker
-      Enabled: true
-      Name: dron40-dron41
-      Namespaces:
-        "": true
-      Topic:
-        Depth: 5
-        Durability Policy: Volatile
-        Filter size: 10
-        History Policy: Keep Last
-        Reliability Policy: Reliable
-        Value: /dron40/dron41/marker
-      Value: true
-    - Class: rviz_default_plugins/Marker
-      Enabled: true
-      Name: dron40-dron42
-      Namespaces:
-        "": true
-      Topic:
-        Depth: 5
-        Durability Policy: Volatile
-        Filter size: 10
-        History Policy: Keep Last
-        Reliability Policy: Reliable
-        Value: /dron40/dron42/marker
-      Value: true
-    - Class: rviz_default_plugins/Marker
-      Enabled: true
-      Name: dron40-dron43
-      Namespaces:
-        "": true
-      Topic:
-        Depth: 5
-        Durability Policy: Volatile
-        Filter size: 10
-        History Policy: Keep Last
-        Reliability Policy: Reliable
-        Value: /dron40/dron43/marker
-      Value: true
-    - Class: rviz_default_plugins/Marker
-      Enabled: true
-      Name: dron41-dron42
-      Namespaces:
-        "": true
-      Topic:
-        Depth: 5
-        Durability Policy: Volatile
-        Filter size: 10
-        History Policy: Keep Last
-        Reliability Policy: Reliable
-        Value: /dron41/dron42/marker
-      Value: true
-    - Class: rviz_default_plugins/Marker
-      Enabled: true
-      Name: dron42-dron43
-      Namespaces:
-        "": true
-      Topic:
-        Depth: 5
-        Durability Policy: Volatile
-        Filter size: 10
-        History Policy: Keep Last
-        Reliability Policy: Reliable
-        Value: /dron42/dron43/marker
       Value: true
     - Alpha: 1
       Class: rviz_default_plugins/RobotModel
@@ -2814,99 +1993,6 @@ Visualization Manager:
         Mass: false
       Name: RobotModel
       TF Prefix: khepera14
-      Update Interval: 0
-      Value: true
-      Visual Enabled: true
-    - Alpha: 1
-      Class: rviz_default_plugins/RobotModel
-      Collision Enabled: false
-      Description File: /home/kiko/roboticpark_ws/src/uned_kheperaIV_ros_pkg/uned_khepera_description/urdf/khepera_simple.urdf
-      Description Source: File
-      Description Topic:
-        Depth: 5
-        Durability Policy: Volatile
-        History Policy: Keep Last
-        Reliability Policy: Reliable
-        Value: ""
-      Enabled: true
-      Links:
-        All Links Enabled: true
-        Expand Joint Details: false
-        Expand Link Details: false
-        Expand Tree: false
-        Link Tree Style: Links in Alphabetic Order
-        base_link:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-      Mass Properties:
-        Inertia: false
-        Mass: false
-      Name: RobotModel
-      TF Prefix: khepera15
-      Update Interval: 0
-      Value: true
-      Visual Enabled: true
-    - Alpha: 1
-      Class: rviz_default_plugins/RobotModel
-      Collision Enabled: false
-      Description File: /home/kiko/roboticpark_ws/src/uned_kheperaIV_ros_pkg/uned_khepera_description/urdf/khepera_simple.urdf
-      Description Source: File
-      Description Topic:
-        Depth: 5
-        Durability Policy: Volatile
-        History Policy: Keep Last
-        Reliability Policy: Reliable
-        Value: ""
-      Enabled: true
-      Links:
-        All Links Enabled: true
-        Expand Joint Details: false
-        Expand Link Details: false
-        Expand Tree: false
-        Link Tree Style: Links in Alphabetic Order
-        base_link:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-      Mass Properties:
-        Inertia: false
-        Mass: false
-      Name: RobotModel
-      TF Prefix: khepera16
-      Update Interval: 0
-      Value: true
-      Visual Enabled: true
-    - Alpha: 1
-      Class: rviz_default_plugins/RobotModel
-      Collision Enabled: false
-      Description File: /home/kiko/roboticpark_ws/src/uned_kheperaIV_ros_pkg/uned_khepera_description/urdf/khepera_simple.urdf
-      Description Source: File
-      Description Topic:
-        Depth: 5
-        Durability Policy: Volatile
-        History Policy: Keep Last
-        Reliability Policy: Reliable
-        Value: ""
-      Enabled: true
-      Links:
-        All Links Enabled: true
-        Expand Joint Details: false
-        Expand Link Details: false
-        Expand Tree: false
-        Link Tree Style: Links in Alphabetic Order
-        base_link:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-      Mass Properties:
-        Inertia: false
-        Mass: false
-      Name: RobotModel
-      TF Prefix: khepera17
       Update Interval: 0
       Value: true
       Visual Enabled: true
@@ -3713,533 +2799,6 @@ Visualization Manager:
         Mass: false
       Name: RobotModel
       TF Prefix: dron26
-      Update Interval: 0
-      Value: true
-      Visual Enabled: true
-    - Alpha: 1
-      Class: rviz_default_plugins/RobotModel
-      Collision Enabled: false
-      Description File: /home/kiko/roboticpark_ws/src/uned_crazyflie_ros_pkg/uned_crazyflie_config/model/urdf/crazyflie_simple.urdf
-      Description Source: File
-      Description Topic:
-        Depth: 5
-        Durability Policy: Volatile
-        History Policy: Keep Last
-        Reliability Policy: Reliable
-        Value: ""
-      Enabled: true
-      Links:
-        All Links Enabled: true
-        Expand Joint Details: false
-        Expand Link Details: false
-        Expand Tree: false
-        Link Tree Style: Links in Alphabetic Order
-        base_link:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-      Mass Properties:
-        Inertia: false
-        Mass: false
-      Name: RobotModel
-      TF Prefix: dron27
-      Update Interval: 0
-      Value: true
-      Visual Enabled: true
-    - Alpha: 1
-      Class: rviz_default_plugins/RobotModel
-      Collision Enabled: false
-      Description File: /home/kiko/roboticpark_ws/src/uned_crazyflie_ros_pkg/uned_crazyflie_config/model/urdf/crazyflie_simple.urdf
-      Description Source: File
-      Description Topic:
-        Depth: 5
-        Durability Policy: Volatile
-        History Policy: Keep Last
-        Reliability Policy: Reliable
-        Value: ""
-      Enabled: true
-      Links:
-        All Links Enabled: true
-        Expand Joint Details: false
-        Expand Link Details: false
-        Expand Tree: false
-        Link Tree Style: Links in Alphabetic Order
-        base_link:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-      Mass Properties:
-        Inertia: false
-        Mass: false
-      Name: RobotModel
-      TF Prefix: dron28
-      Update Interval: 0
-      Value: true
-      Visual Enabled: true
-    - Alpha: 1
-      Class: rviz_default_plugins/RobotModel
-      Collision Enabled: false
-      Description File: /home/kiko/roboticpark_ws/src/uned_crazyflie_ros_pkg/uned_crazyflie_config/model/urdf/crazyflie_simple.urdf
-      Description Source: File
-      Description Topic:
-        Depth: 5
-        Durability Policy: Volatile
-        History Policy: Keep Last
-        Reliability Policy: Reliable
-        Value: ""
-      Enabled: true
-      Links:
-        All Links Enabled: true
-        Expand Joint Details: false
-        Expand Link Details: false
-        Expand Tree: false
-        Link Tree Style: Links in Alphabetic Order
-        base_link:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-      Mass Properties:
-        Inertia: false
-        Mass: false
-      Name: RobotModel
-      TF Prefix: dron29
-      Update Interval: 0
-      Value: true
-      Visual Enabled: true
-    - Alpha: 1
-      Class: rviz_default_plugins/RobotModel
-      Collision Enabled: false
-      Description File: /home/kiko/roboticpark_ws/src/uned_crazyflie_ros_pkg/uned_crazyflie_config/model/urdf/crazyflie_simple.urdf
-      Description Source: File
-      Description Topic:
-        Depth: 5
-        Durability Policy: Volatile
-        History Policy: Keep Last
-        Reliability Policy: Reliable
-        Value: ""
-      Enabled: true
-      Links:
-        All Links Enabled: true
-        Expand Joint Details: false
-        Expand Link Details: false
-        Expand Tree: false
-        Link Tree Style: Links in Alphabetic Order
-        base_link:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-      Mass Properties:
-        Inertia: false
-        Mass: false
-      Name: RobotModel
-      TF Prefix: dron30
-      Update Interval: 0
-      Value: true
-      Visual Enabled: true
-    - Alpha: 1
-      Class: rviz_default_plugins/RobotModel
-      Collision Enabled: false
-      Description File: /home/kiko/roboticpark_ws/src/uned_crazyflie_ros_pkg/uned_crazyflie_config/model/urdf/crazyflie_simple.urdf
-      Description Source: File
-      Description Topic:
-        Depth: 5
-        Durability Policy: Volatile
-        History Policy: Keep Last
-        Reliability Policy: Reliable
-        Value: ""
-      Enabled: true
-      Links:
-        All Links Enabled: true
-        Expand Joint Details: false
-        Expand Link Details: false
-        Expand Tree: false
-        Link Tree Style: Links in Alphabetic Order
-        base_link:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-      Mass Properties:
-        Inertia: false
-        Mass: false
-      Name: RobotModel
-      TF Prefix: dron31
-      Update Interval: 0
-      Value: true
-      Visual Enabled: true
-    - Alpha: 1
-      Class: rviz_default_plugins/RobotModel
-      Collision Enabled: false
-      Description File: /home/kiko/roboticpark_ws/src/uned_crazyflie_ros_pkg/uned_crazyflie_config/model/urdf/crazyflie_simple.urdf
-      Description Source: File
-      Description Topic:
-        Depth: 5
-        Durability Policy: Volatile
-        History Policy: Keep Last
-        Reliability Policy: Reliable
-        Value: ""
-      Enabled: true
-      Links:
-        All Links Enabled: true
-        Expand Joint Details: false
-        Expand Link Details: false
-        Expand Tree: false
-        Link Tree Style: Links in Alphabetic Order
-        base_link:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-      Mass Properties:
-        Inertia: false
-        Mass: false
-      Name: RobotModel
-      TF Prefix: dron32
-      Update Interval: 0
-      Value: true
-      Visual Enabled: true
-    - Alpha: 1
-      Class: rviz_default_plugins/RobotModel
-      Collision Enabled: false
-      Description File: /home/kiko/roboticpark_ws/src/uned_crazyflie_ros_pkg/uned_crazyflie_config/model/urdf/crazyflie_simple.urdf
-      Description Source: File
-      Description Topic:
-        Depth: 5
-        Durability Policy: Volatile
-        History Policy: Keep Last
-        Reliability Policy: Reliable
-        Value: ""
-      Enabled: true
-      Links:
-        All Links Enabled: true
-        Expand Joint Details: false
-        Expand Link Details: false
-        Expand Tree: false
-        Link Tree Style: Links in Alphabetic Order
-        base_link:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-      Mass Properties:
-        Inertia: false
-        Mass: false
-      Name: RobotModel
-      TF Prefix: dron33
-      Update Interval: 0
-      Value: true
-      Visual Enabled: true
-    - Alpha: 1
-      Class: rviz_default_plugins/RobotModel
-      Collision Enabled: false
-      Description File: /home/kiko/roboticpark_ws/src/uned_crazyflie_ros_pkg/uned_crazyflie_config/model/urdf/crazyflie_simple.urdf
-      Description Source: File
-      Description Topic:
-        Depth: 5
-        Durability Policy: Volatile
-        History Policy: Keep Last
-        Reliability Policy: Reliable
-        Value: ""
-      Enabled: true
-      Links:
-        All Links Enabled: true
-        Expand Joint Details: false
-        Expand Link Details: false
-        Expand Tree: false
-        Link Tree Style: Links in Alphabetic Order
-        base_link:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-      Mass Properties:
-        Inertia: false
-        Mass: false
-      Name: RobotModel
-      TF Prefix: dron34
-      Update Interval: 0
-      Value: true
-      Visual Enabled: true
-    - Alpha: 1
-      Class: rviz_default_plugins/RobotModel
-      Collision Enabled: false
-      Description File: /home/kiko/roboticpark_ws/src/uned_crazyflie_ros_pkg/uned_crazyflie_config/model/urdf/crazyflie_simple.urdf
-      Description Source: File
-      Description Topic:
-        Depth: 5
-        Durability Policy: Volatile
-        History Policy: Keep Last
-        Reliability Policy: Reliable
-        Value: ""
-      Enabled: true
-      Links:
-        All Links Enabled: true
-        Expand Joint Details: false
-        Expand Link Details: false
-        Expand Tree: false
-        Link Tree Style: Links in Alphabetic Order
-        base_link:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-      Mass Properties:
-        Inertia: false
-        Mass: false
-      Name: RobotModel
-      TF Prefix: dron35
-      Update Interval: 0
-      Value: true
-      Visual Enabled: true
-    - Alpha: 1
-      Class: rviz_default_plugins/RobotModel
-      Collision Enabled: false
-      Description File: /home/kiko/roboticpark_ws/src/uned_crazyflie_ros_pkg/uned_crazyflie_config/model/urdf/crazyflie_simple.urdf
-      Description Source: File
-      Description Topic:
-        Depth: 5
-        Durability Policy: Volatile
-        History Policy: Keep Last
-        Reliability Policy: Reliable
-        Value: ""
-      Enabled: true
-      Links:
-        All Links Enabled: true
-        Expand Joint Details: false
-        Expand Link Details: false
-        Expand Tree: false
-        Link Tree Style: Links in Alphabetic Order
-        base_link:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-      Mass Properties:
-        Inertia: false
-        Mass: false
-      Name: RobotModel
-      TF Prefix: dron36
-      Update Interval: 0
-      Value: true
-      Visual Enabled: true
-    - Alpha: 1
-      Class: rviz_default_plugins/RobotModel
-      Collision Enabled: false
-      Description File: /home/kiko/roboticpark_ws/src/uned_crazyflie_ros_pkg/uned_crazyflie_config/model/urdf/crazyflie_simple.urdf
-      Description Source: File
-      Description Topic:
-        Depth: 5
-        Durability Policy: Volatile
-        History Policy: Keep Last
-        Reliability Policy: Reliable
-        Value: ""
-      Enabled: true
-      Links:
-        All Links Enabled: true
-        Expand Joint Details: false
-        Expand Link Details: false
-        Expand Tree: false
-        Link Tree Style: Links in Alphabetic Order
-        base_link:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-      Mass Properties:
-        Inertia: false
-        Mass: false
-      Name: RobotModel
-      TF Prefix: dron37
-      Update Interval: 0
-      Value: true
-      Visual Enabled: true
-    - Alpha: 1
-      Class: rviz_default_plugins/RobotModel
-      Collision Enabled: false
-      Description File: /home/kiko/roboticpark_ws/src/uned_crazyflie_ros_pkg/uned_crazyflie_config/model/urdf/crazyflie_simple.urdf
-      Description Source: File
-      Description Topic:
-        Depth: 5
-        Durability Policy: Volatile
-        History Policy: Keep Last
-        Reliability Policy: Reliable
-        Value: ""
-      Enabled: true
-      Links:
-        All Links Enabled: true
-        Expand Joint Details: false
-        Expand Link Details: false
-        Expand Tree: false
-        Link Tree Style: Links in Alphabetic Order
-        base_link:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-      Mass Properties:
-        Inertia: false
-        Mass: false
-      Name: RobotModel
-      TF Prefix: dron38
-      Update Interval: 0
-      Value: true
-      Visual Enabled: true
-    - Alpha: 1
-      Class: rviz_default_plugins/RobotModel
-      Collision Enabled: false
-      Description File: /home/kiko/roboticpark_ws/src/uned_crazyflie_ros_pkg/uned_crazyflie_config/model/urdf/crazyflie_simple.urdf
-      Description Source: File
-      Description Topic:
-        Depth: 5
-        Durability Policy: Volatile
-        History Policy: Keep Last
-        Reliability Policy: Reliable
-        Value: ""
-      Enabled: true
-      Links:
-        All Links Enabled: true
-        Expand Joint Details: false
-        Expand Link Details: false
-        Expand Tree: false
-        Link Tree Style: Links in Alphabetic Order
-        base_link:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-      Mass Properties:
-        Inertia: false
-        Mass: false
-      Name: RobotModel
-      TF Prefix: dron39
-      Update Interval: 0
-      Value: true
-      Visual Enabled: true
-    - Alpha: 1
-      Class: rviz_default_plugins/RobotModel
-      Collision Enabled: false
-      Description File: /home/kiko/roboticpark_ws/src/uned_crazyflie_ros_pkg/uned_crazyflie_config/model/urdf/crazyflie_simple.urdf
-      Description Source: File
-      Description Topic:
-        Depth: 5
-        Durability Policy: Volatile
-        History Policy: Keep Last
-        Reliability Policy: Reliable
-        Value: ""
-      Enabled: true
-      Links:
-        All Links Enabled: true
-        Expand Joint Details: false
-        Expand Link Details: false
-        Expand Tree: false
-        Link Tree Style: Links in Alphabetic Order
-        base_link:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-      Mass Properties:
-        Inertia: false
-        Mass: false
-      Name: RobotModel
-      TF Prefix: dron40
-      Update Interval: 0
-      Value: true
-      Visual Enabled: true
-    - Alpha: 1
-      Class: rviz_default_plugins/RobotModel
-      Collision Enabled: false
-      Description File: /home/kiko/roboticpark_ws/src/uned_crazyflie_ros_pkg/uned_crazyflie_config/model/urdf/crazyflie_simple.urdf
-      Description Source: File
-      Description Topic:
-        Depth: 5
-        Durability Policy: Volatile
-        History Policy: Keep Last
-        Reliability Policy: Reliable
-        Value: ""
-      Enabled: true
-      Links:
-        All Links Enabled: true
-        Expand Joint Details: false
-        Expand Link Details: false
-        Expand Tree: false
-        Link Tree Style: Links in Alphabetic Order
-        base_link:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-      Mass Properties:
-        Inertia: false
-        Mass: false
-      Name: RobotModel
-      TF Prefix: dron41
-      Update Interval: 0
-      Value: true
-      Visual Enabled: true
-    - Alpha: 1
-      Class: rviz_default_plugins/RobotModel
-      Collision Enabled: false
-      Description File: /home/kiko/roboticpark_ws/src/uned_crazyflie_ros_pkg/uned_crazyflie_config/model/urdf/crazyflie_simple.urdf
-      Description Source: File
-      Description Topic:
-        Depth: 5
-        Durability Policy: Volatile
-        History Policy: Keep Last
-        Reliability Policy: Reliable
-        Value: ""
-      Enabled: true
-      Links:
-        All Links Enabled: true
-        Expand Joint Details: false
-        Expand Link Details: false
-        Expand Tree: false
-        Link Tree Style: Links in Alphabetic Order
-        base_link:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-      Mass Properties:
-        Inertia: false
-        Mass: false
-      Name: RobotModel
-      TF Prefix: dron42
-      Update Interval: 0
-      Value: true
-      Visual Enabled: true
-    - Alpha: 1
-      Class: rviz_default_plugins/RobotModel
-      Collision Enabled: false
-      Description File: /home/kiko/roboticpark_ws/src/uned_crazyflie_ros_pkg/uned_crazyflie_config/model/urdf/crazyflie_simple.urdf
-      Description Source: File
-      Description Topic:
-        Depth: 5
-        Durability Policy: Volatile
-        History Policy: Keep Last
-        Reliability Policy: Reliable
-        Value: ""
-      Enabled: true
-      Links:
-        All Links Enabled: true
-        Expand Joint Details: false
-        Expand Link Details: false
-        Expand Tree: false
-        Link Tree Style: Links in Alphabetic Order
-        base_link:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-      Mass Properties:
-        Inertia: false
-        Mass: false
-      Name: RobotModel
-      TF Prefix: dron43
       Update Interval: 0
       Value: true
       Visual Enabled: true

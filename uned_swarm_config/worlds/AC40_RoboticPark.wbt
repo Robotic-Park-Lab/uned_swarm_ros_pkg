@@ -8,7 +8,7 @@ EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023a/project
 
 WorldInfo {
 	info [
-		 "Robotic Park Example World. Case N:30 and R:1.0"
+		 "Robotic Park Example World. Case N:40 and R:2.0"
 	]
 	basicTimeStep 20
 }
@@ -20,7 +20,7 @@ TexturedBackground {}
 TexturedBackgroundLight {}
 Floor {}
 Khepera4 {
-	translation 1.49 -0.05 0.015
+	translation 3.03 0.04 0.015
 	rotation 0 0 1 -3.1415
 	turretSlot [
 		GPS {}
@@ -30,7 +30,7 @@ Khepera4 {
 	controller "<extern>"
 }
 Khepera4 {
-	translation 1.34 0.79 0.015
+	translation 2.67 1.34 0.015
 	rotation 0 0 1 -3.1415
 	turretSlot [
 		GPS {}
@@ -40,7 +40,7 @@ Khepera4 {
 	controller "<extern>"
 }
 Khepera4 {
-	translation 0.75 1.30 0.015
+	translation 1.88 2.31 0.015
 	rotation 0 0 1 -3.1415
 	turretSlot [
 		GPS {}
@@ -50,7 +50,7 @@ Khepera4 {
 	controller "<extern>"
 }
 Khepera4 {
-	translation -0.02 1.54 0.015
+	translation 0.65 2.93 0.015
 	rotation 0 0 1 -3.1415
 	turretSlot [
 		GPS {}
@@ -60,7 +60,7 @@ Khepera4 {
 	controller "<extern>"
 }
 Khepera4 {
-	translation -0.76 1.26 0.015
+	translation -0.62 2.97 0.015
 	rotation 0 0 1 -3.1415
 	turretSlot [
 		GPS {}
@@ -70,7 +70,7 @@ Khepera4 {
 	controller "<extern>"
 }
 Khepera4 {
-	translation -1.27 0.74 0.015
+	translation -1.90 2.39 0.015
 	rotation 0 0 1 -3.1415
 	turretSlot [
 		GPS {}
@@ -80,7 +80,7 @@ Khepera4 {
 	controller "<extern>"
 }
 Khepera4 {
-	translation -1.53 -0.01 0.015
+	translation -2.66 1.30 0.015
 	rotation 0 0 1 -3.1415
 	turretSlot [
 		GPS {}
@@ -90,7 +90,7 @@ Khepera4 {
 	controller "<extern>"
 }
 Khepera4 {
-	translation -1.34 -0.79 0.015
+	translation -2.97 -0.04 0.015
 	rotation 0 0 1 -3.1415
 	turretSlot [
 		GPS {}
@@ -100,7 +100,7 @@ Khepera4 {
 	controller "<extern>"
 }
 Khepera4 {
-	translation -0.71 -1.25 0.015
+	translation -2.71 -1.26 0.015
 	rotation 0 0 1 -3.1415
 	turretSlot [
 		GPS {}
@@ -110,7 +110,7 @@ Khepera4 {
 	controller "<extern>"
 }
 Khepera4 {
-	translation 0.01 -1.54 0.015
+	translation -1.84 -2.30 0.015
 	rotation 0 0 1 -3.1415
 	turretSlot [
 		GPS {}
@@ -120,7 +120,7 @@ Khepera4 {
 	controller "<extern>"
 }
 Khepera4 {
-	translation 0.72 -1.31 0.015
+	translation -0.65 -2.97 0.015
 	rotation 0 0 1 -3.1415
 	turretSlot [
 		GPS {}
@@ -130,7 +130,7 @@ Khepera4 {
 	controller "<extern>"
 }
 Khepera4 {
-	translation 1.33 -0.80 0.015
+	translation 0.70 -2.88 0.015
 	rotation 0 0 1 -3.1415
 	turretSlot [
 		GPS {}
@@ -139,111 +139,179 @@ Khepera4 {
 	name "khepera12"
 	controller "<extern>"
 }
+Khepera4 {
+	translation 1.89 -2.32 0.015
+	rotation 0 0 1 -3.1415
+	turretSlot [
+		GPS {}
+		InertialUnit {}
+	]
+	name "khepera13"
+	controller "<extern>"
+}
+Khepera4 {
+	translation 2.73 -1.31 0.015
+	rotation 0 0 1 -3.1415
+	turretSlot [
+		GPS {}
+		InertialUnit {}
+	]
+	name "khepera14"
+	controller "<extern>"
+}
 Crazyflie {
-	translation 1.27 -0.03 0.015
+	translation 2.75 -0.03 0.015
 	rotation 0 0 1 -3.1415
 	name "dron01"
 	controller "<extern>"
 }
 Crazyflie {
-	translation 1.08 0.79 0.015
+	translation 2.44 1.22 0.015
 	rotation 0 0 1 -3.1415
 	name "dron02"
 	controller "<extern>"
 }
 Crazyflie {
-	translation 0.42 1.24 0.015
+	translation 1.53 2.20 0.015
 	rotation 0 0 1 -3.1415
 	name "dron03"
 	controller "<extern>"
 }
 Crazyflie {
-	translation -0.40 1.23 0.015
+	translation 0.29 2.74 0.015
 	rotation 0 0 1 -3.1415
 	name "dron04"
 	controller "<extern>"
 }
 Crazyflie {
-	translation -1.04 0.74 0.015
+	translation -0.95 2.53 0.015
 	rotation 0 0 1 -3.1415
 	name "dron05"
 	controller "<extern>"
 }
 Crazyflie {
-	translation -1.29 -0.03 0.015
+	translation -2.00 1.76 0.015
 	rotation 0 0 1 -3.1415
 	name "dron06"
 	controller "<extern>"
 }
 Crazyflie {
-	translation -1.08 -0.76 0.015
+	translation -2.66 0.64 0.015
 	rotation 0 0 1 -3.1415
 	name "dron07"
 	controller "<extern>"
 }
 Crazyflie {
-	translation -0.38 -1.29 0.015
+	translation -2.62 -0.62 0.015
 	rotation 0 0 1 -3.1415
 	name "dron08"
 	controller "<extern>"
 }
 Crazyflie {
-	translation 0.45 -1.22 0.015
+	translation -2.08 -1.81 0.015
 	rotation 0 0 1 -3.1415
 	name "dron09"
 	controller "<extern>"
 }
 Crazyflie {
-	translation 1.06 -0.78 0.015
+	translation -0.97 -2.54 0.015
 	rotation 0 0 1 -3.1415
 	name "dron10"
 	controller "<extern>"
 }
 Crazyflie {
-	translation 0.82 -0.02 0.015
+	translation 0.35 -2.69 0.015
 	rotation 0 0 1 -3.1415
 	name "dron11"
 	controller "<extern>"
 }
 Crazyflie {
-	translation 0.52 0.65 0.015
+	translation 1.53 -2.23 0.015
 	rotation 0 0 1 -3.1415
 	name "dron12"
 	controller "<extern>"
 }
 Crazyflie {
-	translation -0.15 0.84 0.015
+	translation 2.43 -1.30 0.015
 	rotation 0 0 1 -3.1415
 	name "dron13"
 	controller "<extern>"
 }
 Crazyflie {
-	translation -0.73 0.35 0.015
+	translation 1.90 -0.00 0.015
 	rotation 0 0 1 -3.1415
 	name "dron14"
 	controller "<extern>"
 }
 Crazyflie {
-	translation -0.72 -0.36 0.015
+	translation 1.53 1.23 0.015
 	rotation 0 0 1 -3.1415
 	name "dron15"
 	controller "<extern>"
 }
 Crazyflie {
-	translation -0.20 -0.76 0.015
+	translation 0.35 1.89 0.015
 	rotation 0 0 1 -3.1415
 	name "dron16"
 	controller "<extern>"
 }
 Crazyflie {
-	translation 0.55 -0.64 0.015
+	translation -0.95 1.66 0.015
 	rotation 0 0 1 -3.1415
 	name "dron17"
 	controller "<extern>"
 }
 Crazyflie {
-	translation 0.01 0.01 0.015
+	translation -1.83 0.68 0.015
 	rotation 0 0 1 -3.1415
 	name "dron18"
+	controller "<extern>"
+}
+Crazyflie {
+	translation -1.79 -0.62 0.015
+	rotation 0 0 1 -3.1415
+	name "dron19"
+	controller "<extern>"
+}
+Crazyflie {
+	translation -0.97 -1.72 0.015
+	rotation 0 0 1 -3.1415
+	name "dron20"
+	controller "<extern>"
+}
+Crazyflie {
+	translation 0.30 -1.94 0.015
+	rotation 0 0 1 -3.1415
+	name "dron21"
+	controller "<extern>"
+}
+Crazyflie {
+	translation 1.52 -1.27 0.015
+	rotation 0 0 1 -3.1415
+	name "dron22"
+	controller "<extern>"
+}
+Crazyflie {
+	translation 0.84 -0.03 0.015
+	rotation 0 0 1 -3.1415
+	name "dron23"
+	controller "<extern>"
+}
+Crazyflie {
+	translation 0.04 0.80 0.015
+	rotation 0 0 1 -3.1415
+	name "dron24"
+	controller "<extern>"
+}
+Crazyflie {
+	translation -0.84 -0.02 0.015
+	rotation 0 0 1 -3.1415
+	name "dron25"
+	controller "<extern>"
+}
+Crazyflie {
+	translation 0.01 -0.81 0.015
+	rotation 0 0 1 -3.1415
+	name "dron26"
 	controller "<extern>"
 }

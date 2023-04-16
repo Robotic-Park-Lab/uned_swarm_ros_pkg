@@ -3,72 +3,84 @@ khepera01:
   config_path: MRS30_khepera01.yaml
   description: khepera
   type: virtual
+  pose: 1.49, -0.05
 
 khepera02:
   name: khepera02
   config_path: MRS30_khepera02.yaml
   description: khepera
   type: virtual
+  pose: 1.34, 0.79
 
 khepera03:
   name: khepera03
   config_path: MRS30_khepera03.yaml
   description: khepera
   type: virtual
+  pose: 0.75, 1.30
 
 khepera04:
   name: khepera04
   config_path: MRS30_khepera04.yaml
   description: khepera
   type: virtual
+  pose: -0.02, 1.54
 
 khepera05:
   name: khepera05
   config_path: MRS30_khepera05.yaml
   description: khepera
   type: virtual
+  pose: -0.76, 1.26
 
 khepera06:
   name: khepera06
   config_path: MRS30_khepera06.yaml
   description: khepera
   type: virtual
+  pose: -1.27, 0.74
 
 khepera07:
   name: khepera07
   config_path: MRS30_khepera07.yaml
   description: khepera
   type: virtual
+  pose: -1.53, -0.01
 
 khepera08:
   name: khepera08
   config_path: MRS30_khepera08.yaml
   description: khepera
   type: virtual
+  pose: -1.34, -0.79
 
 khepera09:
   name: khepera09
   config_path: MRS30_khepera09.yaml
   description: khepera
   type: virtual
+  pose: -0.71, -1.25
 
 khepera10:
   name: khepera10
   config_path: MRS30_khepera10.yaml
   description: khepera
   type: virtual
+  pose: 0.01, -1.54
 
 khepera11:
   name: khepera11
   config_path: MRS30_khepera11.yaml
   description: khepera
   type: virtual
+  pose: 0.72, -1.31
 
 khepera12:
   name: khepera12
   config_path: MRS30_khepera12.yaml
   description: khepera
   type: virtual
+  pose: 1.33, -0.80
 
 dron01:
   name: dron01
@@ -134,7 +146,8 @@ dron11:
   name: dron11
   config_path: MRS30_dron11.yaml
   description: crazyflie
-  type: virtual
+  type: digital_twin
+  uri: radio://0/80/2M/E7E7E7E701
 
 dron12:
   name: dron12
@@ -146,7 +159,8 @@ dron13:
   name: dron13
   config_path: MRS30_dron13.yaml
   description: crazyflie
-  type: virtual
+  type: digital_twin
+  uri: radio://0/80/2M/E7E7E7E702
 
 dron14:
   name: dron14
@@ -158,7 +172,8 @@ dron15:
   name: dron15
   config_path: MRS30_dron15.yaml
   description: crazyflie
-  type: virtual
+  type: digital_twin
+  uri: radio://0/80/2M/E7E7E7E703
 
 dron16:
   name: dron16
@@ -176,5 +191,6 @@ dron18:
   name: dron18
   config_path: MRS30_dron18.yaml
   description: crazyflie
-  type: virtual
+  type: digital_twin
+  uri: radio://0/80/2M/E7E7E7E704
 
