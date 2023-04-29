@@ -66,7 +66,7 @@ dron01:
   config_path: MRS20_dron01.yaml
   description: crazyflie
   pose: 1.20, -0.04
-  type: digital_twin
+  type: virtual
   uri: radio://0/80/2M/E7E7E7E701
 
 dron02:
@@ -81,7 +81,7 @@ dron03:
   config_path: MRS20_dron03.yaml
   description: crazyflie
   pose: 0.03, 1.27
-  type: digital_twin
+  type: virtual
   uri: radio://0/80/2M/E7E7E7E702
 
 dron04:
@@ -96,7 +96,7 @@ dron05:
   config_path: MRS20_dron05.yaml
   description: crazyflie
   pose: -1.23, -0.01
-  type: digital_twin
+  type: virtual
   uri: radio://0/80/2M/E7E7E7E703
 
 dron06:
@@ -111,7 +111,7 @@ dron07:
   config_path: MRS20_dron07.yaml
   description: crazyflie
   pose: -0.02, -1.24
-  type: digital_twin
+  type: virtual
   uri: radio://0/80/2M/E7E7E7E704
 
 dron08:
@@ -126,7 +126,7 @@ dron09:
   config_path: MRS20_dron09.yaml
   description: crazyflie
   pose: 0.42, -0.04
-  type: digital_twin
+  type: virtual
   uri: radio://0/80/2M/E7E7E7E705
 
 dron10:
@@ -141,6 +141,6 @@ dron11:
   config_path: MRS20_dron11.yaml
   description: crazyflie
   pose: -0.23, -0.41
-  type: digital_twin
+  type: virtual
   uri: radio://0/80/2M/E7E7E7E706
 

@@ -12,10 +12,11 @@ from launch.actions import ExecuteProcess
 
 def generate_launch_description():
     general_package_dir = get_package_share_directory('uned_swarm_config')
-    config_path = os.path.join(general_package_dir, 'resources', 'AC20_RoboticPark.yaml')
-    rviz_config_path = os.path.join(general_package_dir, 'rviz', 'AC05_RoboticPark.rviz')
+    config_path = os.path.join(general_package_dir, 'resources', 'AC20_RoboticPark_sim.yaml')
+    rviz_config_path = os.path.join(general_package_dir, 'rviz', 'AC30_RoboticPark.rviz')
     use_sim_time = LaunchConfiguration('use_sim_time', default=True)
-    
+    crazyflie_model_dir = get_package_share_directory('tello_description')
+
     world_path = os.path.join(general_package_dir, 'worlds', 'Empty.world')
     
     gazebo = ExecuteProcess(cmd=['gazebo', '--verbose', world_path, '-s', 'libgazebo_ros_init.so', '-s', 'libgazebo_ros_factory.so', '--ros-args',
@@ -25,7 +26,7 @@ def generate_launch_description():
     robot_node_list = []
     physical_crazyflie_list = ''
     physical_khepera_list = ''
-
+    j = 1
     with open(config_path) as f:
         data = yaml.load(f, Loader=SafeLoader)
         for key, robot in data.items():
@@ -34,16 +35,45 @@ def generate_launch_description():
             individual_config_path = os.path.join(general_package_dir, 'resources', robot['config_path'])
 
             if not robot['type'] == 'physical' and robot['description'] == 'khepera':
+                urdf_path = os.path.join(crazyflie_model_dir, 'urdf', robot['name']+'.urdf')
                 pose = robot['pose'].split(', ')
-                print(pose)
+                
+                robot_node_list.append(Node(package='tello_gazebo', executable='inject_entity.py', output='screen',
+                                            arguments=[urdf_path, pose[0], pose[1], '0.05', '0']),
+                )
+                '''
                 robot_node_list.append(Node(package='gazebo_ros', 
                                             executable='spawn_entity.py',
                                             arguments=['-entity', robot['name'], '-database', 'khepera_IV','-robot_namespace', robot['name'],'-x', pose[0], '-y', pose[1]],
                                             output='screen'),
                 )
+                '''
                 robot_node_list.append(Node(package='uned_kheperaiv_task', 
                                             executable='gazebo_driver',
-                                            name=robot['name'],
+                                            name='driver',
+                                            namespace=robot['name'],
+                                            output='screen',
+                                            parameters=[{   'use_sim_time' : use_sim_time,
+                                                            'config_file' : individual_config_path,
+                                                            'robot' : robot['name'],
+                                                            'type' : robot['type']},
+                                        ]),
+                    )
+                
+                if not robot['type'] == 'virtual' and False:
+                    physical_khepera_list += ', '+robot['name']
+            
+            if not robot['type'] == 'physical' and robot['description'] == 'crazyflie':
+                
+                urdf_path = os.path.join(crazyflie_model_dir, 'urdf', robot['name']+'.urdf')
+                pose = robot['pose'].split(', ')
+                robot_node_list.append(Node(package='tello_gazebo', executable='inject_entity.py', output='screen',
+                                            arguments=[urdf_path, pose[0], pose[1], '0', '0']),
+                )
+                
+                robot_node_list.append(Node(package='uned_swarm_driver', 
+                                            executable='tello_gazebo_driver',
+                                            name='driver',
                                             namespace=robot['name'],
                                             output='screen',
                                             parameters=[{   'use_sim_time' : use_sim_time,
@@ -52,9 +82,8 @@ def generate_launch_description():
                                                             'type' : robot['type']},
                                         ]),
                 )
-                if not robot['type'] == 'virtual':
-                    physical_khepera_list += ', '+robot['name']
-            
+                
+                    
     '''
     print(physical_crazyflie_list)
 
@@ -71,7 +100,7 @@ def generate_launch_description():
             {'robots': physical_crazyflie_list[2:]}
         ]
     )
-    '''
+    
     aux = physical_khepera_list.split(', ')
     for robot in aux:
         if not robot == '':
@@ -89,7 +118,7 @@ def generate_launch_description():
                                     )
             )
 
-    
+    '''    
     robot_state_publisher = Node(
         package='robot_state_publisher',
         executable='robot_state_publisher',
@@ -98,7 +127,7 @@ def generate_launch_description():
             'robot_description': '<robot name=""><link name=""/></robot>'
         }],
     )
-    
+
     rqt_node = Node(
         package='rqt_gui',
         executable='rqt_gui',
@@ -125,7 +154,7 @@ def generate_launch_description():
         name='benchmark',
         output='screen',
         parameters=[{
-             'process_name' : 'gzserver, ros2, gazebo_driver, swarm_driver, rviz2, kheperaIV_clien, gzclient',
+             'process_name' : 'gzserver, ros2, gazebo_driver, swarm_driver, rviz2, kheperaIV_clien, gzclient, tello_gazebo_dr',
              'process_period' : 0.5},
         ],
     )
@@ -133,9 +162,9 @@ def generate_launch_description():
     ld = LaunchDescription()
     ld.add_action(gazebo)
     ld.add_action(rqt_node)
-    ld.add_action(rviz_node)
+    # ld.add_action(rviz_node)
     # ld.add_action(swarm_node)
-    ld.add_action(cpu_measure)
+    # ld.add_action(cpu_measure)
     for robot in robot_node_list:
         ld.add_action(robot)
 

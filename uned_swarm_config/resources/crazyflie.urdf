@@ -4,7 +4,7 @@
         <device reference="camera" type="Camera">
             <ros>
                 <alwaysOn>false</alwaysOn>
-                <enabled>true</enabled>
+                <enabled>false</enabled>
             </ros>
         </device>
         <plugin type="uned_crazyflie_webots.crazyflie_driver.CrazyflieWebotsDriver">

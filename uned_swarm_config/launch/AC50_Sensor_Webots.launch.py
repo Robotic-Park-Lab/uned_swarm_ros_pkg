@@ -128,13 +128,24 @@ def generate_launch_description():
                     on_exit=[launch.actions.EmitEvent(event=launch.events.Shutdown())],
                     )
                 )
-    
+    cpu_measure = Node(
+        package='measure_process_ros2_pkg',
+        executable='measure_process',
+        name='benchmark',
+        output='screen',
+        parameters=[{
+             'process_name' : 'webots-bin, driver, ros2, swarm_driver, rviz2, kheperaIV_clien',
+             'process_period' : 0.5},
+        ],
+    )
+
     ld = LaunchDescription()
     ld.add_action(webots)
     ld.add_action(ros2_supervisor)
     ld.add_action(rqt_node)
-    ld.add_action(rviz_node)
-    ld.add_action(swarm_node)
+    # ld.add_action(rviz_node)
+    # ld.add_action(swarm_node)
+    ld.add_action(cpu_measure)
     for robot in robot_node_list:
         ld.add_action(robot)
         

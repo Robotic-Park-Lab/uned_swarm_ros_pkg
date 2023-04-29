@@ -228,7 +228,7 @@ class TelloDriver(Node):
         self.timer = self.create_timer(0.1, self.iterate)
         # Services
         self.cli = self.create_client(TelloAction, '/'+self.id+'/tello_action')
-        while not self.cli.wait_for_service(timeout_sec=1.0):
+        while not self.cli.wait_for_service(timeout_sec=10.0):
             self.get_logger().info('service not available, waiting again...')
         self.req = TelloAction.Request()
 
