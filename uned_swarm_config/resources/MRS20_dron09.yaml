@@ -1,0 +1,34 @@
+dron09:
+  name: dron09
+  control_mode: HighLevel
+  positioning: Intern
+  controller_type: PID_Continuous
+  communication:
+    type: EventBased
+    threshold:
+      type: Constant
+      co: 0.01
+      ai: Null
+  local_pose:
+    enable: True
+    T: 20
+  local_twist:
+    enable: False
+    T: 20
+  data_attitude:
+    enable: False
+    T: 20
+  data_rate:
+    enable: False
+    T: 20
+  data_motor:
+    enable: False
+    T: 20
+  data:
+    enable: False
+    T: 20
+  task:
+    enable: True
+    role: consensus
+    type: distance
+    relationship: dron01_0.65396, dron02_0.75656, dron08_0.75656, dron10_0.51866, dron11_0.51866

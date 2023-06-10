@@ -1,0 +1,34 @@
+dron05:
+  name: dron05
+  control_mode: HighLevel
+  positioning: Intern
+  controller_type: PID_Continuous
+  communication:
+    type: EventBased
+    threshold:
+      type: Constant
+      co: 0.01
+      ai: Null
+  local_pose:
+    enable: True
+    T: 20
+  local_twist:
+    enable: False
+    T: 20
+  data_attitude:
+    enable: False
+    T: 20
+  data_rate: 
+    enable: False
+    T: 20
+  data_motor: 
+    enable: False
+    T: 20
+  data:
+    enable: False
+    T: 20
+  task:
+    enable: True
+    role: consensus
+    type: distance
+    relationship: khepera06_0.76595, khepera07_0.85607, dron04_0.73159, dron06_0.73159, dron07_0.79781, origin_1.0

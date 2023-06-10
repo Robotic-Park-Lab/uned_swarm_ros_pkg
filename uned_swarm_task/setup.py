@@ -20,7 +20,7 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
-            'shape_control = uned_swarm_task.shape_control:main',
+            'centralized_formation_controller = uned_swarm_task.centralized_formation_controller:main',
             'turtlebot_distance_control = uned_swarm_task.turtlebot_distance_control:main',
         ],
     },

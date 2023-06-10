@@ -12,7 +12,7 @@ from launch.actions import ExecuteProcess
 
 def generate_launch_description():
     general_package_dir = get_package_share_directory('uned_swarm_config')
-    config_path = os.path.join(general_package_dir, 'resources', 'AC20_RoboticPark.yaml')
+    config_path = os.path.join(general_package_dir, 'resources', 'AC20_RoboticPark_sim.yaml')
     rviz_config_path = os.path.join(general_package_dir, 'rviz', 'AC20_RoboticPark.rviz')
     use_sim_time = LaunchConfiguration('use_sim_time', default=True)
     crazyflie_model_dir = get_package_share_directory('tello_description')
@@ -80,7 +80,7 @@ def generate_launch_description():
                     
 
     # print(physical_crazyflie_list)
-
+    '''
     swarm_node = Node(
         package='uned_crazyflie_driver',
         executable='swarm_driver',
@@ -111,7 +111,7 @@ def generate_launch_description():
                                         ]
                                     )
             )
-  
+    '''
     robot_state_publisher = Node(
         package='robot_state_publisher',
         executable='robot_state_publisher',
@@ -156,7 +156,7 @@ def generate_launch_description():
     ld.add_action(gazebo)
     ld.add_action(rqt_node)
     ld.add_action(rviz_node)
-    ld.add_action(swarm_node)
+    # ld.add_action(swarm_node)
     ld.add_action(cpu_measure)
     for robot in robot_node_list:
         ld.add_action(robot)

@@ -1,0 +1,40 @@
+khepera02:
+  name: khepera02
+  agent_ip: '192.168.0.22'
+  port_number: 50000
+  init_theta: 0.0
+  pose:
+    x: 0.78
+    y: 1.25
+  control_mode: HighLevel
+  positioning: Intern
+  controller_type: PID_Continuous
+  communication:
+    type: EventBased
+    threshold:
+      type: Constant
+      co: 0.01
+      ai: Null
+  local_pose:
+    enable: True
+    T: 20
+  local_twist:
+    enable: False
+    T: 20
+  data_attitude:
+    enable: False
+    T: 20
+  data_rate:
+    enable: False
+    T: 20
+  data_motor:
+    enable: False
+    T: 20
+  data:
+    enable: False
+    T: 20
+  task:
+    enable: True
+    role: consensus
+    type: distance
+    relationship: khepera01_1, khepera03_1, dron01_1.1806, dron02_0.97473, origin_1.0

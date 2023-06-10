@@ -1,0 +1,34 @@
+khepera04:
+  name: khepera04
+  control_mode: HighLevel
+  positioning: Intern
+  controller_type: PID_Continuous
+  communication:
+    type: EventBased
+    threshold:
+      type: Constant
+      co: 0.01
+      ai: Null
+  local_pose:
+    enable: True
+    T: 20
+  local_twist:
+    enable: False
+    T: 20
+  data_attitude:
+    enable: False
+    T: 20
+  data_rate:
+    enable: False
+    T: 20
+  data_motor:
+    enable: False
+    T: 20
+  data:
+    enable: False
+    T: 20
+  task:
+    enable: True
+    role: consensus
+    type: distance
+    relationship: khepera03_0.68404, khepera05_0.68404, dron03_0.7556, dron04_0.63725

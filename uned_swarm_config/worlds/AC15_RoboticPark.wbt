@@ -1,0 +1,144 @@
+#VRML_SIM R2023a utf8
+
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023a/projects/robots/bitcraze/crazyflie/protos/Crazyflie.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023a/projects/robots/k-team/khepera4/protos/Khepera4.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023a/projects/objects/backgrounds/protos/TexturedBackground.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023a/projects/objects/backgrounds/protos/TexturedBackgroundLight.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023a/projects/objects/floors/protos/Floor.proto"
+
+WorldInfo {
+	info [
+		 "Robotic Park Example World. Case N:15 and R:1.0"
+	]
+	basicTimeStep 20
+}
+Viewpoint {
+	orientation -0.10311089632172073 0.641740519713268 0.7599587149430397 0.6949228976889259
+	position -1.268241807244382 -0.8135852818657491 1.1481805683796245
+}
+TexturedBackground {}
+TexturedBackgroundLight {}
+Floor {}
+Khepera4 {
+	translation 1.52 -0.05 0.015
+	rotation 0 0 1 -3.1415
+	turretSlot [
+		GPS {}
+		InertialUnit {}
+	]
+	name "khepera01"
+	supervisor TRUE
+	controller "<extern>"
+}
+Khepera4 {
+	translation 1.10 1.10 0.015
+	rotation 0 0 1 -3.1415
+	turretSlot [
+		GPS {}
+		InertialUnit {}
+	]
+	name "khepera02"
+	controller "<extern>"
+}
+Khepera4 {
+	translation 0.02 1.53 0.015
+	rotation 0 0 1 -3.1415
+	turretSlot [
+		GPS {}
+		InertialUnit {}
+	]
+	name "khepera03"
+	controller "<extern>"
+}
+Khepera4 {
+	translation -1.04 1.05 0.015
+	rotation 0 0 1 -3.1415
+	turretSlot [
+		GPS {}
+		InertialUnit {}
+	]
+	name "khepera04"
+	controller "<extern>"
+}
+Khepera4 {
+	translation -1.48 -0.03 0.015
+	rotation 0 0 1 -3.1415
+	turretSlot [
+		GPS {}
+		InertialUnit {}
+	]
+	name "khepera05"
+	controller "<extern>"
+}
+Khepera4 {
+	translation -1.04 -1.11 0.015
+	rotation 0 0 1 -3.1415
+	turretSlot [
+		GPS {}
+		InertialUnit {}
+	]
+	name "khepera06"
+	controller "<extern>"
+}
+Khepera4 {
+	translation -0.02 -1.55 0.015
+	rotation 0 0 1 -3.1415
+	turretSlot [
+		GPS {}
+		InertialUnit {}
+	]
+	name "khepera07"
+	controller "<extern>"
+}
+Khepera4 {
+	translation 1.02 -1.03 0.015
+	rotation 0 0 1 -3.1415
+	turretSlot [
+		GPS {}
+		InertialUnit {}
+	]
+	name "khepera08"
+	controller "<extern>"
+}
+Crazyflie {
+	translation 1.12 -0.02 0.015
+	rotation 0 0 1 -3.1415
+	name "dron01"
+	controller "<extern>"
+}
+Crazyflie {
+	translation 0.59 0.90 0.015
+	rotation 0 0 1 -3.1415
+	name "dron02"
+	controller "<extern>"
+}
+Crazyflie {
+	translation -0.55 0.94 0.015
+	rotation 0 0 1 -3.1415
+	name "dron03"
+	controller "<extern>"
+}
+Crazyflie {
+	translation -1.07 0.03 0.015
+	rotation 0 0 1 -3.1415
+	name "dron04"
+	controller "<extern>"
+}
+Crazyflie {
+	translation -0.58 -0.95 0.015
+	rotation 0 0 1 -3.1415
+	name "dron05"
+	controller "<extern>"
+}
+Crazyflie {
+	translation 0.54 -0.94 0.015
+	rotation 0 0 1 -3.1415
+	name "dron06"
+	controller "<extern>"
+}
+Crazyflie {
+	translation 0.02 0.03 0.015
+	rotation 0 0 1 -3.1415
+	name "dron07"
+	controller "<extern>"
+}

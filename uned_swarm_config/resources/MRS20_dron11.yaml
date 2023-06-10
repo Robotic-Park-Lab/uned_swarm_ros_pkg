@@ -1,0 +1,34 @@
+dron11:
+  name: dron11
+  control_mode: HighLevel
+  positioning: Intern
+  controller_type: PID_Continuous
+  communication:
+    type: EventBased
+    threshold:
+      type: Constant
+      co: 0.01
+      ai: Null
+  local_pose:
+    enable: True
+    T: 20
+  local_twist:
+    enable: False
+    T: 20
+  data_attitude:
+    enable: False
+    T: 20
+  data_rate:
+    enable: False
+    T: 20
+  data_motor:
+    enable: False
+    T: 20
+  data:
+    enable: False
+    T: 20
+  task:
+    enable: True
+    role: consensus
+    type: distance
+    relationship: dron05_0.82142, dron06_0.66671, dron07_0.70275, dron08_0.89101, dron09_0.51866, dron10_0.51866

@@ -1,0 +1,110 @@
+khepera01:
+  name: khepera01
+  config_path: MRS15_khepera01.yaml
+  description: khepera
+  pose: 1.52, -0.05
+  type: virtual
+
+khepera02:
+  name: khepera02
+  config_path: MRS15_khepera02.yaml
+  description: khepera
+  pose: 1.04, 1.02
+  type: virtual
+
+khepera03:
+  name: khepera03
+  config_path: MRS15_khepera03.yaml
+  description: khepera
+  pose: -0.04, 1.53
+  type: virtual
+
+khepera04:
+  name: khepera04
+  config_path: MRS15_khepera04.yaml
+  description: khepera
+  pose: -1.04, 1.04
+  type: virtual
+
+khepera05:
+  name: khepera05
+  config_path: MRS15_khepera05.yaml
+  description: khepera
+  pose: -1.45, -0.05
+  type: virtual
+
+khepera06:
+  name: khepera06
+  config_path: MRS15_khepera06.yaml
+  description: khepera
+  pose: -1.07, -1.07
+  type: virtual
+
+khepera07:
+  name: khepera07
+  config_path: MRS15_khepera07.yaml
+  description: khepera
+  pose: 0.03, -1.47
+  type: virtual
+
+khepera08:
+  name: khepera08
+  config_path: MRS15_khepera08.yaml
+  description: khepera
+  pose: 1.03, -1.06
+  type: virtual
+
+dron01:
+  name: dron01
+  config_path: MRS15_dron01.yaml
+  description: crazyflie
+  pose: 1.09, 0.01
+  type: digital_twin
+  uri: radio://0/80/2M/E7E7E7E706
+
+dron02:
+  name: dron02
+  config_path: MRS15_dron02.yaml
+  description: crazyflie
+  pose: 0.57, 0.98
+  type: digital_twin
+  uri: radio://0/80/2M/E7E7E7E702
+
+dron03:
+  name: dron03
+  config_path: MRS15_dron03.yaml
+  description: crazyflie
+  pose: -0.57, 0.97
+  type: virtual
+
+dron04:
+  name: dron04
+  config_path: MRS15_dron04.yaml
+  description: crazyflie
+  pose: -1.08, -0.03
+  type: digital_twin
+  uri: radio://0/80/2M/E7E7E7E704
+
+dron05:
+  name: dron05
+  config_path: MRS15_dron05.yaml
+  description: crazyflie
+  pose: -0.59, -0.95
+  type: digital_twin
+  uri: radio://0/80/2M/E7E7E7E705
+
+dron06:
+  name: dron06
+  config_path: MRS15_dron06.yaml
+  description: crazyflie
+  pose: 0.59, -0.97
+  type: virtual
+
+dron07:
+  name: dron07
+  config_path: MRS15_dron07.yaml
+  description: crazyflie
+  pose: 0.01, -0.03
+  type: digital_twin
+  uri: radio://0/80/2M/E7E7E7E703
+

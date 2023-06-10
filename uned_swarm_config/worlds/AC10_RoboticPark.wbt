@@ -20,7 +20,7 @@ TexturedBackground {}
 TexturedBackgroundLight {}
 Floor {}
 Khepera4 {
-	translation 1.53 -0.02 0.015
+	translation 1.53 0.04 0.015
 	rotation 0 0 1 -3.1415
 	turretSlot [
 		GPS {}
@@ -30,7 +30,7 @@ Khepera4 {
 	controller "<extern>"
 }
 Khepera4 {
-	translation 0.75 1.32 0.015
+	translation 0.71 1.34 0.015
 	rotation 0 0 1 -3.1415
 	turretSlot [
 		GPS {}
@@ -40,7 +40,7 @@ Khepera4 {
 	controller "<extern>"
 }
 Khepera4 {
-	translation -0.71 1.34 0.015
+	translation -0.74 1.26 0.015
 	rotation 0 0 1 -3.1415
 	turretSlot [
 		GPS {}
@@ -50,7 +50,7 @@ Khepera4 {
 	controller "<extern>"
 }
 Khepera4 {
-	translation -1.50 -0.04 0.015
+	translation -1.52 0.00 0.015
 	rotation 0 0 1 -3.1415
 	turretSlot [
 		GPS {}
@@ -60,7 +60,7 @@ Khepera4 {
 	controller "<extern>"
 }
 Khepera4 {
-	translation -0.79 -1.32 0.015
+	translation -0.70 -1.25 0.015
 	rotation 0 0 1 -3.1415
 	turretSlot [
 		GPS {}
@@ -70,7 +70,7 @@ Khepera4 {
 	controller "<extern>"
 }
 Khepera4 {
-	translation 0.78 -1.32 0.015
+	translation 0.72 -1.25 0.015
 	rotation 0 0 1 -3.1415
 	turretSlot [
 		GPS {}
@@ -80,25 +80,25 @@ Khepera4 {
 	controller "<extern>"
 }
 Crazyflie {
-	translation 0.94 -0.03 0.015
+	translation 0.95 -0.00 0.015
 	rotation 0 0 1 -3.1415
 	name "dron01"
 	controller "<extern>"
 }
 Crazyflie {
-	translation 0.04 0.89 0.015
+	translation 0.03 0.87 0.015
 	rotation 0 0 1 -3.1415
 	name "dron02"
 	controller "<extern>"
 }
 Crazyflie {
-	translation -0.94 -0.02 0.015
+	translation -0.92 0.04 0.015
 	rotation 0 0 1 -3.1415
 	name "dron03"
 	controller "<extern>"
 }
 Crazyflie {
-	translation 0.01 -0.91 0.015
+	translation 0.03 -0.86 0.015
 	rotation 0 0 1 -3.1415
 	name "dron04"
 	controller "<extern>"

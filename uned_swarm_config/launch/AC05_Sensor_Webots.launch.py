@@ -61,7 +61,7 @@ def generate_launch_description():
                 physical_khepera_list += ', '+robot['name']
     
     print(physical_crazyflie_list)
-
+    '''  
     swarm_node = Node(
         package='uned_crazyflie_driver',
         executable='swarm_driver',
@@ -92,7 +92,7 @@ def generate_launch_description():
                                     )
             )
 
-    
+    '''    
     robot_state_publisher = Node(
         package='robot_state_publisher',
         executable='robot_state_publisher',
@@ -146,7 +146,7 @@ def generate_launch_description():
     ld.add_action(rqt_node)
     ld.add_action(rviz_node)
     ld.add_action(cpu_measure)
-    ld.add_action(swarm_node)
+    # ld.add_action(swarm_node)
     for robot in robot_node_list:
         ld.add_action(robot)
         

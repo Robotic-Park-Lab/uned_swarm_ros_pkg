@@ -13,13 +13,13 @@ from webots_ros2_driver.utils import controller_url_prefix
 
 def generate_launch_description():
     general_package_dir = get_package_share_directory('uned_swarm_config')
-    config_path = os.path.join(general_package_dir, 'resources', 'AD09_RoboticPark.yaml')
-    rviz_config_path = os.path.join(general_package_dir, 'rviz', 'AD09_RoboticPark.rviz')
+    config_path = os.path.join(general_package_dir, 'resources', 'AC15_RoboticPark.yaml')
+    rviz_config_path = os.path.join(general_package_dir, 'rviz', 'AC15_RoboticPark.rviz')
     use_sim_time = LaunchConfiguration('use_sim_time', default=True)
 
     dron_package_dir = get_package_share_directory('uned_crazyflie_webots')
     webots = WebotsLauncher(
-        world=os.path.join(general_package_dir, 'worlds', 'AD09_RoboticPark.wbt')
+        world=os.path.join(general_package_dir, 'worlds', 'AC15_RoboticPark.wbt')
     )
     ros2_supervisor = Ros2SupervisorLauncher()
 
@@ -59,7 +59,7 @@ def generate_launch_description():
                 physical_crazyflie_list += ', '+robot['name']
             if not robot['type'] == 'virtual' and robot['description'] == 'khepera':
                 physical_khepera_list += ', '+robot['name']
-    '''
+    
     print(physical_crazyflie_list)
 
     swarm_node = Node(
@@ -92,7 +92,7 @@ def generate_launch_description():
                                     )
             )
 
-    '''
+    
     robot_state_publisher = Node(
         package='robot_state_publisher',
         executable='robot_state_publisher',
@@ -121,7 +121,7 @@ def generate_launch_description():
         ],
         arguments=['-d', rviz_config_path],
     )
-    '''
+
     cpu_measure = Node(
         package='measure_process_ros2_pkg',
         executable='measure_process',
@@ -129,10 +129,10 @@ def generate_launch_description():
         output='screen',
         parameters=[{
              'process_name' : 'webots-bin, driver, ros2, swarm_driver, rviz2, kheperaIV_clien',
-             'process_period' : 0.5},
+             'process_period' : 0.1},
         ],
     )
-    '''
+
     ros2_close = launch.actions.RegisterEventHandler(
                     event_handler=launch.event_handlers.OnProcessExit(
                     target_action=webots,
@@ -143,10 +143,10 @@ def generate_launch_description():
     ld = LaunchDescription()
     ld.add_action(webots)
     ld.add_action(ros2_supervisor)
-    # ld.add_action(rqt_node)
+    ld.add_action(rqt_node)
     # ld.add_action(rviz_node)
-    # ld.add_action(swarm_node)
-    # ld.add_action(cpu_measure)
+    ld.add_action(cpu_measure)
+    ld.add_action(swarm_node)
     for robot in robot_node_list:
         ld.add_action(robot)
         
