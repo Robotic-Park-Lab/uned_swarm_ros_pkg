@@ -21,6 +21,7 @@ class Neighbour():
         self.parent = parent
         self.d = d
         self.pose = Pose()
+        self.disable = False
         if self.id == 'origin':
             self.pose.position.x = 0.0
             self.pose.position.y = 0.0
@@ -30,44 +31,52 @@ class Neighbour():
         self.publisher_data_ = self.parent.parent.create_publisher(Float64, self.parent.id + '/' + self.id + '/data', 10)
         self.publisher_marker_ = self.parent.parent.create_publisher(Marker, self.parent.id + '/' + self.id + '/marker', 10)
 
+    def clear_neighbour(self):
+        self.disable = True
+        # self.parent.parent.destroy_publisher(self.publisher_data_)
+        # self.parent.parent.destroy_publisher(self.publisher_marker_)
+        # if not self.id == 'origin':
+        #     self.parent.parent.destroy_subscription(self.sub_pose_)
+
     def gtpose_callback(self, msg):
-        self.pose = msg
+        if not self.disable:
+            self.pose = msg
 
-        line = Marker()
-        p0 = Point()
-        p0.x = self.parent.pose.position.x
-        p0.y = self.parent.pose.position.y
-        p0.z = self.parent.pose.position.z
+            line = Marker()
+            p0 = Point()
+            p0.x = self.parent.pose.position.x
+            p0.y = self.parent.pose.position.y
+            p0.z = self.parent.pose.position.z
 
-        p1 = Point()
-        p1.x = self.pose.position.x
-        p1.y = self.pose.position.y
-        p1.z = self.pose.position.z
+            p1 = Point()
+            p1.x = self.pose.position.x
+            p1.y = self.pose.position.y
+            p1.z = self.pose.position.z
 
-        line.header.frame_id = 'map'
-        line.header.stamp = self.parent.parent.get_clock().now().to_msg()
-        line.id = 1
-        line.type = 5
-        line.action = 0
-        line.scale.x = 0.01
-        line.scale.y = 0.01
-        line.scale.z = 0.01
-        
-        distance = sqrt(pow(p0.x-p1.x,2)+pow(p0.y-p1.y,2)+pow(p0.z-p1.z,2))
-        if abs(distance - self.d) > 0.05:
-            line.color.r = 1.0
-        else:
-            if abs(distance - self.d) > 0.025:
+            line.header.frame_id = 'map'
+            line.header.stamp = self.parent.parent.get_clock().now().to_msg()
+            line.id = 1
+            line.type = 5
+            line.action = 0
+            line.scale.x = 0.01
+            line.scale.y = 0.01
+            line.scale.z = 0.01
+            
+            distance = sqrt(pow(p0.x-p1.x,2)+pow(p0.y-p1.y,2)+pow(p0.z-p1.z,2))
+            if abs(distance - self.d) > 0.05:
                 line.color.r = 1.0
-                line.color.g = 0.5
             else:
-                line.color.g = 1.0
+                if abs(distance - self.d) > 0.025:
+                    line.color.r = 1.0
+                    line.color.g = 0.5
+                else:
+                    line.color.g = 1.0
 
-        line.color.a = 1.0
-        line.points.append(p1)
-        line.points.append(p0)
+            line.color.a = 1.0
+            line.points.append(p1)
+            line.points.append(p0)
 
-        self.publisher_marker_.publish(line)
+            self.publisher_marker_.publish(line)
 
 
 class Agent():
@@ -135,6 +144,28 @@ class CentralizedFormationController(Node):
         self.get_logger().info('Multi-Robot-System::Order: "%s"' % msg.data)
         if msg.data == 'distance_formation_run':
             self.distance_formation_bool = True
+        elif not msg.data.find("agent") == -1:
+            aux = msg.data.split('_')
+            if aux[1] == 'remove':
+                for agent in self.agent_list:
+                    for robot in agent.neighbour_list:
+                        if robot.id == aux[2]:
+                            self.get_logger().info('Multi-Robot-System::Remove Neighbour: "%s"' % aux[2])
+                            robot.clear_neighbour()
+                            agent.neighbour_list.remove(robot)
+                            break
+                for agent in self.agent_list:
+                    if agent.id == aux[2]:
+                        self.get_logger().info('Multi-Robot-System::Remove Agent: "%s"' % aux[2])
+                        self.agent_list.remove(agent)
+                        break
+                self.down_signal_ = self.create_publisher(String,'/'+aux[2]+'/order', 10)
+                msg = String()
+                msg.data = 'land'
+                self.down_signal_.publish(msg)
+                # self.destroy_publisher(self.down_signal_)
+        else:
+            self.get_logger().error('"%s": Unknown order' % (msg.data))
 
     def iterate(self):
         if self.distance_formation_bool:

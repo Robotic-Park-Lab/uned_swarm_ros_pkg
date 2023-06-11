@@ -29,6 +29,8 @@ dron08:
     T: 20
   task:
     enable: True
+    T: 100
+    Onboard: False
     role: consensus
     type: distance
     relationship: khepera09_0.63201, khepera10_0.60771, dron07_0.5762, dron09_0.5762, dron14_0.55786, origin_1.0

@@ -29,6 +29,8 @@ dron11:
     T: 20
   task:
     enable: True
+    T: 100
+    Onboard: False
     role: consensus
     type: distance
     relationship: dron05_0.82142, dron06_0.66671, dron07_0.70275, dron08_0.89101, dron09_0.51866, dron10_0.51866

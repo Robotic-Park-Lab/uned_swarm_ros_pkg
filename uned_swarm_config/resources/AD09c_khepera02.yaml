@@ -1,5 +1,5 @@
-khepera05:
-  name: khepera05
+khepera02:
+  name: khepera02
   control_mode: HighLevel
   positioning: Intern
   controller_type: PID_Continuous
@@ -28,9 +28,9 @@ khepera05:
     enable: False
     T: 20
   task:
-    enable: True
+    enable: False
     T: 100
     Onboard: False
     role: consensus
     type: distance
-    relationship: khepera04_1, khepera06_1, dron03_1.1806, dron04_0.97473, origin_1.0
+    relationship: khepera01_0.7071, khepera03_0.7071, dron02_0.9468, dron03_0.9468, origin_0.5

@@ -28,6 +28,8 @@ dron01:
     T: 20
   task: 
     enable: True
+    T: 100
+    Onboard: False
     role: consensus
     type: distance
     relationship: 'khepera01_0.8485, khepera02_0.8485, dron02_0.6, dron03_0.6'
@@ -62,6 +64,8 @@ dron02:
     T: 20
   task: 
     enable: True
+    T: 100
+    Onboard: False
     role: consensus
     type: distance
     relationship: 'khepera03_0.8485, khepera04_0.8485, dron01_0.6, dron03_0.6'
@@ -96,6 +100,8 @@ dron03:
     T: 20
   task: 
     enable: True
+    T: 100
+    Onboard: False
     role: consensus
     type: distance
     relationship: 'khepera02_0.8485, khepera03_0.8485, dron01_0.6, dron02_0.6'
@@ -113,6 +119,8 @@ khepera01:
       ai: Null
   task: 
     enable: True
+    T: 100
+    Onboard: False
     role: consensus
     type: distance
     relationship: 'khepera02_0.6, khepera03_0.8485, khepera04_0.6, dron01_0.8485'
@@ -129,6 +137,8 @@ turtlebot01:
       ai: Null
   task: 
     enable: True
+    T: 100
+    Onboard: False
     role: consensus
     type: distance
     relationship: 'khepera02_0.6, khepera03_0.8485, khepera04_0.6, dron01_0.8485'
@@ -180,6 +190,8 @@ khepera02:
       ai: Null
   task: 
     enable: True
+    T: 100
+    Onboard: False
     role: consensus
     type: distance
     relationship: 'khepera01_0.6, khepera03_0.6, khepera04_0.8485, dron01_0.8485'
@@ -197,6 +209,8 @@ khepera03:
       ai: Null
   task: 
     enable: True
+    T: 100
+    Onboard: False
     role: consensus
     type: distance
     relationship: 'khepera02_0.6, khepera01_0.8485, khepera04_0.6, dron02_0.8485'
@@ -214,6 +228,8 @@ khepera04:
       ai: Null
   task: 
     enable: True
+    T: 100
+    Onboard: False
     role: consensus
     type: distance
     relationship: 'khepera01_0.6, khepera02_0.8485, khepera03_0.6, dron02_0.8485'

@@ -16,7 +16,7 @@ from webots_ros2_driver.utils import controller_url_prefix
 
 def get_ros2_nodes(*args):
     general_package_dir = get_package_share_directory('uned_swarm_config')
-    config_path = os.path.join(general_package_dir, 'resources', 'AD09_RoboticParkWebots.yaml')
+    config_path = os.path.join(general_package_dir, 'resources', 'AD09d_RoboticParkWebots.yaml')
     rviz_config_path = os.path.join(general_package_dir, 'rviz', 'AD09_RoboticPark.rviz')
     use_sim_time = LaunchConfiguration('use_sim_time', default=True)
 
