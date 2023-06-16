@@ -1,5 +1,11 @@
 khepera02:
   name: khepera02
+  agent_ip: '192.168.0.22'
+  port_number: 50000
+  init_theta: -1.5708
+  pose:
+    x: 0.0
+    y: 1.53
   control_mode: HighLevel
   positioning: Intern
   controller_type: PID_Continuous

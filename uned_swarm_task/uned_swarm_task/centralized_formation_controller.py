@@ -13,6 +13,7 @@ from rclpy.node import Node
 from std_msgs.msg import String, Float64MultiArray, UInt16, UInt16MultiArray, Float64
 from geometry_msgs.msg import Pose, Twist, PointStamped, Point
 from visualization_msgs.msg import Marker
+from builtin_interfaces.msg import Time
 
 
 class Neighbour():
@@ -104,24 +105,26 @@ class Agent():
         self.pose = msg
 
 
-
 class CentralizedFormationController(Node):
     def __init__(self):
         super().__init__('formation_controller')
         # Params
         self.declare_parameter('config_file', 'path')
+        self.declare_parameter('pkg', 'uned_swarm_config')
 
         # Publisher
         self.publisher_status = self.create_publisher(String,'swarm/status', 10)
+        self.publisher_order = self.create_publisher(String,'swarm/order', 10)
+        self.publisher_time = self.create_publisher(Time,'swarm/time', 10)
         # Subscription
         self.sub_order = self.create_subscription(String, 'swarm/order', self.order_callback, 10)
 
-        self.timer_task = self.create_timer(0.1, self.iterate)
         self.initialize()
 
     def initialize(self):
         self.get_logger().info('Formation Controller::inicialize() ok.')
-        pkg_dir = get_package_share_directory('uned_swarm_config')
+        pkg = self.get_parameter('pkg').get_parameter_value().string_value
+        pkg_dir = get_package_share_directory(pkg)
         self.agent_list = list()
         self.distance_formation_bool = False
 
@@ -135,15 +138,18 @@ class CentralizedFormationController(Node):
                 individual_config_path = os.path.join(pkg_dir, 'resources', robot['config_path'])
                 new_robot.get_neighbourhood(individual_config_path)
                 self.agent_list.append(new_robot)
-        
 
-
+        self.timer_task = self.create_timer(0.1, self.iterate)
         self.get_logger().info('Formation Controller::inicialized.')
 
     def order_callback(self,msg):
         self.get_logger().info('Multi-Robot-System::Order: "%s"' % msg.data)
         if msg.data == 'distance_formation_run':
             self.distance_formation_bool = True
+            self.t_stop = Timer(20, self.stop_dataset)
+            self.t_stop.start()
+        elif msg.data == 'formation_stop':
+            self.distance_formation_bool = False
         elif not msg.data.find("agent") == -1:
             aux = msg.data.split('_')
             if aux[1] == 'remove':
@@ -165,9 +171,19 @@ class CentralizedFormationController(Node):
                 self.down_signal_.publish(msg)
                 # self.destroy_publisher(self.down_signal_)
         else:
-            self.get_logger().error('"%s": Unknown order' % (msg.data))
+            self.get_logger().debug('"%s": Unknown order' % (msg.data))
+
+    def stop_dataset(self):
+        self.distance_formation_bool = False
+        msg = String()
+        msg.data = 'formation_stop'
+        self.publisher_order.publish(msg)
+        self.get_logger().info('Multi-Robot-System::Order: "%s"' % msg.data)
 
     def iterate(self):
+        msg = self.get_clock().now().to_msg()
+        self.publisher_time.publish(msg)
+
         if self.distance_formation_bool:
             for agent in self.agent_list:
                 dx = dy = dz = 0
@@ -190,23 +206,39 @@ class CentralizedFormationController(Node):
                     msg_data.data = abs(neighbour.d - sqrt(distance))
                     neighbour.publisher_data_.publish(msg_data)
 
-                if dx > 0.32:
-                    dx = 0.32
-                if dx < -0.32:
-                    dx = -0.32
-                if dy > 0.32:
-                    dy = 0.32
-                if dy < -0.32:
-                    dy = -0.32
-                if dz > 0.32:
-                    dz = 0.32
-                if dz < -0.32:
-                    dz = -0.32
-                
                 goal = Pose()
-                goal.position.x = agent.pose.position.x + dx/4
-                goal.position.y = agent.pose.position.y + dy/4
-                goal.position.z = agent.pose.position.z + dz/4
+                if not agent.id.find("dron") == -1:
+                    if dx > 0.32:
+                        dx = 0.32
+                    if dx < -0.32:
+                        dx = -0.32
+                    if dy > 0.32:
+                        dy = 0.32
+                    if dy < -0.32:
+                        dy = -0.32
+                    if dz > 0.32:
+                        dz = 0.32
+                    if dz < -0.32:
+                        dz = -0.32
+                    goal.position.x = agent.pose.position.x + dx/4
+                    goal.position.y = agent.pose.position.y + dy/4
+                    goal.position.z = agent.pose.position.z + dz/4
+                    if goal.position.z < 0.6:
+                        goal.position.z = 0.6
+                    elif goal.position.z > 2.0:
+                        goal.position.z = 2.0
+                else:
+                    if dx > 4:
+                        dx = 4
+                    if dx < -4:
+                        dx = -4
+                    if dy > 4:
+                        dy = 4
+                    if dy < -4:
+                        dy = -4
+                    goal.position.x = agent.pose.position.x + dx/4
+                    goal.position.y = agent.pose.position.y + dy/4
+
                 self.get_logger().debug('Agent %s: X: %.2f->%.2f Y: %.2f->%.2f Z: %.2f->%.2f' % (agent.id, agent.pose.position.x, goal.position.x, agent.pose.position.y, goal.position.y, agent.pose.position.z, goal.position.z)) 
                 agent.publisher_goalpose.publish(goal)
         

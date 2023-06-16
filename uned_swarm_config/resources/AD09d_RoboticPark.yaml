@@ -32,7 +32,7 @@ dron01:
   description: crazyflie
   pose: 0.91, -0.03
   type: digital_twin
-  uri: radio://0/80/2M/E7E7E7E701
+  uri: radio://0/80/2M/E7E7E7E706
 
 dron02:
   name: dron02
@@ -64,5 +64,5 @@ dron05:
   description: crazyflie
   pose: -0.01, -0.86
   type: digital_twin
-  uri: radio://0/80/2M/E7E7E7E704
+  uri: radio://0/80/2M/E7E7E7E705
 

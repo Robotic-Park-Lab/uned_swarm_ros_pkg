@@ -1,11 +1,5 @@
-khepera01:
-  name: khepera01
-  agent_ip: '192.168.0.21'
-  port_number: 50000
-  init_theta: 3.1415
-  pose:
-    x: 1.53
-    y: -0.0
+khepera21:
+  name: khepera21
   control_mode: HighLevel
   positioning: Intern
   controller_type: PID_Continuous
@@ -13,11 +7,11 @@ khepera01:
     type: EventBased
     threshold:
       type: Constant
-      co: 0.08
+      co: 0.01
       ai: Null
   local_pose:
     enable: True
-    T: 100
+    T: 20
   local_twist:
     enable: False
     T: 20
@@ -34,10 +28,7 @@ khepera01:
     enable: False
     T: 20
   task:
-    enable: False
-    T: 100
-    Onboard: False
+    enable: True
     role: consensus
     type: distance
-    # relationship: 'khepera02_0.7071, khepera04_0.7071, origin_0.5'
-    relationship: 'khepera02_0.7071, khepera04_0.7071, dron02_0.9468, dron05_0.9468, origin_0.5'
+    relationship: khepera01_0.89425, khepera20_0.89425, dron01_1.1842, dron20_0.79534
