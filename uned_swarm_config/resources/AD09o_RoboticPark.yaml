@@ -1,34 +1,34 @@
 khepera01:
   name: khepera01
-  config_path: AD09d_khepera01.yaml
+  config_path: AD09o_khepera01.yaml
   description: khepera
   pose: 1.53 -0.02
   type: digital_twin
 
 khepera02:
   name: khepera02
-  config_path: AD09d_khepera02.yaml
+  config_path: AD09o_khepera02.yaml
   description: khepera
   pose: 0.0 1.53
   type: digital_twin
 
 khepera03:
   name: khepera03
-  config_path: AD09d_khepera03.yaml
+  config_path: AD09o_khepera03.yaml
   description: khepera
   pose: -1.53 -0.02
   type: digital_twin
 
 khepera04:
   name: khepera04
-  config_path: AD09d_khepera04.yaml
+  config_path: AD09o_khepera04.yaml
   description: khepera
   pose: 0.0 -1.53
   type: digital_twin
 
 dron01:
   name: dron01
-  config_path: AD09d_dron01.yaml
+  config_path: AD09o_dron01.yaml
   description: crazyflie
   pose: 0.91, -0.03
   type: digital_twin
@@ -36,7 +36,7 @@ dron01:
 
 dron02:
   name: dron02
-  config_path: AD09d_dron02.yaml
+  config_path: AD09o_dron02.yaml
   description: crazyflie
   pose: -0.00, 0.92
   type: digital_twin
@@ -44,7 +44,7 @@ dron02:
 
 dron03:
   name: dron03
-  config_path: AD09d_dron03.yaml
+  config_path: AD09o_dron03.yaml
   description: crazyflie
   pose: -0.89, -0.01
   type: digital_twin
@@ -52,7 +52,7 @@ dron03:
 
 dron04:
   name: dron04
-  config_path: AD09d_dron04.yaml
+  config_path: AD09o_dron04.yaml
   description: crazyflie
   pose: -0.01, -0.86
   type: digital_twin
@@ -60,7 +60,7 @@ dron04:
 
 dron05:
   name: dron05
-  config_path: AD09d_dron05.yaml
+  config_path: AD09o_dron05.yaml
   description: crazyflie
   pose: -0.01, -0.86
   type: digital_twin

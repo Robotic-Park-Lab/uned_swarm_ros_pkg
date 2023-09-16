@@ -1,18 +1,23 @@
-# Default crazyflie parameters to ros2 node
-dron05:
-  name: dron05
-  positioning: Intern
+khepera04:
+  name: khepera04
+  agent_ip: '192.168.0.20'
+  port_number: 50000
+  init_theta: 1.5708
+  pose:
+    x: 0.0
+    y: -1.53
   control_mode: HighLevel
+  positioning: Intern
   controller_type: PID_Continuous
   communication:
-    type: EventBased
+    type: Continuous
     threshold:
       type: Constant
       co: 0.01
       ai: Null
   local_pose:
     enable: True
-    T: 100
+    T: 200
   local_twist:
     enable: False
     T: 20
@@ -30,8 +35,9 @@ dron05:
     T: 20
   task: 
     enable: True
-    T: 100
-    Onboard: False
+    T: 200
+    Onboard: True
     role: consensus
     type: distance
-    relationship: 'dron01_0.7071, dron02_0.7071, dron04_0.7071, khepera01_0.9468, khepera04_0.9468, origin_1.0'
+    # relationship: 'khepera01_0.7071, khepera03_0.7071, origin_0.5'
+    relationship: 'khepera01_0.7071, khepera03_0.7071, dron04_0.9468, dron05_0.9468, origin_0.5'

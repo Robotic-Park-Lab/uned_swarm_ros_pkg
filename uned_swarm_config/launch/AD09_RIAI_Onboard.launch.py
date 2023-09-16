@@ -1,6 +1,4 @@
 import os
-import pathlib
-import launch
 import yaml
 from yaml.loader import SafeLoader
 from launch_ros.actions import Node
@@ -12,9 +10,8 @@ from launch import LaunchDescription
 
 def get_ros2_nodes(*args):
     general_package_dir = get_package_share_directory('uned_swarm_config')
-    config_path = os.path.join(general_package_dir, 'resources', 'AD09d_RoboticPark.yaml')
+    config_path = os.path.join(general_package_dir, 'resources', 'AD09o_RoboticPark.yaml')
     rviz_config_path = os.path.join(general_package_dir, 'rviz', 'AD09_RoboticPark.rviz')
-    use_sim_time = LaunchConfiguration('use_sim_time', default=True)
 
     robot_node_list = []
     physical_crazyflie_list = ''
@@ -32,6 +29,7 @@ def get_ros2_nodes(*args):
                 physical_khepera_list += ', '+robot['name']
     
 
+
     print(physical_crazyflie_list)
     robot_node_list.append(Node(
         package='uned_crazyflie_driver',
@@ -47,6 +45,7 @@ def get_ros2_nodes(*args):
         ]
     )
     )
+
     aux = physical_khepera_list.split(', ')
     for robot in aux:
         if not robot == '':
@@ -63,27 +62,11 @@ def get_ros2_nodes(*args):
                                         ]
                                     )
             )
-            
-            robot_node_list.append(Node(package='uned_swarm_task',
-                                        executable='formation_controller',
-                                        name='formation_controller',
-                                        namespace=data[robot]['name'],
-                                        output='screen',
-                                        shell=True,
-                                        emulate_tty=True,
-                                        parameters=[{'id': data[robot]['name']},
-                                                    {'config_file': individual_config_path}
-                                        ]
-                                    )
-            )
 
     robot_node_list.append(Node(
             package='rqt_gui',
             executable='rqt_gui',
             name='interface',
-            parameters=[
-                {'use_sim_time': use_sim_time},
-            ],
         )
     )
 
@@ -92,9 +75,6 @@ def get_ros2_nodes(*args):
             executable='rviz2',
             name='rviz2',
             output='screen',
-            parameters=[
-                {'use_sim_time': use_sim_time},
-            ],
             arguments=['-d', rviz_config_path],
         )
     )

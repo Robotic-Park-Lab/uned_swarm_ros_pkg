@@ -5,14 +5,14 @@ dron01:
   control_mode: HighLevel
   controller_type: PID_Continuous
   communication:
-    type: Continuous
+    type: EventBased
     threshold:
-      type: Null
-      co: Null
+      type: Constant
+      co: 0.01
       ai: Null
   local_pose:
     enable: True
-    T: 20
+    T: 100
   local_twist:
     enable: False
     T: 20
