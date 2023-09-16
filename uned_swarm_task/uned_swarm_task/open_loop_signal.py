@@ -68,7 +68,6 @@ class OpenLoop(Node):
 
     def iterate(self):
         if self.new:
-            self.get_logger().info('Open Loop::iterate.')
             self.new = False
             if self.signal_type == 'pose':
                 command = Pose()

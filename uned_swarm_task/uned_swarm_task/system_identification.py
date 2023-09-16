@@ -87,11 +87,17 @@ class SystemIdentification(Node):
         self.timer_task = self.create_timer(0.05, self.iterate)
 
         # Estimator
-        self.m = np.zeros(2)
+        if self.order == '1p0z':
+            self.N = 2
+        elif self.order == '2p0z':
+            self.N = 4
+        else:
+            self.N = 2
+        self.m = np.zeros(self.N)
         self.m = self.m.reshape(1, -1)
-        self.theta = np.zeros(2)
+        self.theta = np.zeros(self.N)
         self.theta = self.theta.reshape(-1, 1)
-        self.P = np.identity(2)*10
+        self.P = np.identity(self.N)*10
         self.ek1 = 100
         self.finish = False
 
@@ -136,16 +142,28 @@ class SystemIdentification(Node):
             msg = self.get_clock().now().to_msg()
             ## ESTIMATION
             # First Order
-            self.m[0,1] = self.u_signal[4]
-            self.m[0,0] = np.sign(self.u_signal[4])*self.y_signal[3]
+            if self.N == 2:
+                self.m[0,1] = self.u_signal[4]
+                self.m[0,0] = np.sign(self.u_signal[4])*self.y_signal[3]
+            # Second Order
+            if self.N == 4:
+                self.m[0,2] = self.u_signal[4]
+                self.m[0,3] = self.u_signal[3]
+                self.m[0,0] = np.sign(self.u_signal[3])*self.y_signal[3]
+                self.m[0,1] = np.sign(self.u_signal[2])*self.y_signal[2]
             mt = self.m.reshape(-1, 1)
             K=np.matmul(self.P,mt)/(1+np.matmul(self.m,np.matmul(self.P,mt)))
             ek = self.y_signal[4]-np.matmul(self.m,self.theta)
             self.theta = self.theta+K*ek
-            self.P = np.matmul((np.identity(2)-np.matmul(K,self.m)),self.P)
-            gain = self.theta[1,0]/(1-self.theta[0,0])
-            tau = -0.05*np.log(self.theta[0,0])
-            self.get_logger().info('Estimation: a=%.3f \tb=%.3f \tk=%.3f \ttau=%.3f  \te=%.3f' % (self.theta[0,0], self.theta[1,0], gain, tau, ek))
+            self.P = np.matmul((np.identity(self.N)-np.matmul(K,self.m)),self.P)
+            # First Order
+            if self.N == 2:
+                gain = self.theta[1,0]/(1-self.theta[0,0])
+                tau = -0.05*np.log(self.theta[0,0])
+                self.get_logger().info('Estimation: a=%.3f \tb=%.3f \tk=%.3f \ttau=%.3f  \te=%.3f' % (self.theta[0,0], self.theta[1,0], gain, tau, ek))
+            # Second Order
+            if self.N == 4:
+                self.get_logger().info('Estimation: a1=%.3f \ta2=%.3f \tb0=%.3f \tb1=%.3f  \te=%.3f' % (self.theta[0,0], self.theta[1,0], self.theta[2,0], self.theta[3,0], ek))
             if abs(ek)<0.08 and abs(self.ek1)<0.08 and False:
                 self.ident_process_bool = False
                 self.finish = True
