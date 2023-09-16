@@ -20,7 +20,7 @@ from sysidentpy.residues.residues_correlation import compute_residues_autocorrel
 
 from rclpy.node import Node
 from std_msgs.msg import String, Float32, Float64MultiArray, UInt16, UInt16MultiArray, Float64
-from geometry_msgs.msg import Pose, Twist, PointStamped, Point
+from geometry_msgs.msg import Pose, Twist, PointStamped, Point, PoseStamped
 from visualization_msgs.msg import Marker
 from builtin_interfaces.msg import Time
 
@@ -56,8 +56,8 @@ class SystemIdentification(Node):
         input_signal = self.get_parameter('input').get_parameter_value().string_value
         self.input_type = self.get_parameter('input_type').get_parameter_value().string_value
         if self.input_type == 'pose':
-            self.sub_input = self.create_subscription(Pose, input_signal, self.input_callback, 10)
-            self.u = Pose()
+            self.sub_input = self.create_subscription(PoseStamped, input_signal, self.input_callback, 10)
+            self.u = PoseStamped()
         elif self.input_type == 'twist':
             self.sub_input = self.create_subscription(Twist, input_signal, self.input_callback, 10)
             self.u = Twist()
@@ -68,8 +68,8 @@ class SystemIdentification(Node):
         output_signal = self.get_parameter('output').get_parameter_value().string_value
         self.output_type = self.get_parameter('output_type').get_parameter_value().string_value
         if self.output_type == 'pose':
-            self.sub_input = self.create_subscription(Pose, output_signal, self.output_callback, 10)
-            self.y = Pose()
+            self.sub_input = self.create_subscription(PoseStamped, output_signal, self.output_callback, 10)
+            self.y = PoseStamped()
         elif self.output_type == 'twist':
             self.sub_input = self.create_subscription(Twist, output_signal, self.output_callback, 10)
             self.y = Twist()
@@ -120,13 +120,22 @@ class SystemIdentification(Node):
     def input_callback(self,msg):
         self.u_signal = np.delete(self.u_signal, 0)
         self.u = msg
-        self.u_signal = np.append(self.u_signal, self.u.linear.x)
+        if self.input_type == 'pose':
+            self.u_signal = np.append(self.u_signal, self.u.pose.position.x)
+        elif self.input_type == 'twist':
+            self.u_signal = np.append(self.u_signal, self.u.linear.x)
+        elif self.input_type == 'point':
+            self.u_signal = np.append(self.u_signal, self.u.x)
+        elif self.input_type == 'float32':
+            self.u_signal = np.append(self.u_signal, self.u.data)
+        else:
+            self.u_signal = np.append(self.u_signal, self.u.data)
 
     def output_callback(self,msg):
         self.y_signal = np.delete(self.y_signal, 0)
         self.y = msg
         if self.output_type == 'pose':
-            self.y_signal = np.append(self.y_signal, self.y.position.x)
+            self.y_signal = np.append(self.y_signal, self.y.pose.position.x)
         elif self.output_type == 'twist':
             self.y_signal = np.append(self.y_signal, self.y.linear.x)
         elif self.output_type == 'point':
@@ -139,7 +148,6 @@ class SystemIdentification(Node):
         
     def iterate(self):
         if self.ident_process_bool:
-            msg = self.get_clock().now().to_msg()
             ## ESTIMATION
             # First Order
             if self.N == 2:

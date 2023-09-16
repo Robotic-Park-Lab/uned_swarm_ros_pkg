@@ -11,7 +11,8 @@ from math import atan2, cos, sin, sqrt
 
 from rclpy.node import Node
 from std_msgs.msg import String, Float64MultiArray, UInt16, UInt16MultiArray, Float64
-from geometry_msgs.msg import Pose, Twist, PointStamped, Point
+from geometry_msgs.msg import Pose, Twist, PointStamped, Point, PoseStamped
+from nav_msgs.msg import Odometry, Path
 from visualization_msgs.msg import Marker
 from builtin_interfaces.msg import Time
 
@@ -29,6 +30,7 @@ class OpenLoop(Node):
         # Publisher
         self.publisher_status = self.create_publisher(String,'open_loop/status', 10)
         self.publisher_ident = self.create_publisher(String,'ident/order', 10)
+        self.path_publisher = self.create_publisher(Path, 'ident/path', 10)
         
         # Subscription
         self.sub_order = self.create_subscription(String, 'open_loop/order', self.order_callback, 10)
@@ -40,7 +42,7 @@ class OpenLoop(Node):
         signal = self.get_parameter('signal').get_parameter_value().string_value
         self.signal_type = self.get_parameter('signal_type').get_parameter_value().string_value
         if self.signal_type == 'pose':
-            self.pub_signal = self.create_publisher(Pose, signal, 10)
+            self.pub_signal = self.create_publisher(PoseStamped, signal, 10)
         elif self.signal_type == 'twist':
             self.pub_signal = self.create_publisher(Twist, signal, 10)
         else:
@@ -51,6 +53,8 @@ class OpenLoop(Node):
 
         self.new = False
         self.timer_task = self.create_timer(0.1, self.iterate)
+        self.path = Path()
+        self.path.header.frame_id = "map"
 
         self.t_ready = Timer(self.period, self._ready)
         self.t_ready.start()
@@ -70,10 +74,13 @@ class OpenLoop(Node):
         if self.new:
             self.new = False
             if self.signal_type == 'pose':
-                command = Pose()
-                command.position.x = random.uniform(-self.range, self.range)
-                command.position.y = random.uniform(-self.range, self.range)
-                self.get_logger().info('Open Loop::Pose X %.3f  Y %.3f' % (command.position.x, command.position.y))
+                command = PoseStamped()
+                command.header.frame_id = "map"
+                command.pose.position.x = random.uniform(-self.range, self.range)
+                command.pose.position.y = random.uniform(-self.range, self.range)
+                self.get_logger().info('Open Loop::Pose X %.3f  Y %.3f' % (command.pose.position.x, command.pose.position.y))
+                self.path.poses.append(command)
+                self.path_publisher.publish(self.path)
             elif self.signal_type == 'twist':
                 command = Twist()
                 command.linear.x = random.uniform(0.0, self.range)
