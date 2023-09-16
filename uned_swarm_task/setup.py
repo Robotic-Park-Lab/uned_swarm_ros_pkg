@@ -21,6 +21,9 @@ setup(
     entry_points={
         'console_scripts': [
             'centralized_formation_controller = uned_swarm_task.centralized_formation_controller:main',
+            'system_identification = uned_swarm_task.system_identification:main',
+            'open_loop_signal = uned_swarm_task.open_loop_signal:main',
+            'formation_controller = uned_swarm_task.formation_controller:main',
             'turtlebot_distance_control = uned_swarm_task.turtlebot_distance_control:main',
         ],
     },
