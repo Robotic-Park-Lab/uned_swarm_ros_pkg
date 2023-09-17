@@ -113,22 +113,24 @@ class OpenLoop(Node):
             self.new = False
             if self.shape == 'random':
                 if self.signal_type == 'pose':
-                    self.target.pose.position.x = random.uniform(-self.range, self.range)
-                    self.target.pose.position.y = random.uniform(-self.range, self.range)
+                    PoseStamp = PoseStamped()
+                    PoseStamp.header.stamp = self.get_clock().now().to_msg()
+                    PoseStamp.pose.position.x = random.uniform(-self.range, self.range)
+                    PoseStamp.pose.position.y = random.uniform(-self.range, self.range)
                     if self.robot == 'dron':
-                        self.target.pose.position.z = 1.0
+                        PoseStamp.pose.position.z = 1.0
                     else:
-                        self.target.pose.position.z = 0.0
-
+                        PoseStamp.pose.position.z = 0.0
                     q = tf_transformations.quaternion_from_euler(0.0, 0.0, random.uniform(-pi, pi))
-                    self.get_logger().info('Pose X %.3f  Y %.3f' % (self.target.pose.position.x, self.target.pose.position.y))
-                    self.target.pose.orientation.x = q[0]
-                    self.target.pose.orientation.y = q[1]
-                    self.target.pose.orientation.z = q[2]
-                    self.target.pose.orientation.w = q[3]
-                    self.path.poses.append(self.target)
+                    self.get_logger().info('Pose X %.3f  Y %.3f' % (PoseStamp.pose.position.x, PoseStamp.pose.position.y))
+                    PoseStamp.pose.orientation.x = q[0]
+                    PoseStamp.pose.orientation.y = q[1]
+                    PoseStamp.pose.orientation.z = q[2]
+                    PoseStamp.pose.orientation.w = q[3]
+                    self.path.header.stamp = self.get_clock().now().to_msg()
+                    self.path.poses.append(PoseStamp)
                     self.path_publisher.publish(self.path)
-                    
+                    self.target = PoseStamp
                 elif self.signal_type == 'twist':
                     self.target.linear.x = random.uniform(0.0, self.range)
                     self.target.angular.z = random.uniform(-self.range/20, self.range/20)
@@ -137,38 +139,43 @@ class OpenLoop(Node):
                     self.target = Float64()
                 t = random.uniform(self.period, self.period+2)
                 self.get_logger().info('New t %f.' % t)
+                self.pub_signal.publish(self.target)  
+                self.t_ready = Timer(t, self._ready)
+                self.t_ready.start()
             else:
+                PoseStamp = PoseStamped()
                 if self.shape == 'polygon':
-                    self.target.pose.position.x = self.points['P'+str(self.j)]['x'] * self.range
-                    self.target.pose.position.y = self.points['P'+str(self.j)]['y'] * self.range
-                    self.target.pose.position.z = self.points['P'+str(self.j)]['z']
+                    PoseStamp.pose.position.x = self.points['P'+str(self.j)]['x'] * self.range
+                    PoseStamp.pose.position.y = self.points['P'+str(self.j)]['y'] * self.range
+                    PoseStamp.pose.position.z = self.points['P'+str(self.j)]['z']
                     t = self.points['P'+str(self.j)]['t']
-                    self.get_logger().info('P%s: X %.3f  Y %.3f' % (str(self.j),self.target.pose.position.x, self.target.pose.position.y))
+                    self.get_logger().info('P%s: X %.3f  Y %.3f' % (str(self.j),PoseStamp.pose.position.x, PoseStamp.pose.position.y))
                     self.j = ((self.j+1) % len(self.points))
                 if self.shape == 'circle':
                     time = self.get_clock().now().to_msg()
                     t = time.sec+time.nanosec*1e-9
-                    self.target.pose.position.x = sin((t-self.t_init)*0.2) * self.range
-                    self.target.pose.position.y = cos((t-self.t_init)*0.2) * self.range
+                    PoseStamp.pose.position.x = sin((t-self.t_init)*0.2) * self.range
+                    PoseStamp.pose.position.y = cos((t-self.t_init)*0.2) * self.range
                     if self.robot == 'dron':
-                        self.target.pose.position.z = 1.0
+                        PoseStamp.pose.position.z = 1.0
                     else:
-                        self.target.pose.position.z = 0.0
+                        PoseStamp.pose.position.z = 0.0
                     t = 0.1
-                yaw = atan2(self.target.pose.position.y-self.output.pose.position.y,self.target.pose.position.x-self.output.pose.position.x)
+                yaw = atan2(PoseStamp.pose.position.y-self.output.pose.position.y,PoseStamp.pose.position.x-self.output.pose.position.x)
                 q = tf_transformations.quaternion_from_euler(0.0, 0.0, yaw)
-                self.target.pose.orientation.x = q[0]
-                self.target.pose.orientation.y = q[1]
-                self.target.pose.orientation.z = q[2]
-                self.target.pose.orientation.w = q[3]
+                PoseStamp.pose.orientation.x = q[0]
+                PoseStamp.pose.orientation.y = q[1]
+                PoseStamp.pose.orientation.z = q[2]
+                PoseStamp.pose.orientation.w = q[3]
+                PoseStamp.header.frame_id = "map"
+                PoseStamp.header.stamp = self.get_clock().now().to_msg()
+                self.path.header.stamp = self.get_clock().now().to_msg()
+                self.path.poses.append(PoseStamp)
+                self.path_publisher.publish(self.path)
+                self.pub_signal.publish(PoseStamp)  
+                self.t_ready = Timer(t, self._ready)
+                self.t_ready.start()
 
-            
-            self.pub_signal.publish(self.target)  
-            self.t_ready = Timer(t, self._ready)
-            self.t_ready.start()  
-        
-        
-        
 
 def main(args=None):
     rclpy.init(args=args)

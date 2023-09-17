@@ -11,9 +11,10 @@ from ament_index_python.packages import get_package_share_directory
 
 from rclpy.node import Node
 from std_msgs.msg import String, Float64MultiArray, UInt16, UInt16MultiArray, Float64
-from geometry_msgs.msg import Pose, Twist, PointStamped, Point
+from geometry_msgs.msg import Pose, Twist, PoseStamped, Point
 from visualization_msgs.msg import Marker
 from builtin_interfaces.msg import Time
+import tf_transformations
 
 
 class Neighbour():
@@ -28,7 +29,7 @@ class Neighbour():
             self.pose.position.y = 0.0
             self.pose.position.z = 0.0
         else:
-            self.sub_pose_ = self.parent.parent.create_subscription(Pose, '/' + self.id + '/local_pose', self.gtpose_callback, 10)
+            self.sub_pose_ = self.parent.parent.create_subscription(PoseStamped, '/' + self.id + '/local_pose', self.gtpose_callback, 10)
         self.publisher_data_ = self.parent.parent.create_publisher(Float64, self.parent.id + '/' + self.id + '/data', 10)
         self.publisher_marker_ = self.parent.parent.create_publisher(Marker, self.parent.id + '/' + self.id + '/marker', 10)
 
@@ -41,7 +42,7 @@ class Neighbour():
 
     def gtpose_callback(self, msg):
         if not self.disable:
-            self.pose = msg
+            self.pose = msg.pose
 
             line = Marker()
             p0 = Point()
@@ -87,13 +88,11 @@ class Agent():
         self.neighbour_list = list()
         self.pose = Pose()
         self.parent.get_logger().info('New Agent: %s' % self.id)
-        self.sub_pose = self.parent.create_subscription(Pose, self.id + '/local_pose', self.gtpose_callback, 10)
-        self.publisher_goalpose = self.parent.create_publisher(Pose, self.id + '/goal_pose', 10)
+        self.sub_pose = self.parent.create_subscription(PoseStamped, self.id + '/local_pose', self.gtpose_callback, 10)
+        self.publisher_goalpose = self.parent.create_publisher(PoseStamped, self.id + '/goal_pose', 10)
 
-    def get_neighbourhood(self,config_file):
-        with open(config_file, 'r') as file:
-            documents = yaml.safe_load(file)
-        aux = documents[self.id]['task']['relationship']
+    def get_neighbourhood(self,documents):
+        aux = documents['relationship']
         self.relationship = aux.split(', ')
         for rel in self.relationship:
             aux = rel.split('_')
@@ -102,7 +101,7 @@ class Agent():
             self.neighbour_list.append(robot)
 
     def gtpose_callback(self, msg):
-        self.pose = msg
+        self.pose = msg.pose
 
 
 class CentralizedFormationController(Node):
@@ -135,8 +134,7 @@ class CentralizedFormationController(Node):
             data = yaml.load(f, Loader=SafeLoader)
             for key, robot in data.items():
                 new_robot = Agent(self, robot['name'])
-                individual_config_path = os.path.join(pkg_dir, 'resources', robot['config_path'])
-                new_robot.get_neighbourhood(individual_config_path)
+                new_robot.get_neighbourhood(robot['task'])
                 self.agent_list.append(new_robot)
 
         self.timer_task = self.create_timer(0.1, self.iterate)
@@ -240,7 +238,19 @@ class CentralizedFormationController(Node):
                     goal.position.y = agent.pose.position.y + dy/4
 
                 self.get_logger().debug('Agent %s: X: %.2f->%.2f Y: %.2f->%.2f Z: %.2f->%.2f' % (agent.id, agent.pose.position.x, goal.position.x, agent.pose.position.y, goal.position.y, agent.pose.position.z, goal.position.z)) 
-                agent.publisher_goalpose.publish(goal)
+                PoseStamp = PoseStamped()
+                PoseStamp.header.frame_id = "map"
+                PoseStamp.pose.position.x = goal.position.x
+                PoseStamp.pose.position.y = goal.position.y
+                PoseStamp.pose.position.z = goal.position.z
+                yaw = atan2(PoseStamp.pose.position.y-agent.pose.position.y,PoseStamp.pose.position.x-agent.pose.position.x)
+                q = tf_transformations.quaternion_from_euler(0.0, 0.0, yaw)
+                PoseStamp.pose.orientation.x = q[0]
+                PoseStamp.pose.orientation.y = q[1]
+                PoseStamp.pose.orientation.z = q[2]
+                PoseStamp.pose.orientation.w = q[3]
+                PoseStamp.header.stamp = self.get_clock().now().to_msg()
+                agent.publisher_goalpose.publish(PoseStamp)
         
 
 def main(args=None):
