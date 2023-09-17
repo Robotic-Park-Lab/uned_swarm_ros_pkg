@@ -24,6 +24,7 @@ class OpenLoop(Node):
         # Params
         self.declare_parameter('range', 2.0)
         self.declare_parameter('mPeriod', 1.0)
+        self.declare_parameter('robot', 'mobile')
         self.declare_parameter('signal', 'cmd_vel')
         self.declare_parameter('signal_type', 'twist')
         self.declare_parameter('signal_shape', 'random')
@@ -43,6 +44,7 @@ class OpenLoop(Node):
 
     def initialize(self):
         self.get_logger().info('Open Loop::inicialize() ok.')
+        self.robot = self.get_parameter('robot').get_parameter_value().string_value
         signal = self.get_parameter('signal').get_parameter_value().string_value
         self.signal_type = self.get_parameter('signal_type').get_parameter_value().string_value
         
@@ -85,9 +87,6 @@ class OpenLoop(Node):
         self.path = Path()
         self.path.header.frame_id = "map"
 
-        self.t_ready = Timer(self.period, self._ready)
-        self.t_ready.start()
-
         self.get_logger().info('Open Loop::inicialized.')
 
     def _ready(self):
@@ -98,6 +97,10 @@ class OpenLoop(Node):
         
     def order_callback(self,msg):
         self.get_logger().info('Open Loop::Order: "%s"' % msg.data)
+        msg = String()
+        msg.data = 'ident_start'
+        self.publisher_ident.publish(msg)
+        self.new = True
 
     def output_callback(self, msg):
         self.output = msg
@@ -112,6 +115,11 @@ class OpenLoop(Node):
                 if self.signal_type == 'pose':
                     self.target.pose.position.x = random.uniform(-self.range, self.range)
                     self.target.pose.position.y = random.uniform(-self.range, self.range)
+                    if self.robot == 'dron':
+                        self.target.pose.position.z = 1.0
+                    else:
+                        self.target.pose.position.z = 0.0
+
                     q = tf_transformations.quaternion_from_euler(0.0, 0.0, random.uniform(-pi, pi))
                     self.get_logger().info('Pose X %.3f  Y %.3f' % (self.target.pose.position.x, self.target.pose.position.y))
                     self.target.pose.orientation.x = q[0]
@@ -120,9 +128,10 @@ class OpenLoop(Node):
                     self.target.pose.orientation.w = q[3]
                     self.path.poses.append(self.target)
                     self.path_publisher.publish(self.path)
+                    
                 elif self.signal_type == 'twist':
                     self.target.linear.x = random.uniform(0.0, self.range)
-                    self.target.angular.z = random.uniform(-self.range/10, self.range/10)
+                    self.target.angular.z = random.uniform(-self.range/20, self.range/20)
                     self.get_logger().info('CMD v %.3f  w %.3f' % (self.target.linear.x, self.target.angular.z))
                 else:
                     self.target = Float64()
@@ -132,8 +141,8 @@ class OpenLoop(Node):
                 if self.shape == 'polygon':
                     self.target.pose.position.x = self.points['P'+str(self.j)]['x'] * self.range
                     self.target.pose.position.y = self.points['P'+str(self.j)]['y'] * self.range
-                    self.target.pose.position.z = self.points['P'+str(self.j)]['z'] * self.range
-                    t = self.points['P'+str(self.j)]['t'] * self.range
+                    self.target.pose.position.z = self.points['P'+str(self.j)]['z']
+                    t = self.points['P'+str(self.j)]['t']
                     self.get_logger().info('P%s: X %.3f  Y %.3f' % (str(self.j),self.target.pose.position.x, self.target.pose.position.y))
                     self.j = ((self.j+1) % len(self.points))
                 if self.shape == 'circle':
@@ -141,15 +150,19 @@ class OpenLoop(Node):
                     t = time.sec+time.nanosec*1e-9
                     self.target.pose.position.x = sin((t-self.t_init)*0.2) * self.range
                     self.target.pose.position.y = cos((t-self.t_init)*0.2) * self.range
-                    self.target.pose.position.z = 0.0
+                    if self.robot == 'dron':
+                        self.target.pose.position.z = 1.0
+                    else:
+                        self.target.pose.position.z = 0.0
                     t = 0.1
+                yaw = atan2(self.target.pose.position.y-self.output.pose.position.y,self.target.pose.position.x-self.output.pose.position.x)
+                q = tf_transformations.quaternion_from_euler(0.0, 0.0, yaw)
+                self.target.pose.orientation.x = q[0]
+                self.target.pose.orientation.y = q[1]
+                self.target.pose.orientation.z = q[2]
+                self.target.pose.orientation.w = q[3]
 
-            yaw = atan2(self.target.pose.position.y-self.output.pose.position.y,self.target.pose.position.x-self.output.pose.position.x)
-            q = tf_transformations.quaternion_from_euler(0.0, 0.0, yaw)
-            self.target.pose.orientation.x = q[0]
-            self.target.pose.orientation.y = q[1]
-            self.target.pose.orientation.z = q[2]
-            self.target.pose.orientation.w = q[3]
+            
             self.pub_signal.publish(self.target)  
             self.t_ready = Timer(t, self._ready)
             self.t_ready.start()  

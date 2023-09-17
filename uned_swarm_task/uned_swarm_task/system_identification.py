@@ -39,12 +39,14 @@ class SystemIdentification(Node):
 
         # Publisher
         self.publisher_status = self.create_publisher(String,'ident/status', 10)
+        self.publisher_rmse = self.create_publisher(Float64,'ident/rmse', 10)
         
         # Subscription
         self.sub_order = self.create_subscription(String, 'ident/order', self.order_callback, 10)
 
         self.u_signal = np.zeros(5)
         self.y_signal = np.zeros(5)
+        self.error = np.zeros(20)
 
         self.initialize()
 
@@ -148,6 +150,7 @@ class SystemIdentification(Node):
         
     def iterate(self):
         if self.ident_process_bool:
+            self.error = np.delete(self.error, 0)
             ## ESTIMATION
             # First Order
             if self.N == 2:
@@ -164,14 +167,18 @@ class SystemIdentification(Node):
             ek = self.y_signal[4]-np.matmul(self.m,self.theta)
             self.theta = self.theta+K*ek
             self.P = np.matmul((np.identity(self.N)-np.matmul(K,self.m)),self.P)
+            self.error = np.append(self.error, pow(ek,2))
+            msg = Float64()
+            msg.data = sqrt(sum(self.error)/20)
+            self.publisher_rmse.publish(msg)
             # First Order
             if self.N == 2:
                 gain = self.theta[1,0]/(1-self.theta[0,0])
                 tau = -0.05*np.log(self.theta[0,0])
-                self.get_logger().info('Estimation: a=%.3f \tb=%.3f \tk=%.3f \ttau=%.3f  \te=%.3f' % (self.theta[0,0], self.theta[1,0], gain, tau, ek))
+                self.get_logger().info('Estimation: a=%.3f \tb=%.3f \tk=%.3f \ttau=%.3f  \te=%.3f' % (self.theta[0,0], self.theta[1,0], gain, tau, msg.data))
             # Second Order
             if self.N == 4:
-                self.get_logger().info('Estimation: a1=%.3f \ta2=%.3f \tb0=%.3f \tb1=%.3f  \te=%.3f' % (self.theta[0,0], self.theta[1,0], self.theta[2,0], self.theta[3,0], ek))
+                self.get_logger().info('Estimation: a1=%.3f \ta2=%.3f \tb0=%.3f \tb1=%.3f  \te=%.3f' % (self.theta[0,0], self.theta[1,0], self.theta[2,0], self.theta[3,0], msg.data))
             if abs(ek)<0.08 and abs(self.ek1)<0.08 and False:
                 self.ident_process_bool = False
                 self.finish = True
