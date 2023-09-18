@@ -52,9 +52,9 @@ class SystemIdentification(Node):
 
     def initialize(self):
         self.get_logger().info('System Identification::inicialize() ok.')
-        self.order = self.get_parameter('order').get_parameter_value().string_value
     
         # Read Params
+        self.order = self.get_parameter('order').get_parameter_value().string_value
         input_signal = self.get_parameter('input').get_parameter_value().string_value
         self.input_type = self.get_parameter('input_type').get_parameter_value().string_value
         if self.input_type == 'pose':
@@ -80,7 +80,7 @@ class SystemIdentification(Node):
             self.y = Point()
         elif self.output_type == 'float32':
             self.sub_input = self.create_subscription(Float32, output_signal, self.output_callback, 10)
-            self.y = Point()
+            self.y = Float32()
         else:
             self.sub_input = self.create_subscription(Float64, output_signal, self.output_callback, 10)
             self.y = Float64()
@@ -103,10 +103,6 @@ class SystemIdentification(Node):
         self.ek1 = 100
         self.finish = False
 
-        # basis_function = Polynomial(degree=2)
-
-        # self.model = FROLS(order_selection=True, n_info_values=3, extended_least_squares=False, ylag=1, xlag=1, info_criteria='aic', estimator='least_squares', basis_function=basis_function)
-        
         self.get_logger().info('System Identification::inicialized.')
 
     def order_callback(self,msg):
@@ -185,6 +181,7 @@ class SystemIdentification(Node):
             else:
                 self.ek1 = ek
             '''
+            # Matlab code
             for i=k:1:N
                 % First Order
                 m=[out(i-1) in(i)];
