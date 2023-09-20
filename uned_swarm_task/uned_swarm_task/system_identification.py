@@ -32,8 +32,10 @@ class SystemIdentification(Node):
         # Params
         self.declare_parameter('input', 'signal0')
         self.declare_parameter('input_type', 'pose')
+        self.declare_parameter('input_value', 'position.x')
         self.declare_parameter('output', 'signal1')
         self.declare_parameter('output_type', 'pose')
+        self.declare_parameter('output_value', 'position.x')
         self.declare_parameter('delay', 0.0)
         self.declare_parameter('order','1p0z')
 
@@ -56,6 +58,7 @@ class SystemIdentification(Node):
         # Read Params
         self.order = self.get_parameter('order').get_parameter_value().string_value
         input_signal = self.get_parameter('input').get_parameter_value().string_value
+        self.input_value = self.get_parameter('input_value').get_parameter_value().string_value
         self.input_type = self.get_parameter('input_type').get_parameter_value().string_value
         if self.input_type == 'pose':
             self.sub_input = self.create_subscription(PoseStamped, input_signal, self.input_callback, 10)
@@ -68,6 +71,7 @@ class SystemIdentification(Node):
             self.u = Float64()
         
         output_signal = self.get_parameter('output').get_parameter_value().string_value
+        self.output_value = self.get_parameter('output_value').get_parameter_value().string_value
         self.output_type = self.get_parameter('output_type').get_parameter_value().string_value
         if self.output_type == 'pose':
             self.sub_input = self.create_subscription(PoseStamped, output_signal, self.output_callback, 10)
@@ -119,11 +123,28 @@ class SystemIdentification(Node):
         self.u_signal = np.delete(self.u_signal, 0)
         self.u = msg
         if self.input_type == 'pose':
-            self.u_signal = np.append(self.u_signal, self.u.pose.position.x)
+            if self.input_value == 'position.x':
+                self.u_signal = np.append(self.u_signal, self.u.pose.position.x)
+            elif self.input_value == 'position.y':
+                self.u_signal = np.append(self.u_signal, self.u.pose.position.y)
+            elif self.input_value == 'position.z':
+                self.u_signal = np.append(self.u_signal, self.u.pose.position.z)
         elif self.input_type == 'twist':
-            self.u_signal = np.append(self.u_signal, self.u.linear.x)
+            if self.input_value == 'linear.x':
+                self.u_signal = np.append(self.u_signal, self.u.linear.x)
+            elif self.input_value == 'linear.y':
+                self.u_signal = np.append(self.u_signal, self.u.linear.y)
+            elif self.input_value == 'linear.z':
+                self.u_signal = np.append(self.u_signal, self.u.linear.z)
+            elif self.input_value == 'angular.z':
+                self.u_signal = np.append(self.u_signal, self.u.angular.z)
         elif self.input_type == 'point':
-            self.u_signal = np.append(self.u_signal, self.u.x)
+            if self.input_value == 'x':
+                self.u_signal = np.append(self.u_signal, self.u.x)
+            elif self.input_value == 'y':
+                self.u_signal = np.append(self.u_signal, self.u.y)
+            elif self.input_value == 'z':
+                self.u_signal = np.append(self.u_signal, self.u.z)
         elif self.input_type == 'float32':
             self.u_signal = np.append(self.u_signal, self.u.data)
         else:
@@ -133,9 +154,21 @@ class SystemIdentification(Node):
         self.y_signal = np.delete(self.y_signal, 0)
         self.y = msg
         if self.output_type == 'pose':
-            self.y_signal = np.append(self.y_signal, self.y.pose.position.x)
+            if self.output_value == 'position.x':
+                self.y_signal = np.append(self.y_signal, self.y.pose.position.x)
+            elif self.output_value == 'position.y':
+                self.y_signal = np.append(self.y_signal, self.y.pose.position.y)
+            elif self.output_value == 'position.z':
+                self.y_signal = np.append(self.y_signal, self.y.pose.position.z)
         elif self.output_type == 'twist':
-            self.y_signal = np.append(self.y_signal, self.y.linear.x)
+            if self.output_value == 'linear.x':
+                self.y_signal = np.append(self.y_signal, self.y.linear.x)
+            elif self.output_value == 'linear.y':
+                self.y_signal = np.append(self.y_signal, self.y.linear.y)
+            elif self.output_value == 'linear.z':
+                self.y_signal = np.append(self.y_signal, self.y.linear.z)
+            elif self.output_value == 'angular.z':
+                self.y_signal = np.append(self.y_signal, self.y.angular.z)
         elif self.output_type == 'point':
             self.y_signal = np.append(self.y_signal, self.y.x)
         elif self.output_type == 'float32':
@@ -151,13 +184,20 @@ class SystemIdentification(Node):
             # First Order
             if self.N == 2:
                 self.m[0,1] = self.u_signal[4]
-                self.m[0,0] = np.sign(self.u_signal[4])*self.y_signal[3]
+                if self.output_type == 'float32':
+                    self.m[0,0] = np.sign(self.u_signal[4])*self.y_signal[3]
+                else:
+                    self.m[0,0] = self.y_signal[3]
             # Second Order
             if self.N == 4:
                 self.m[0,2] = self.u_signal[4]
                 self.m[0,3] = self.u_signal[3]
-                self.m[0,0] = np.sign(self.u_signal[3])*self.y_signal[3]
-                self.m[0,1] = np.sign(self.u_signal[2])*self.y_signal[2]
+                if self.output_type == 'float32':
+                    self.m[0,0] = np.sign(self.u_signal[3])*self.y_signal[3]
+                    self.m[0,1] = np.sign(self.u_signal[2])*self.y_signal[2]
+                else:
+                    self.m[0,0] = self.y_signal[3]
+                    self.m[0,1] = self.y_signal[2]
             mt = self.m.reshape(-1, 1)
             K=np.matmul(self.P,mt)/(1+np.matmul(self.m,np.matmul(self.P,mt)))
             ek = self.y_signal[4]-np.matmul(self.m,self.theta)

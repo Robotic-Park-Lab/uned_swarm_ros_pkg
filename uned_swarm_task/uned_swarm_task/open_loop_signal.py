@@ -27,6 +27,7 @@ class OpenLoop(Node):
         self.declare_parameter('robot', 'mobile')
         self.declare_parameter('signal', 'cmd_vel')
         self.declare_parameter('signal_type', 'twist')
+        self.declare_parameter('signal_value', 'linear.x')
         self.declare_parameter('signal_shape', 'random')
         self.declare_parameter('signal_shape_file', 'path')
         self.declare_parameter('output', 'local_pose')
@@ -46,6 +47,7 @@ class OpenLoop(Node):
         self.get_logger().info('Open Loop::inicialize() ok.')
         self.robot = self.get_parameter('robot').get_parameter_value().string_value
         signal = self.get_parameter('signal').get_parameter_value().string_value
+        self.signal_value = self.get_parameter('signal_value').get_parameter_value().string_value
         self.signal_type = self.get_parameter('signal_type').get_parameter_value().string_value
         
         if self.signal_type == 'pose':
@@ -115,12 +117,28 @@ class OpenLoop(Node):
                 if self.signal_type == 'pose':
                     PoseStamp = PoseStamped()
                     PoseStamp.header.stamp = self.get_clock().now().to_msg()
-                    PoseStamp.pose.position.x = random.uniform(-self.range, self.range)
-                    PoseStamp.pose.position.y = random.uniform(-self.range, self.range)
-                    if self.robot == 'dron':
-                        PoseStamp.pose.position.z = 1.0
-                    else:
-                        PoseStamp.pose.position.z = 0.0
+                    if self.signal_value == 'position.x':
+                        PoseStamp.pose.position.x = random.uniform(-self.range, self.range)
+                        PoseStamp.pose.position.y = self.output.pose.position.y
+                        PoseStamp.pose.position.z = self.output.pose.position.z
+                    if self.signal_value == 'position.y':
+                        PoseStamp.pose.position.x = self.output.pose.position.x
+                        PoseStamp.pose.position.y = random.uniform(-self.range, self.range)
+                        PoseStamp.pose.position.z = self.output.pose.position.z
+                    if self.signal_value == 'position.z':
+                        PoseStamp.pose.position.x = self.output.pose.position.x
+                        PoseStamp.pose.position.y = self.output.pose.position.y
+                        if self.robot == 'dron':
+                            PoseStamp.pose.position.z = random.uniform(1.0-self.range, 1.0+self.range)
+                        else:
+                            PoseStamp.pose.position.z = 0.0
+                    if self.signal_value == 'full':
+                        PoseStamp.pose.position.x = random.uniform(-self.range, self.range)
+                        PoseStamp.pose.position.y = random.uniform(-self.range, self.range)
+                        if self.robot == 'dron':
+                            PoseStamp.pose.position.y = random.uniform(1.0-self.range, 1.0+self.range)
+                        else:
+                            PoseStamp.pose.position.z = 0.0
                     q = tf_transformations.quaternion_from_euler(0.0, 0.0, random.uniform(-pi, pi))
                     self.get_logger().info('Pose X %.3f  Y %.3f' % (PoseStamp.pose.position.x, PoseStamp.pose.position.y))
                     PoseStamp.pose.orientation.x = q[0]
@@ -132,8 +150,14 @@ class OpenLoop(Node):
                     self.path_publisher.publish(self.path)
                     self.target = PoseStamp
                 elif self.signal_type == 'twist':
-                    self.target.linear.x = random.uniform(0.0, self.range)
-                    self.target.angular.z = random.uniform(-self.range/20, self.range/20)
+                    if self.signal_value == 'linear.x' or self.signal_value == 'full':
+                        self.target.linear.x = random.uniform(0.0, self.range)
+                    if self.signal_value == 'linear.y' or self.signal_value == 'full':
+                        self.target.linear.y = random.uniform(-self.range, self.range)
+                    if self.signal_value == 'linear.z' or self.signal_value == 'full':
+                        self.target.linear.z = random.uniform(-self.range, self.range)
+                    if self.signal_value == 'angular.z' or self.signal_value == 'full':
+                        self.target.angular.z = random.uniform(-self.range/20, self.range/20)
                     self.get_logger().info('CMD v %.3f  w %.3f' % (self.target.linear.x, self.target.angular.z))
                 else:
                     self.target = Float64()
