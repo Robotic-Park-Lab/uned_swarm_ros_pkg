@@ -6,7 +6,7 @@ import numpy as np
 from math import atan2, sqrt
 
 from rclpy.node import Node
-from std_msgs.msg import String, Float64
+from std_msgs.msg import String, Float64, Bool
 from geometry_msgs.msg import Pose, PoseStamped, Point
 from visualization_msgs.msg import Marker
 from builtin_interfaces.msg import Time
@@ -173,19 +173,29 @@ class Agent():
         self.publisher_goalpose = self.parent.create_publisher(PoseStamped, self.id + '/goal_pose', 10)
         self.distance_formation_bool = False
         self.pose_formation_bool = False
+        self.continuous = False
+        self.trigger_ai = 0.01
+        self.trigger_co = 0.1
 
     def get_neighbourhood(self,documents):
         self.controller = documents['controller']
-        if self.controller == 'pid':
-            k = 0.5
-            if not self.id.find("dron") == -1:
-                self.x_controller = PIDController(k, 0.0, 0.0, 0.0, 100, 0.1, -0.1, 0.01, 0.01)
-                self.y_controller = PIDController(k, 0.0, 0.0, 0.0, 100, 0.1, -0.1, 0.01, 0.01)
-                self.z_controller = PIDController(k, 0.0, 0.0, 0.0, 100, 0.1, -0.1, 0.01, 0.01)
-            else:
-                self.x_controller = PIDController(k, 0.0, 0.0, 0.0, 100, 1.0, -1.0, 0.1, 0.01)
-                self.y_controller = PIDController(k, 0.0, 0.0, 0.0, 100, 1.0, -1.0, 0.1, 0.01)
-                self.z_controller = PIDController(0.0, 0.0, 0.0, 0.0, 100, 1.0, -1.0, 0.1, 0.01)
+        self.controller_type = self.controller['type']
+        self.k = self.controller['gain']
+        self.ul = self.controller['upperLimit']
+        self.ll = self.controller['lowerLimit']
+        self.continuous = self.controller['protocol'] == 'Continuous'
+        self.event_x = self.parent.create_publisher(Bool, self.id + '/event_x', 10)
+        self.event_y = self.parent.create_publisher(Bool, self.id + '/event_y', 10)
+        self.event_z = self.parent.create_publisher(Bool, self.id + '/event_z', 10)
+        if not self.continuous:
+            self.trigger_ai = self.controller['threshold']['ai']
+            self.trigger_co = self.controller['threshold']['co']
+        
+        if self.controller_type == 'pid':
+            self.x_controller = PIDController(self.k, 0.0, 0.0, 0.0, 100, self.ul, self.ll, self.trigger_ai, self.trigger_co)
+            self.y_controller = PIDController(self.k, 0.0, 0.0, 0.0, 100, self.ul, self.ll, self.trigger_ai, self.trigger_co)
+            self.z_controller = PIDController(self.k, 0.0, 0.0, 0.0, 100, self.ul, self.ll, self.trigger_ai, self.trigger_co)
+
         aux = documents['relationship']
         self.relationship = aux.split(', ')
         if documents['type'] == 'distance':
@@ -214,46 +224,40 @@ class Agent():
             error_z = self.pose.position.z - neighbour.pose.position.z
             distance = pow(error_x,2)+pow(error_y,2)+pow(error_z,2)
             d = sqrt(distance)
-            dx += neighbour.k * (pow(neighbour.d,2) - distance) * error_x/d
-            dy += neighbour.k * (pow(neighbour.d,2) - distance) * error_y/d
-            dz += neighbour.k * (pow(neighbour.d,2) - distance) * error_z/d
+            dx += self.k * neighbour.k * (pow(neighbour.d,2) - distance) * error_x/d
+            dy += self.k * neighbour.k * (pow(neighbour.d,2) - distance) * error_y/d
+            dz += self.k * neighbour.k * (pow(neighbour.d,2) - distance) * error_z/d
                     
             msg_data = Float64()
             msg_data.data = abs(neighbour.d - sqrt(distance))
             neighbour.publisher_data_.publish(msg_data)
         
         goal = Pose()
-        if not self.id.find("dron") == -1:
-            if dx > 0.32:
-                dx = 0.32
-            if dx < -0.32:
-                dx = -0.32
-            if dy > 0.32:
-                dy = 0.32
-            if dy < -0.32:
-                dy = -0.32
-            if dz > 0.32:
-                dz = 0.32
-            if dz < -0.32:
-                dz = -0.32
-            goal.position.x = self.pose.position.x + dx/4
-            goal.position.y = self.pose.position.y + dy/4
-            goal.position.z = self.pose.position.z + dz/4
-            if goal.position.z < 0.6:
-                goal.position.z = 0.6
-            elif goal.position.z > 2.0:
-                goal.position.z = 2.0
-        else:
-            if dx > 4:
-                dx = 4
-            if dx < -4:
-                dx = -4
-            if dy > 4:
-                dy = 4
-            if dy < -4:
-                dy = -4
-            goal.position.x = self.pose.position.x + dx/4
-            goal.position.y = self.pose.position.y + dy/4
+        if not self.continuous:
+            delta=sqrt(pow(dx,2)+pow(dy,2)+pow(dz,2))
+            if not self.eval_threshold(0.0, delta):
+                goal.position.z = -1000
+                return goal
+        
+        msg = Bool()
+        msg.data = True
+        self.event_x.publish(msg)
+
+        if dx > self.ul:
+            dx = self.ul
+        if dx < self.ll:
+            dx = self.ll
+        if dy > self.ul:
+            dy = self.ul
+        if dy < self.ll:
+            dy = self.ll
+        if dz > self.ul:
+            dz = self.ul
+        if dz < self.ll:
+            dz = self.ll
+        goal.position.x = dx
+        goal.position.y = dy
+        goal.position.z = dz
         
         return goal
     
@@ -275,6 +279,14 @@ class Agent():
 
         aux = self.parent.get_clock().now().to_msg()
         time = aux.sec + aux.nanosec*1e-9
+
+        goal = Pose()
+        if not (self.x_controller.eval_threshold(0.0, ex) or self.x_controller.eval_threshold(0.0, ex) or self.x_controller.eval_threshold(0.0, ex) or self.continuous):
+            goal.position.z = -1000
+            return goal
+        
+        msg = Bool()
+        msg.data = True
         # X Controller
         self.x_controller.error[0] = ex
         dtx = time - self.x_controller.past_time
@@ -293,17 +305,11 @@ class Agent():
         dz = self.z_controller.update(dtz)
         self.z_controller.past_time = time
 
-        goal = Pose()
-        goal.position.x = self.pose.position.x + dx
-        goal.position.y = self.pose.position.y + dy
-        goal.position.z = self.pose.position.z + dz
-        if not self.id.find("dron") == -1:
-            if goal.position.z < 0.6:
-                goal.position.z = 0.6
-            elif goal.position.z > 2.0:
-                goal.position.z = 2.0
-        else:
-            goal.position.z = 0.0
+        goal.position.x = dx
+        goal.position.y = dy
+        goal.position.z = dz
+
+        self.event_x.publish(msg)
         
         return goal
 
@@ -313,46 +319,42 @@ class Agent():
             error_x = self.pose.position.x - neighbour.pose.position.x
             error_y = self.pose.position.y - neighbour.pose.position.y
             error_z = self.pose.position.z - neighbour.pose.position.z
-            dx += neighbour.k * (pow(neighbour.x,2) - pow(error_x,2)) * error_x
-            dy += neighbour.k * (pow(neighbour.y,2) - pow(error_y,2)) * error_y
-            dz += neighbour.k * (pow(neighbour.z,2) - pow(error_z,2)) * error_z
+            distance = pow(error_x,2)+pow(error_y,2)+pow(error_z,2)
+            d = sqrt(distance)
+            dx += self.k * neighbour.k * (pow(neighbour.x,2) - pow(error_x,2)) * error_x/d
+            dy += self.k * neighbour.k * (pow(neighbour.y,2) - pow(error_y,2)) * error_y/d
+            dz += self.k * neighbour.k * (pow(neighbour.z,2) - pow(error_z,2)) * error_z/d
                     
             msg_data = Float64()
             msg_data.data = sqrt(pow(neighbour.x-error_x,2) + pow(error_y,2) + pow(error_z,2))
             neighbour.publisher_data_.publish(msg_data)
         
         goal = Pose()
-        if not self.id.find("dron") == -1:
-            if dx > 0.32:
-                dx = 0.32
-            if dx < -0.32:
-                dx = -0.32
-            if dy > 0.32:
-                dy = 0.32
-            if dy < -0.32:
-                dy = -0.32
-            if dz > 0.32:
-                dz = 0.32
-            if dz < -0.32:
-                dz = -0.32
-            goal.position.x = self.pose.position.x + dx/4
-            goal.position.y = self.pose.position.y + dy/4
-            goal.position.z = self.pose.position.z + dz/4
-            if goal.position.z < 0.6:
-                goal.position.z = 0.6
-            elif goal.position.z > 2.0:
-                goal.position.z = 2.0
-        else:
-            if dx > 4:
-                dx = 4
-            if dx < -4:
-                dx = -4
-            if dy > 4:
-                dy = 4
-            if dy < -4:
-                dy = -4
-            goal.position.x = self.pose.position.x + dx/4
-            goal.position.y = self.pose.position.y + dy/4
+        if not self.continuous:
+            delta=sqrt(pow(dx,2)+pow(dy,2)+pow(dz,2))
+            if not self.eval_threshold(0.0, delta):
+                goal.position.z = -1000
+                return goal
+
+        msg = Bool()
+        msg.data = True
+        self.event_x.publish(msg)
+
+        if dx > self.ul:
+            dx = self.ul
+        if dx < self.ll:
+            dx = self.ll
+        if dy > self.ul:
+            dy = self.ul
+        if dy < self.ll:
+            dy = self.ll
+        if dz > self.ul:
+            dz = self.ul
+        if dz < self.ll:
+            dz = self.ll
+        goal.position.x = dx
+        goal.position.y = dy
+        goal.position.z = dz
         
         return goal
     
@@ -372,47 +374,85 @@ class Agent():
 
         aux = self.parent.get_clock().now().to_msg()
         time = aux.sec + aux.nanosec*1e-9
-        # X Controller
-        self.x_controller.error[0] = ex
-        dtx = time - self.x_controller.past_time
-        dx = self.x_controller.update(dtx)
-        self.x_controller.past_time = time
+        goal = Pose()
+        msg = Bool()
+        msg.data = False
 
+        # X Controller
+        if self.x_controller.eval_threshold(0.0, ex) or self.continuous:
+            self.x_controller.error[0] = ex
+            dtx = time - self.x_controller.past_time
+            goal.position.x = self.x_controller.update(dtx)
+            self.x_controller.past_time = time
+            msg.data = True
+            self.event_x.publish(msg)
+        else:
+            goal.position.x = 0.0
+        
         # Y Controller
-        self.y_controller.error[0] = ey
-        dty = time - self.y_controller.past_time
-        dy = self.y_controller.update(dty)
-        self.y_controller.past_time = time
+        if self.y_controller.eval_threshold(0.0, ey) or self.continuous:
+            self.y_controller.error[0] = ey
+            dty = time - self.y_controller.past_time
+            goal.position.y = self.y_controller.update(dty)
+            self.y_controller.past_time = time
+            msg.data = True
+            self.event_y.publish(msg)
+        else:
+            goal.position.y = 0.0
 
         # Z Controller
-        self.z_controller.error[0] = ez
-        dtz = time - self.z_controller.past_time
-        dz = self.z_controller.update(dtz)
-        self.z_controller.past_time = time
-
-        goal = Pose()
-        goal.position.x = self.pose.position.x + dx
-        goal.position.y = self.pose.position.y + dy
-        goal.position.z = self.pose.position.z + dz
-        if not self.id.find("dron") == -1:
-            if goal.position.z < 0.6:
-                goal.position.z = 0.6
-            elif goal.position.z > 2.0:
-                goal.position.z = 2.0
+        if self.z_controller.eval_threshold(0.0, ez) or self.continuous:
+            self.z_controller.error[0] = ez
+            dtz = time - self.z_controller.past_time
+            goal.position.z = self.z_controller.update(dtz)
+            self.z_controller.past_time = time
+            msg.data = True
+            self.event_z.publish(msg)
         else:
             goal.position.z = 0.0
-            if sqrt(pow(dx,2)+pow(dy,2))<0.04:
-                goal.position.x = self.pose.position.x
-                goal.position.y = self.pose.position.y
+
+        if not msg.data:
+            goal.position.z = -1000
         
         return goal
+
+    def eval_threshold(self, signal, ref):
+        '''
+        # Noise (Cn)
+        mean = signal/len(self.noise)
+        for i in range(0,len(self.noise)-2):
+            self.noise[i] = self.noise[i+1]
+            mean += self.noise[i]/len(self.noise)
+        
+        self.noise[len(self.noise)-1] = signal
+
+        trigger_cn = 0.0
+        for i in range(0,len(self.noise)-1):
+            if abs(self.noise[i]-mean) > trigger_cn:
+                trigger_cn = self.noise[i]-mean
+        '''
+        trigger_cn = 0.0
+
+        # a
+        a = self.trigger_ai * abs(signal - ref)
+        if a > self.trigger_ai:
+            a = self.trigger_ai
+
+        # Threshold
+        self.th = self.trigger_co + a + trigger_cn
+        self.inc = abs(abs(ref-signal) - self.trigger_last_signal) 
+        # Delta Error
+        if (self.inc >= abs(self.th)):
+            self.trigger_last_signal = abs(ref-signal)
+            return True
+
+        return False
 
 class CentralizedFormationController(Node):
     def __init__(self):
         super().__init__('formation_controller')
         # Params
         self.declare_parameter('config_file', 'path')
-        self.declare_parameter('controller', 'gradient')
 
         # Publisher
         self.publisher_status = self.create_publisher(String,'swarm/status', 10)
@@ -429,7 +469,6 @@ class CentralizedFormationController(Node):
         self.formation_bool = False
 
         # Read Params
-        self.controller = self.get_parameter('controller').get_parameter_value().string_value
         config_file = self.get_parameter('config_file').get_parameter_value().string_value
 
         with open(config_file) as f:
@@ -488,38 +527,55 @@ class CentralizedFormationController(Node):
             for agent in self.agent_list:
                 cmd = Pose()
                 if agent.distance_formation_bool:
-                    if agent.controller == 'gradient':
+                    if agent.controller_type == 'gradient':
                         cmd = agent.distance_gradient_controller()
-                    if agent.controller == 'pid':
+                    if agent.controller_type == 'pid':
                         cmd = agent.distance_pid_controller()
                 elif agent.pose_formation_bool:
-                    if agent.controller == 'gradient':
+                    if agent.controller_type == 'gradient':
                         cmd = agent.pose_gradient_controller()
-                    if agent.controller == 'pid':
+                    if agent.controller_type == 'pid':
                         cmd = agent.pose_pid_controller()
+                if not cmd.position.z == -1000:
+                    self.get_logger().debug('Agent %s: X: %.2f->%.2f Y: %.2f->%.2f Z: %.2f->%.2f' % (agent.id, agent.pose.position.x, cmd.position.x, agent.pose.position.y, cmd.position.y, agent.pose.position.z, cmd.position.z)) 
+                    PoseStamp = PoseStamped()
+                    PoseStamp.header.frame_id = "map"
+                    PoseStamp.pose.position.x = agent.pose.position.x + cmd.position.x
+                    PoseStamp.pose.position.y = agent.pose.position.y + cmd.position.y
+                    PoseStamp.pose.position.z = agent.pose.position.z + cmd.position.z
 
-                self.get_logger().debug('Agent %s: X: %.2f->%.2f Y: %.2f->%.2f Z: %.2f->%.2f' % (agent.id, agent.pose.position.x, cmd.position.x, agent.pose.position.y, cmd.position.y, agent.pose.position.z, cmd.position.z)) 
-                PoseStamp = PoseStamped()
-                PoseStamp.header.frame_id = "map"
-                PoseStamp.pose.position.x = cmd.position.x
-                PoseStamp.pose.position.y = cmd.position.y
-                PoseStamp.pose.position.z = cmd.position.z
-                delta=sqrt(pow(cmd.position.x-agent.pose.position.x,2)+pow(cmd.position.y-agent.pose.position.y,2)+pow(cmd.position.z-agent.pose.position.z,2))
-                angles = tf_transformations.euler_from_quaternion((agent.pose.orientation.x, agent.pose.orientation.y, agent.pose.orientation.z, agent.pose.orientation.w))
-                
-                if delta<0.1:
-                    yaw = angles[2]
-                else:
-                    yaw = atan2(PoseStamp.pose.position.y-agent.pose.position.y,PoseStamp.pose.position.x-agent.pose.position.x)
-                if not agent.id.find("dron01") == -1:
-                    yaw = 0
-                q = tf_transformations.quaternion_from_euler(0.0, 0.0, yaw)
-                PoseStamp.pose.orientation.x = q[0]
-                PoseStamp.pose.orientation.y = q[1]
-                PoseStamp.pose.orientation.z = q[2]
-                PoseStamp.pose.orientation.w = q[3]
-                PoseStamp.header.stamp = self.get_clock().now().to_msg()
-                agent.publisher_goalpose.publish(PoseStamp)
+                    delta=sqrt(pow(cmd.position.x,2)+pow(cmd.position.y,2)+pow(cmd.position.z,2))
+                    angles = tf_transformations.euler_from_quaternion((agent.pose.orientation.x, agent.pose.orientation.y, agent.pose.orientation.z, agent.pose.orientation.w))
+                    
+                    if delta<0.1:
+                        roll = angles[0]
+                        pitch = angles[1]
+                        yaw = angles[2]
+                    else:
+                        h = sqrt(pow(cmd.position.x,2)+pow(cmd.position.y,2))
+                        roll = 0.0
+                        pitch = -atan2(cmd.position.z,h)
+                        yaw = atan2(cmd.position.y,cmd.position.x)
+
+                    if not agent.id.find("dron") == -1:
+                        if not agent.id.find("dron01") == -1:
+                            yaw = 0
+                        if cmd.position.z < 0.6:
+                            cmd.position.z = 0.6
+                        elif cmd.position.z > 2.0:
+                            cmd.position.z = 2.0
+                    else:
+                        PoseStamp.pose.position.z = 0.0
+                        roll = 0.0
+                        pitch = 0.0
+                    
+                    q = tf_transformations.quaternion_from_euler(roll, pitch, yaw)
+                    PoseStamp.pose.orientation.x = q[0]
+                    PoseStamp.pose.orientation.y = q[1]
+                    PoseStamp.pose.orientation.z = q[2]
+                    PoseStamp.pose.orientation.w = q[3]
+                    PoseStamp.header.stamp = self.get_clock().now().to_msg()
+                    agent.publisher_goalpose.publish(PoseStamp)
 
         
 
