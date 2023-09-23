@@ -222,7 +222,7 @@ class Agent():
                         u.y = float(aux[5])
                         u.z = float(aux[6])
                         robot = Neighbour(self, id, point = p, vector = u)
-                        self.parent.get_logger().info('Agent: %s. Neighbour %s ::: Px: %s' % (self.id, id,aux[1]))
+                        self.parent.get_logger().info('Agent: %s. Neighbour %s ::: Px: %s Py: %s Pz: %s' % (self.id, id, aux[1], aux[2], aux[3]))
                     else:
                         robot = Neighbour(self, id, d = float(aux[1]))
                         self.parent.get_logger().info('Agent: %s. Neighbour %s ::: d: %s' % (self.id, id,aux[1]))
