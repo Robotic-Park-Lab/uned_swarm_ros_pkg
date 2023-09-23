@@ -140,8 +140,8 @@ class Neighbour():
             line.scale.y = 0.01
             line.scale.z = 0.01
             
-            distance = sqrt(pow(p0.x-p1.x,2)+pow(p0.y-p1.y,2)+pow(p0.z-p1.z,2))
             if self.distance_bool:
+                distance = sqrt(pow(p0.x-p1.x,2)+pow(p0.y-p1.y,2)+pow(p0.z-p1.z,2))
                 e = abs(distance - self.d)
             else:
                 e = sqrt(pow(self.x-(p0.x-p1.x),2)+pow(self.y-(p0.y-p1.y),2)+pow(self.z-(p0.z-p1.z),2))
@@ -176,6 +176,7 @@ class Agent():
         self.continuous = False
         self.trigger_ai = 0.01
         self.trigger_co = 0.1
+        self.trigger_last_signal = 0.0
 
     def get_neighbourhood(self,documents):
         self.controller = documents['controller']
@@ -281,7 +282,7 @@ class Agent():
         time = aux.sec + aux.nanosec*1e-9
 
         goal = Pose()
-        if not (self.x_controller.eval_threshold(0.0, ex) or self.x_controller.eval_threshold(0.0, ex) or self.x_controller.eval_threshold(0.0, ex) or self.continuous):
+        if not (self.x_controller.eval_threshold(0.0, ex) or self.y_controller.eval_threshold(0.0, ey) or self.z_controller.eval_threshold(0.0, ez) or self.continuous):
             goal.position.z = -1000
             return goal
         
@@ -326,7 +327,7 @@ class Agent():
             dz += self.k * neighbour.k * (pow(neighbour.z,2) - pow(error_z,2)) * error_z/d
                     
             msg_data = Float64()
-            msg_data.data = sqrt(pow(neighbour.x-error_x,2) + pow(error_y,2) + pow(error_z,2))
+            msg_data.data = sqrt(pow(neighbour.x-error_x,2) + pow(neighbour.y-error_y,2) + pow(neighbour.z-error_z,2))
             neighbour.publisher_data_.publish(msg_data)
         
         goal = Pose()
@@ -547,7 +548,7 @@ class CentralizedFormationController(Node):
                     delta=sqrt(pow(cmd.position.x,2)+pow(cmd.position.y,2)+pow(cmd.position.z,2))
                     angles = tf_transformations.euler_from_quaternion((agent.pose.orientation.x, agent.pose.orientation.y, agent.pose.orientation.z, agent.pose.orientation.w))
                     
-                    if delta<0.1:
+                    if delta<0.05:
                         roll = angles[0]
                         pitch = angles[1]
                         yaw = angles[2]
