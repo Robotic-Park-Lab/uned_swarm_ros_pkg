@@ -7,7 +7,7 @@ from math import atan2, sqrt
 
 from rclpy.node import Node
 from std_msgs.msg import String, Float64, Bool
-from geometry_msgs.msg import Pose, PoseStamped, Point
+from geometry_msgs.msg import Pose, PoseStamped, Point, Vector3
 from visualization_msgs.msg import Marker
 from builtin_interfaces.msg import Time
 import tf_transformations
@@ -84,28 +84,36 @@ class PIDController():
 
 
 class Neighbour():
-    def __init__(self, parent, id, x = None, y = None, z = None, d = None):
+    def __init__(self, parent, id, x = None, y = None, z = None, d = None, point = None, vector = None):
         self.id = id
         self.parent = parent
-        if d == None:
-            self.distance_bool = False
-            self.x = x
-            self.y = y
-            self.z = z
-        else:
-            self.distance_bool = True
-            self.d = d
         self.pose = Pose()
         self.disable = False
-        if self.id == 'origin':
-            self.pose.position.x = 0.0
-            self.pose.position.y = 0.0
-            self.pose.position.z = 0.0
-            self.k = 2.0
-            self.sub_pose_ = self.parent.parent.create_subscription(PoseStamped, '/' + self.id + '/local_pose', self.gtpose_callback, 10)
+        if not id.find("line") == -1:
+            self.distance_bool = True
+            self.d = 0
+            self.point = point
+            self.vector = vector
+            self.mod=pow(vector.x,2)+pow(vector.y,2)+pow(vector.z,2)
+            self.k = 4.0
         else:
-            self.k = 1.0
-            self.sub_pose_ = self.parent.parent.create_subscription(PoseStamped, '/' + self.id + '/local_pose', self.gtpose_callback, 10)
+            if d == None:
+                self.distance_bool = False
+                self.x = x
+                self.y = y
+                self.z = z
+            else:
+                self.distance_bool = True
+                self.d = d
+            if self.id == 'origin':
+                self.pose.position.x = 0.0
+                self.pose.position.y = 0.0
+                self.pose.position.z = 0.0
+                self.k = 2.0
+                self.sub_pose_ = self.parent.parent.create_subscription(PoseStamped, '/' + self.id + '/local_pose', self.gtpose_callback, 10)
+            else:
+                self.k = 1.0
+                self.sub_pose_ = self.parent.parent.create_subscription(PoseStamped, '/' + self.id + '/local_pose', self.gtpose_callback, 10)
         self.publisher_data_ = self.parent.parent.create_publisher(Float64, self.parent.id + '/' + self.id + '/data', 10)
         self.publisher_marker_ = self.parent.parent.create_publisher(Marker, self.parent.id + '/' + self.id + '/marker', 10)
 
@@ -203,8 +211,21 @@ class Agent():
                 self.distance_formation_bool = True
                 for rel in self.relationship:
                     aux = rel.split('_')
-                    robot = Neighbour(self, aux[0], d = float(aux[1]))
-                    self.parent.get_logger().info('Agent: %s. Neighbour %s ::: d: %s' % (self.id, aux[0],aux[1]))
+                    id = aux[0]
+                    if not id.find("line") == -1:
+                        p = Point()
+                        p.x = float(aux[1])
+                        p.y = float(aux[2])
+                        p.z = float(aux[3])
+                        u = Vector3()
+                        u.x = float(aux[4])
+                        u.y = float(aux[5])
+                        u.z = float(aux[6])
+                        robot = Neighbour(self, id, point = p, vector = u)
+                        self.parent.get_logger().info('Agent: %s. Neighbour %s ::: Px: %s' % (self.id, id,aux[1]))
+                    else:
+                        robot = Neighbour(self, id, d = float(aux[1]))
+                        self.parent.get_logger().info('Agent: %s. Neighbour %s ::: d: %s' % (self.id, id,aux[1]))
                     self.neighbour_list.append(robot)
         elif documents['type'] == 'pose':
                 self.pose_formation_bool = True
@@ -220,11 +241,22 @@ class Agent():
     def distance_gradient_controller(self):
         dx = dy = dz = 0
         for neighbour in self.neighbour_list:
+            if not neighbour.id.find("line") == -1:
+                nearest = PoseStamped()
+                nearest.header.frame_id = "map"
+                gamma = -np.dot([neighbour.point.x-self.pose.position.x, neighbour.point.y-self.pose.position.y, neighbour.point.z-self.pose.position.z],[neighbour.vector.x, neighbour.vector.y, neighbour.vector.z])/neighbour.mod
+                nearest.pose.position.x = neighbour.point.x + gamma * neighbour.vector.x
+                nearest.pose.position.y = neighbour.point.y + gamma * neighbour.vector.y
+                nearest.pose.position.z = neighbour.point.z + gamma * neighbour.vector.z
+                neighbour.gtpose_callback(nearest)
+
             error_x = self.pose.position.x - neighbour.pose.position.x
             error_y = self.pose.position.y - neighbour.pose.position.y
             error_z = self.pose.position.z - neighbour.pose.position.z
             distance = pow(error_x,2)+pow(error_y,2)+pow(error_z,2)
             d = sqrt(distance)
+            if d == 0:
+                d = 1.0
             dx += self.k * neighbour.k * (pow(neighbour.d,2) - distance) * error_x/d
             dy += self.k * neighbour.k * (pow(neighbour.d,2) - distance) * error_y/d
             dz += self.k * neighbour.k * (pow(neighbour.d,2) - distance) * error_z/d
@@ -265,11 +297,21 @@ class Agent():
     def distance_pid_controller(self):
         ex = ey = ez = 0
         for neighbour in self.neighbour_list:
+            if not neighbour.id.find("line") == -1:
+                nearest = PoseStamped()
+                nearest.header.frame_id = "map"
+                gamma = -np.dot([neighbour.point.x-self.pose.position.x, neighbour.point.y-self.pose.position.y, neighbour.point.z-self.pose.position.z],[neighbour.vector.x, neighbour.vector.y, neighbour.vector.z])/neighbour.mod
+                nearest.pose.position.x = neighbour.point.x + gamma * neighbour.vector.x
+                nearest.pose.position.y = neighbour.point.y + gamma * neighbour.vector.y
+                nearest.pose.position.z = neighbour.point.z + gamma * neighbour.vector.z
+                neighbour.gtpose_callback(nearest)
             error_x = self.pose.position.x - neighbour.pose.position.x
             error_y = self.pose.position.y - neighbour.pose.position.y
             error_z = self.pose.position.z - neighbour.pose.position.z
             distance = sqrt(pow(error_x,2)+pow(error_y,2)+pow(error_z,2))
             e = neighbour.d - distance
+            if distance == 0:
+                distance = 1.0
             ex += neighbour.k * e * (error_x/distance)
             ey += neighbour.k * e * (error_y/distance)
             ez += neighbour.k * e * (error_z/distance)
