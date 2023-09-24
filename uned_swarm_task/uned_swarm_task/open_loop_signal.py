@@ -78,6 +78,7 @@ class OpenLoop(Node):
         self.shape = self.get_parameter('signal_shape').get_parameter_value().string_value
         shape_file = self.get_parameter('signal_shape_file').get_parameter_value().string_value
         self.new = False
+        self.non_stop= True
         time = self.get_clock().now().to_msg()
         self.t_init = time.sec+time.nanosec*1e-9
         if self.shape == 'polygon':
@@ -92,23 +93,25 @@ class OpenLoop(Node):
         self.get_logger().info('Open Loop::inicialized.')
 
     def _ready(self):
-        msg = String()
-        msg.data = 'ident_start'
-        self.publisher_ident.publish(msg)
-        self.new = True
+        if self.non_stop:
+            msg = String()
+            msg.data = 'ident_start'
+            self.publisher_ident.publish(msg)
+            self.new = True
         
     def order_callback(self,msg):
         self.get_logger().info('Open Loop::Order: "%s"' % msg.data)
-        msg = String()
-        msg.data = 'ident_start'
-        self.publisher_ident.publish(msg)
-        self.new = True
+        if msg.data == 'start':
+            msg = String()
+            msg.data = 'ident_start'
+            self.publisher_ident.publish(msg)
+            self.new = True
+        elif msg.data == 'start':
+            self.non_stop= False
+        
 
     def output_callback(self, msg):
         self.output = msg
-
-    def polygon_drawing(self):
-        self.get_logger().info('TO-DO')
 
     def iterate(self):
         if self.new:
