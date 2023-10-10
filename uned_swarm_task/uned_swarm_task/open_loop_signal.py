@@ -78,6 +78,10 @@ class OpenLoop(Node):
         self.shape = self.get_parameter('signal_shape').get_parameter_value().string_value
         shape_file = self.get_parameter('signal_shape_file').get_parameter_value().string_value
         self.new = False
+        # Relé
+        self.dseta = 0.05
+        self.rele = False
+
         self.non_stop= True
         time = self.get_clock().now().to_msg()
         self.t_init = time.sec+time.nanosec*1e-9
@@ -106,7 +110,7 @@ class OpenLoop(Node):
             msg.data = 'ident_start'
             self.publisher_ident.publish(msg)
             self.new = True
-        elif msg.data == 'start':
+        elif msg.data == 'stop':
             self.non_stop= False
         
 
@@ -169,6 +173,57 @@ class OpenLoop(Node):
                 self.pub_signal.publish(self.target)  
                 self.t_ready = Timer(t, self._ready)
                 self.t_ready.start()
+            elif self.shape == 'rele':
+                if self.signal_type == 'pose':
+                    PoseStamp = PoseStamped()
+                    PoseStamp.header.frame_id = "map"
+                    PoseStamp.header.stamp = self.get_clock().now().to_msg()
+                    if self.signal_value == 'position.x':
+                        error = -self.output.pose.position.x
+                        if not self.rele:
+                            if error > self.range/2:
+                                PoseStamp.pose.position.x = self.range
+                                self.rele = True
+                                self.get_logger().info('Switch rele: True')
+                            else:
+                                PoseStamp.pose.position.x = -self.range
+                        else:
+                            if error < -self.range/2:
+                                PoseStamp.pose.position.x = -self.range
+                                self.rele = False
+                                self.get_logger().info('Switch rele: False')
+                            else: 
+                                PoseStamp.pose.position.x = self.range
+                        PoseStamp.pose.position.y = 0.0
+                        PoseStamp.pose.position.z = 1.0
+                    if self.signal_value == 'position.y':
+                        error = -self.output.pose.position.y
+                        if not self.rele:
+                            if error > self.dseta:
+                                PoseStamp.pose.position.y = self.range
+                                self.rele = True
+                                self.get_logger().info('Switch rele: True')
+                            else:
+                                PoseStamp.pose.position.y = -self.range
+                        else:
+                            if error < -self.dseta:
+                                PoseStamp.pose.position.y = -self.range
+                                self.rele = False
+                                self.get_logger().info('Switch rele: False')
+                            else: 
+                                PoseStamp.pose.position.y = self.range
+                        PoseStamp.pose.position.x = 0.0
+                        PoseStamp.pose.position.z = 1.0
+                    q = tf_transformations.quaternion_from_euler(0.0, 0.0, 0.0)
+                    self.get_logger().info('Pose X %.3f  Y %.3f Z %.3f' % (PoseStamp.pose.position.x, PoseStamp.pose.position.y, PoseStamp.pose.position.z))
+                    PoseStamp.pose.orientation.x = q[0]
+                    PoseStamp.pose.orientation.y = q[1]
+                    PoseStamp.pose.orientation.z = q[2]
+                    PoseStamp.pose.orientation.w = q[3]
+                    self.target = PoseStamp
+                    self.pub_signal.publish(self.target)
+                    self.t_ready = Timer(0.1, self._ready)
+                    self.t_ready.start()
             else:
                 PoseStamp = PoseStamped()
                 if self.shape == 'polygon':
@@ -178,7 +233,7 @@ class OpenLoop(Node):
                     t = self.points['P'+str(self.j)]['t']
                     self.get_logger().info('P%s: X %.3f  Y %.3f' % (str(self.j),PoseStamp.pose.position.x, PoseStamp.pose.position.y))
                     self.j = ((self.j+1) % len(self.points))
-                if self.shape == 'circle':
+                elif self.shape == 'circle':
                     time = self.get_clock().now().to_msg()
                     t = time.sec+time.nanosec*1e-9
                     PoseStamp.pose.position.x = sin((t-self.t_init)*0.2) * self.range
