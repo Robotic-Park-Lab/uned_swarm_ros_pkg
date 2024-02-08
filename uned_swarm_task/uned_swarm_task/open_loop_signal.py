@@ -22,16 +22,7 @@ class OpenLoop(Node):
     def __init__(self):
         super().__init__('formation_controller')
         # Params
-        self.declare_parameter('range', 2.0)
-        self.declare_parameter('mPeriod', 1.0)
-        self.declare_parameter('robot', 'mobile')
-        self.declare_parameter('signal', 'cmd_vel')
-        self.declare_parameter('signal_type', 'twist')
-        self.declare_parameter('signal_value', 'linear.x')
-        self.declare_parameter('signal_shape', 'random')
-        self.declare_parameter('signal_shape_file', 'path')
-        self.declare_parameter('output', 'local_pose')
-        self.declare_parameter('output_type', 'pose')
+        self.declare_parameter('file', 'path')
 
         # Publisher
         self.publisher_status = self.create_publisher(String,'open_loop/status', 10)
@@ -45,38 +36,47 @@ class OpenLoop(Node):
 
     def initialize(self):
         self.get_logger().info('Open Loop::inicialize() ok.')
-        self.robot = self.get_parameter('robot').get_parameter_value().string_value
-        signal = self.get_parameter('signal').get_parameter_value().string_value
-        self.signal_value = self.get_parameter('signal_value').get_parameter_value().string_value
-        self.signal_type = self.get_parameter('signal_type').get_parameter_value().string_value
+        config_file = self.get_parameter('file').get_parameter_value().string_value
+        with open(config_file, 'r') as file:
+            self.config = yaml.safe_load(file)
+
+        self.robot = self.config['config']['robot']
+        output = self.config['config']['output']
+        self.output_type = self.config['config']['output_type']
+        self.output_field = self.config['config']['output_field']
         
-        if self.signal_type == 'pose':
-            self.pub_signal = self.create_publisher(PoseStamped, signal, 10)
+        
+        if self.output_type == 'PoseStamped':
             self.target = PoseStamped()
             self.target.header.frame_id = "map"
-        elif self.signal_type == 'twist':
-            self.pub_signal = self.create_publisher(Twist, signal, 10)
+            self.pub_signal = self.create_publisher(PoseStamped, output, 10)
+        elif self.output_type == 'Twist':
             self.target = Twist()
+            self.pub_signal = self.create_publisher(Twist, output, 10)
         else:
-            self.pub_signal = self.create_publisher(Float64, signal, 10)
+            self.pub_signal = self.create_publisher(Float64, output, 10)
         
-        signal = self.get_parameter('output').get_parameter_value().string_value
-        self.output_type = self.get_parameter('output_type').get_parameter_value().string_value
+        signal = self.config['config']['input']
+        self.input_type = self.config['config']['output_type']
+        self.input_field = self.config['config']['output_field']
         
-        if self.output_type == 'pose':
-            self.sub_signal = self.create_subscription(PoseStamped, signal, self.output_callback, 10)
-            self.output = PoseStamped()
-        elif self.output_type == 'twist':
-            self.sub_signal = self.create_subscription(Twist, signal, self.output_callback, 10)
-            self.output = Twist()
+        if self.input_type == 'PoseStamped':
+            self.input = PoseStamped()
+            self.sub_signal = self.create_subscription(PoseStamped, signal, self.input_callback, 10)
+        elif self.input_type == 'Twist':
+            self.input = Twist()
+            self.sub_signal = self.create_subscription(Twist, signal, self.input_callback, 10)
         else:
-            self.subb_signal = self.create_subscription(Float64, signal, self.output_callback, 10)
-            self.output = Float64()
+            self.input = Float64()
+            self.sub_signal = self.create_subscription(Float64, signal, self.input_callback, 10)
 
-        self.period = self.get_parameter('mPeriod').get_parameter_value().double_value
-        self.range = self.get_parameter('range').get_parameter_value().double_value
-        self.shape = self.get_parameter('signal_shape').get_parameter_value().string_value
-        shape_file = self.get_parameter('signal_shape_file').get_parameter_value().string_value
+        self.period = self.config['config']['period']
+        self.range = self.config['config']['range']
+        self.shape = self.config['config']['shape']
+        self.repeat = self.config['config']['repeat']
+        self.last_point = 0
+        self.points = self.config['points']
+
         self.new = False
         # Relé
         self.dseta = 0.05
@@ -85,12 +85,8 @@ class OpenLoop(Node):
         self.non_stop= True
         time = self.get_clock().now().to_msg()
         self.t_init = time.sec+time.nanosec*1e-9
-        if self.shape == 'polygon':
-             self.j = 0
-             with open(shape_file, 'r') as file:
-                self.points = yaml.safe_load(file)
-
-        self.timer_task = self.create_timer(0.1, self.iterate)
+        
+        self.timer_task = self.create_timer(self.period, self.iterate)
         self.path = Path()
         self.path.header.frame_id = "map"
 
@@ -114,8 +110,8 @@ class OpenLoop(Node):
             self.non_stop= False
         
 
-    def output_callback(self, msg):
-        self.output = msg
+    def input_callback(self, msg):
+        self.input = msg
 
     def iterate(self):
         if self.new:
@@ -124,22 +120,22 @@ class OpenLoop(Node):
                 if self.signal_type == 'pose':
                     PoseStamp = PoseStamped()
                     PoseStamp.header.stamp = self.get_clock().now().to_msg()
-                    if self.signal_value == 'position.x':
+                    if self.signal_field == 'position.x':
                         PoseStamp.pose.position.x = random.uniform(-self.range, self.range)
                         PoseStamp.pose.position.y = self.output.pose.position.y
                         PoseStamp.pose.position.z = self.output.pose.position.z
-                    if self.signal_value == 'position.y':
+                    if self.signal_field == 'position.y':
                         PoseStamp.pose.position.x = self.output.pose.position.x
                         PoseStamp.pose.position.y = random.uniform(-self.range, self.range)
                         PoseStamp.pose.position.z = self.output.pose.position.z
-                    if self.signal_value == 'position.z':
+                    if self.signal_field == 'position.z':
                         PoseStamp.pose.position.x = self.output.pose.position.x
                         PoseStamp.pose.position.y = self.output.pose.position.y
                         if self.robot == 'dron':
                             PoseStamp.pose.position.z = random.uniform(1.0-self.range, 1.0+self.range)
                         else:
                             PoseStamp.pose.position.z = 0.0
-                    if self.signal_value == 'full':
+                    if self.signal_field == 'full':
                         PoseStamp.pose.position.x = random.uniform(-self.range, self.range)
                         PoseStamp.pose.position.y = random.uniform(-self.range, self.range)
                         if self.robot == 'dron':
@@ -157,13 +153,13 @@ class OpenLoop(Node):
                     self.path_publisher.publish(self.path)
                     self.target = PoseStamp
                 elif self.signal_type == 'twist':
-                    if self.signal_value == 'linear.x' or self.signal_value == 'full':
+                    if self.signal_field == 'linear.x' or self.signal_field == 'full':
                         self.target.linear.x = random.uniform(0.0, self.range)
-                    if self.signal_value == 'linear.y' or self.signal_value == 'full':
+                    if self.signal_field == 'linear.y' or self.signal_field == 'full':
                         self.target.linear.y = random.uniform(-self.range, self.range)
-                    if self.signal_value == 'linear.z' or self.signal_value == 'full':
+                    if self.signal_field == 'linear.z' or self.signal_field == 'full':
                         self.target.linear.z = random.uniform(-self.range, self.range)
-                    if self.signal_value == 'angular.z' or self.signal_value == 'full':
+                    if self.signal_field == 'angular.z' or self.signal_field == 'full':
                         self.target.angular.z = random.uniform(-self.range/20, self.range/20)
                     self.get_logger().info('CMD v %.3f  w %.3f' % (self.target.linear.x, self.target.angular.z))
                 else:
@@ -178,7 +174,7 @@ class OpenLoop(Node):
                     PoseStamp = PoseStamped()
                     PoseStamp.header.frame_id = "map"
                     PoseStamp.header.stamp = self.get_clock().now().to_msg()
-                    if self.signal_value == 'position.x':
+                    if self.signal_field == 'position.x':
                         error = -self.output.pose.position.x
                         if not self.rele:
                             if error > self.range/2:
@@ -196,7 +192,7 @@ class OpenLoop(Node):
                                 PoseStamp.pose.position.x = self.range
                         PoseStamp.pose.position.y = 0.0
                         PoseStamp.pose.position.z = 1.0
-                    if self.signal_value == 'position.y':
+                    if self.signal_field == 'position.y':
                         error = -self.output.pose.position.y
                         if not self.rele:
                             if error > self.dseta:
@@ -227,23 +223,29 @@ class OpenLoop(Node):
             else:
                 PoseStamp = PoseStamped()
                 if self.shape == 'polygon':
-                    PoseStamp.pose.position.x = self.points['P'+str(self.j)]['x'] * self.range
-                    PoseStamp.pose.position.y = self.points['P'+str(self.j)]['y'] * self.range
-                    PoseStamp.pose.position.z = self.points['P'+str(self.j)]['z']
-                    t = self.points['P'+str(self.j)]['t']
-                    self.get_logger().info('P%s: X %.3f  Y %.3f' % (str(self.j),PoseStamp.pose.position.x, PoseStamp.pose.position.y))
-                    self.j = ((self.j+1) % len(self.points))
+                    PoseStamp.pose.position.x = self.points['P'+str(self.last_point)]['x'] * self.range
+                    PoseStamp.pose.position.y = self.points['P'+str(self.last_point)]['y'] * self.range
+                    PoseStamp.pose.position.z = self.points['P'+str(self.last_point)]['z']
+                    t = self.points['P'+str(self.last_point)]['t']
+                    self.get_logger().info('P%s: X %.3f  Y %.3f' % (str(self.last_point),PoseStamp.pose.position.x, PoseStamp.pose.position.y))
+                    self.last_point = ((self.last_point+1) % len(self.points))
+                    if self.last_point == len(self.points):
+                        self.repeat = self.repeat - 1
+                        self.get_logger().warn('STOPPED:-1 : %d' % self.repeat)
                 elif self.shape == 'circle':
                     time = self.get_clock().now().to_msg()
                     t = time.sec+time.nanosec*1e-9
-                    PoseStamp.pose.position.x = sin((t-self.t_init)*0.2) * self.range
-                    PoseStamp.pose.position.y = cos((t-self.t_init)*0.2) * self.range
-                    if self.robot == 'dron':
-                        PoseStamp.pose.position.z = 1.0
-                    else:
-                        PoseStamp.pose.position.z = 0.0
-                    t = 0.1
-                yaw = atan2(PoseStamp.pose.position.y-self.output.pose.position.y,PoseStamp.pose.position.x-self.output.pose.position.x)
+                    PoseStamp.pose.position.x = self.points['center']['x'] + sin((t-self.t_init)*0.4) * self.range
+                    PoseStamp.pose.position.y = self.points['center']['y'] + cos((t-self.t_init)*0.4) * self.range
+                    PoseStamp.pose.position.z = self.points['center']['z']
+                    t = self.period
+                    self.last_point = self.last_point + 1
+                    if self.points['center']['t'] < self.last_point*self.period:
+                        self.last_point = 0
+                        self.repeat = self.repeat - 1
+                        self.get_logger().warn('STOPPED:-1 : %d' % self.repeat)
+
+                yaw = atan2(PoseStamp.pose.position.y-self.input.pose.position.y,PoseStamp.pose.position.x-self.input.pose.position.x)
                 q = tf_transformations.quaternion_from_euler(0.0, 0.0, yaw)
                 PoseStamp.pose.orientation.x = q[0]
                 PoseStamp.pose.orientation.y = q[1]
@@ -254,9 +256,10 @@ class OpenLoop(Node):
                 self.path.header.stamp = self.get_clock().now().to_msg()
                 self.path.poses.append(PoseStamp)
                 self.path_publisher.publish(self.path)
-                self.pub_signal.publish(PoseStamp)  
-                self.t_ready = Timer(t, self._ready)
-                self.t_ready.start()
+                self.pub_signal.publish(PoseStamp)
+                if self.repeat>0:
+                    self.t_ready = Timer(t, self._ready)
+                    self.t_ready.start()
 
 
 def main(args=None):
