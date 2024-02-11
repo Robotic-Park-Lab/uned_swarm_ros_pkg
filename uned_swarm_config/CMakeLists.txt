@@ -32,6 +32,7 @@ install(
     launch
     worlds
     rviz
+    rqt
     resources
   DESTINATION share/${PROJECT_NAME}
 )

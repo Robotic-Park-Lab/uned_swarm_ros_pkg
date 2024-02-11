@@ -6,7 +6,7 @@ import numpy as np
 from math import atan2, sqrt
 
 from rclpy.node import Node
-from std_msgs.msg import String, Float64, Bool
+from std_msgs.msg import String, Float64, Bool, Float64MultiArray, MultiArrayDimension
 from geometry_msgs.msg import Pose, PoseStamped, Point, Vector3
 from visualization_msgs.msg import Marker
 from builtin_interfaces.msg import Time
@@ -86,7 +86,11 @@ class PIDController():
 class Neighbour():
     def __init__(self, parent, id, x = None, y = None, z = None, d = None, point = None, vector = None):
         self.id = id
+        self.distance = False
         self.parent = parent
+        self.last_error = 0.0
+        self.last_iae = 0.0
+        self.k = 1.0
         self.pose = Pose()
         self.disable = False
         if not id.find("line") == -1:
@@ -102,27 +106,40 @@ class Neighbour():
                 self.x = x
                 self.y = y
                 self.z = z
+                self.parent.parent.get_logger().info('Agent: %s' % self.str_())
             else:
                 self.distance_bool = True
                 self.d = d
+                self.parent.parent.get_logger().info('Agent: %s' % self.str_distance_())
             if self.id == 'origin':
                 self.pose.position.x = 0.0
                 self.pose.position.y = 0.0
                 self.pose.position.z = 0.0
-                self.k = 2.0
-                self.sub_pose_ = self.parent.parent.create_subscription(PoseStamped, '/' + self.id + '/local_pose', self.gtpose_callback, 10)
-            else:
-                self.k = 1.0
-                self.sub_pose_ = self.parent.parent.create_subscription(PoseStamped, '/' + self.id + '/local_pose', self.gtpose_callback, 10)
+                self.k = 4.0
+            self.sub_pose_ = self.parent.parent.create_subscription(PoseStamped, '/' + self.id + '/local_pose', self.gtpose_callback, 10)
+        self.sub_d_ = self.parent.parent.create_subscription(Float64, self.parent.id + '/' + self.id + '/d', self.d_callback, 10)
         self.publisher_data_ = self.parent.parent.create_publisher(Float64, self.parent.id + '/' + self.id + '/data', 10)
+        self.publisher_error_ = self.parent.parent.create_publisher(Float64, self.parent.id + '/' + self.id + '/error', 10)
+        self.publisher_iae_ = self.parent.parent.create_publisher(Float64, self.parent.id + '/' + self.id + '/iae', 10)
         self.publisher_marker_ = self.parent.parent.create_publisher(Marker, self.parent.id + '/' + self.id + '/marker', 10)
 
     def clear_neighbour(self):
         self.disable = True
-        # self.parent.parent.destroy_publisher(self.publisher_data_)
-        # self.parent.parent.destroy_publisher(self.publisher_marker_)
-        # if not self.id == 'origin':
-        #     self.parent.parent.destroy_subscription(self.sub_pose_)
+        self.parent.parent.destroy_publisher(self.publisher_data_)
+        self.parent.parent.destroy_publisher(self.publisher_error_)
+        self.parent.parent.destroy_publisher(self.publisher_iae_)
+        self.parent.parent.destroy_publisher(self.publisher_marker_)
+        self.parent.parent.destroy_subscription(self.sub_pose_)
+
+    def str_(self):
+        return ('ID: ' + str(self.id) + ' X: ' + str(self.x) +
+                ' Y: ' + str(self.y)+' Z: ' + str(self.z))
+    
+    def str_distance_(self):
+        return ('ID: ' + str(self.id) + ' Distance: ' + str(self.d))
+
+    def d_callback(self, msg):
+        self.d = msg.data
 
     def gtpose_callback(self, msg):
         if not self.disable:
@@ -179,12 +196,15 @@ class Agent():
         self.parent.get_logger().info('New Agent: %s' % self.id)
         self.sub_pose = self.parent.create_subscription(PoseStamped, self.id + '/local_pose', self.gtpose_callback, 10)
         self.publisher_goalpose = self.parent.create_publisher(PoseStamped, self.id + '/goal_pose', 10)
+        self.publisher_mrs_data = self.parent.create_publisher(Float64MultiArray, self.id + '/mr_data', 10)
+        self.publisher_global_error_ = self.parent.create_publisher(Float64, self.id + '/global_error', 10)
         self.distance_formation_bool = False
         self.pose_formation_bool = False
         self.continuous = False
         self.trigger_ai = 0.01
         self.trigger_co = 0.1
         self.trigger_last_signal = 0.0
+        self.N = 0.0
 
     def get_neighbourhood(self,documents):
         self.controller = documents['controller']
@@ -196,6 +216,7 @@ class Agent():
         self.event_x = self.parent.create_publisher(Bool, self.id + '/event_x', 10)
         self.event_y = self.parent.create_publisher(Bool, self.id + '/event_y', 10)
         self.event_z = self.parent.create_publisher(Bool, self.id + '/event_z', 10)
+        self.task_period = self.controller['period']
         if not self.continuous:
             self.trigger_ai = self.controller['threshold']['ai']
             self.trigger_co = self.controller['threshold']['co']
@@ -226,6 +247,7 @@ class Agent():
                     else:
                         robot = Neighbour(self, id, d = float(aux[1]))
                         self.parent.get_logger().info('Agent: %s. Neighbour %s ::: d: %s' % (self.id, id,aux[1]))
+                    self.N += 1.0
                     self.neighbour_list.append(robot)
         elif documents['type'] == 'pose':
                 self.pose_formation_bool = True
@@ -234,36 +256,46 @@ class Agent():
                     robot = Neighbour(self, aux[0], x = float(aux[1]), y = float(aux[2]), z = float(aux[3]))
                     self.parent.get_logger().info('Agent: %s. Neighbour %s :::x: %s \ty: %s \tz: %s' % (self.id, aux[0], aux[1], aux[2], aux[3]))
                     self.neighbour_list.append(robot)
+                    self.N += 1.0
 
     def gtpose_callback(self, msg):
         self.pose = msg.pose
 
     def distance_gradient_controller(self):
+        msg_error = Float64()
+        msg_error.data = 0.0
         dx = dy = dz = 0
-        for neighbour in self.neighbour_list:
-            if not neighbour.id.find("line") == -1:
+        for agent in self.neighbour_list:
+            if not agent.id.find("line") == -1:
                 nearest = PoseStamped()
                 nearest.header.frame_id = "map"
-                gamma = -np.dot([neighbour.point.x-self.pose.position.x, neighbour.point.y-self.pose.position.y, neighbour.point.z-self.pose.position.z],[neighbour.vector.x, neighbour.vector.y, neighbour.vector.z])/neighbour.mod
-                nearest.pose.position.x = neighbour.point.x + gamma * neighbour.vector.x
-                nearest.pose.position.y = neighbour.point.y + gamma * neighbour.vector.y
-                nearest.pose.position.z = neighbour.point.z + gamma * neighbour.vector.z
-                neighbour.gtpose_callback(nearest)
+                gamma = -np.dot([agent.point.x-self.pose.position.x, agent.point.y-self.pose.position.y, agent.point.z-self.pose.position.z],[agent.vector.x, agent.vector.y, agent.vector.z])/agent.mod
+                nearest.pose.position.x = agent.point.x + gamma * agent.vector.x
+                nearest.pose.position.y = agent.point.y + gamma * agent.vector.y
+                nearest.pose.position.z = agent.point.z + gamma * agent.vector.z
+                agent.gtpose_callback(nearest)
 
-            error_x = self.pose.position.x - neighbour.pose.position.x
-            error_y = self.pose.position.y - neighbour.pose.position.y
-            error_z = self.pose.position.z - neighbour.pose.position.z
+            error_x = self.pose.position.x - agent.pose.position.x
+            error_y = self.pose.position.y - agent.pose.position.y
+            error_z = self.pose.position.z - agent.pose.position.z
             distance = pow(error_x,2)+pow(error_y,2)+pow(error_z,2)
-            d = sqrt(distance)
-            if d == 0:
-                d = 1.0
-            dx += self.k * neighbour.k * (pow(neighbour.d,2) - distance) * error_x/d
-            dy += self.k * neighbour.k * (pow(neighbour.d,2) - distance) * error_y/d
-            dz += self.k * neighbour.k * (pow(neighbour.d,2) - distance) * error_z/d
+
+            dx += - self.k * agent.k * (distance - pow(agent.d,2)) * error_x
+            dy += - self.k * agent.k * (distance - pow(agent.d,2)) * error_y
+            dz += - self.k * agent.k * (distance - pow(agent.d,2)) * error_z
                     
             msg_data = Float64()
-            msg_data.data = abs(neighbour.d - sqrt(distance))
-            neighbour.publisher_data_.publish(msg_data)
+            msg_data.data = sqrt(distance)
+            agent.publisher_data_.publish(msg_data)
+            error = abs(sqrt(distance) - agent.d)
+            msg_data.data = agent.last_iae + (agent.last_error + error) * self.task_period /2
+            agent.last_error = error
+            agent.publisher_iae_.publish(msg_data)
+            agent.last_iae = msg_data.data
+            msg_data.data = distance - pow(agent.d,2)
+            agent.publisher_error_.publish(msg_data)
+            msg_error.data += msg_data.data
+            self.parent.get_logger().debug('Agent %s: D: %.2f dx: %.2f dy: %.2f dz: %.2f ' % (agent.id, msg_data.data, dx, dy, dz)) 
         
         goal = Pose()
         if not self.continuous:
@@ -275,6 +307,15 @@ class Agent():
         msg = Bool()
         msg.data = True
         self.event_x.publish(msg)
+
+        msg = Float64MultiArray()
+        msg.data = [round(dx,3), round(dy,3), round(dz,3), self.N]
+        msg.layout.data_offset = 0
+        msg.layout.dim.append(MultiArrayDimension())
+        msg.layout.dim[0].label = 'data'
+        msg.layout.dim[0].size = 4
+        msg.layout.dim[0].stride = 1
+        self.publisher_mrs_data.publish(msg)
 
         if dx > self.ul:
             dx = self.ul
@@ -288,13 +329,17 @@ class Agent():
             dz = self.ul
         if dz < self.ll:
             dz = self.ll
+
         goal.position.x = dx
         goal.position.y = dy
         goal.position.z = dz
+
+        self.publisher_global_error_.publish(msg_error)
         
         return goal
     
     def distance_pid_controller(self):
+        ## TO-DO: Review
         ex = ey = ez = 0
         for neighbour in self.neighbour_list:
             if not neighbour.id.find("line") == -1:
@@ -357,6 +402,7 @@ class Agent():
         return goal
 
     def pose_gradient_controller(self):
+        ## TO-DO: Review
         dx = dy = dz = 0
         for neighbour in self.neighbour_list:
             error_x = self.pose.position.x - neighbour.pose.position.x
@@ -402,6 +448,7 @@ class Agent():
         return goal
     
     def pose_pid_controller(self):
+        # TO-DO: Review
         ex = ey = ez = 0
         for neighbour in self.neighbour_list:
             error_x = neighbour.x - (self.pose.position.x - neighbour.pose.position.x)
@@ -514,14 +561,14 @@ class CentralizedFormationController(Node):
         # Read Params
         config_file = self.get_parameter('config_file').get_parameter_value().string_value
 
-        with open(config_file) as f:
-            data = yaml.load(f, Loader=SafeLoader)
-            for key, robot in data.items():
-                new_robot = Agent(self, robot['name'])
-                new_robot.get_neighbourhood(robot['task'])
+        with open(config_file, 'r') as file:
+            documents = yaml.safe_load(file)
+            for robot in documents['Robots']:
+                new_robot = Agent(self, documents['Robots'][robot]['name'])
+                new_robot.get_neighbourhood(documents['Robots'][robot]['task'])
                 self.agent_list.append(new_robot)
 
-        self.timer_task = self.create_timer(0.1, self.iterate)
+        self.timer_task = self.create_timer(documents['Architecture']['node']['period'], self.iterate)
 
         self.get_logger().info('Formation Controller::inicialized.')
 
@@ -529,8 +576,6 @@ class CentralizedFormationController(Node):
         self.get_logger().info('Multi-Robot-System::Order: "%s"' % msg.data)
         if msg.data == 'formation_run':
             self.formation_bool = True
-            # self.t_stop = Timer(20, self.stop_dataset)
-            # self.t_stop.start()
         elif msg.data == 'formation_stop':
             self.formation_bool = False
         elif not msg.data.find("agent") == -1:
@@ -556,13 +601,6 @@ class CentralizedFormationController(Node):
         else:
             self.get_logger().debug('"%s": Unknown order' % (msg.data))
 
-    def stop_dataset(self):
-        self.formation_bool = False
-        msg = String()
-        msg.data = 'formation_stop'
-        self.publisher_order.publish(msg)
-        self.get_logger().info('Multi-Robot-System::Order: "%s"' % msg.data)
-
     def iterate(self):
         msg = self.get_clock().now().to_msg()
         self.publisher_time.publish(msg)
@@ -579,48 +617,45 @@ class CentralizedFormationController(Node):
                         cmd = agent.pose_gradient_controller()
                     if agent.controller_type == 'pid':
                         cmd = agent.pose_pid_controller()
-                if not cmd.position.z == -1000:
-                    self.get_logger().debug('Agent %s: X: %.2f->%.2f Y: %.2f->%.2f Z: %.2f->%.2f' % (agent.id, agent.pose.position.x, cmd.position.x, agent.pose.position.y, cmd.position.y, agent.pose.position.z, cmd.position.z)) 
-                    PoseStamp = PoseStamped()
-                    PoseStamp.header.frame_id = "map"
-                    PoseStamp.pose.position.x = agent.pose.position.x + cmd.position.x
-                    PoseStamp.pose.position.y = agent.pose.position.y + cmd.position.y
-                    PoseStamp.pose.position.z = agent.pose.position.z + cmd.position.z
+                
+                self.get_logger().debug('Agent %s: X: %.2f->%.2f Y: %.2f->%.2f Z: %.2f->%.2f' % (agent.id, agent.pose.position.x, cmd.position.x, agent.pose.position.y, cmd.position.y, agent.pose.position.z, cmd.position.z)) 
+                PoseStamp = PoseStamped()
+                PoseStamp.header.frame_id = "map"
+                PoseStamp.pose.position.x = agent.pose.position.x + cmd.position.x
+                PoseStamp.pose.position.y = agent.pose.position.y + cmd.position.y
+                PoseStamp.pose.position.z = agent.pose.position.z + cmd.position.z
 
-                    delta=sqrt(pow(cmd.position.x,2)+pow(cmd.position.y,2)+pow(cmd.position.z,2))
-                    angles = tf_transformations.euler_from_quaternion((agent.pose.orientation.x, agent.pose.orientation.y, agent.pose.orientation.z, agent.pose.orientation.w))
+                delta=sqrt(pow(cmd.position.x,2)+pow(cmd.position.y,2)+pow(cmd.position.z,2))
+                angles = tf_transformations.euler_from_quaternion((agent.pose.orientation.x, agent.pose.orientation.y, agent.pose.orientation.z, agent.pose.orientation.w))
                     
-                    if delta<0.05:
-                        roll = angles[0]
-                        pitch = angles[1]
-                        yaw = angles[2]
-                    else:
-                        h = sqrt(pow(cmd.position.x,2)+pow(cmd.position.y,2))
-                        roll = 0.0
-                        pitch = -atan2(cmd.position.z,h)
-                        yaw = atan2(cmd.position.y,cmd.position.x)
+                if delta<0.05:
+                    roll = angles[0]
+                    pitch = angles[1]
+                    yaw = angles[2]
+                else:
+                    h = sqrt(pow(cmd.position.x,2)+pow(cmd.position.y,2))
+                    roll = 0.0
+                    pitch = -atan2(cmd.position.z,h)
+                    yaw = atan2(cmd.position.y,cmd.position.x)
 
-                    if not agent.id.find("dron") == -1:
-                        if not agent.id.find("dron01") == -1:
-                            yaw = 0
-                        if cmd.position.z < 0.6:
-                            cmd.position.z = 0.6
-                        elif cmd.position.z > 2.0:
-                            cmd.position.z = 2.0
-                    else:
-                        PoseStamp.pose.position.z = 0.0
-                        roll = 0.0
-                        pitch = 0.0
-                    
-                    q = tf_transformations.quaternion_from_euler(roll, pitch, yaw)
-                    PoseStamp.pose.orientation.x = q[0]
-                    PoseStamp.pose.orientation.y = q[1]
-                    PoseStamp.pose.orientation.z = q[2]
-                    PoseStamp.pose.orientation.w = q[3]
-                    PoseStamp.header.stamp = self.get_clock().now().to_msg()
-                    agent.publisher_goalpose.publish(PoseStamp)
+                if not agent.id.find("dron") == -1:
+                    if PoseStamp.pose.position.z < 0.6:
+                        PoseStamp.pose.position.z = 0.6
+                    elif PoseStamp.pose.position.z > 2.0:
+                        PoseStamp.pose.position.z = 2.0
+                else:
+                    PoseStamp.pose.position.z = 0.0
+                    roll = 0.0
+                    pitch = 0.0
+                   
+                q = tf_transformations.quaternion_from_euler(0.0, 0.0, yaw)
+                PoseStamp.pose.orientation.x = q[0]
+                PoseStamp.pose.orientation.y = q[1]
+                PoseStamp.pose.orientation.z = q[2]
+                PoseStamp.pose.orientation.w = q[3]
+                PoseStamp.header.stamp = self.get_clock().now().to_msg()
+                agent.publisher_goalpose.publish(PoseStamp)
 
-        
 
 def main(args=None):
     rclpy.init(args=args)

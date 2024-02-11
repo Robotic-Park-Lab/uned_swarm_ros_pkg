@@ -117,20 +117,20 @@ class OpenLoop(Node):
         if self.new:
             self.new = False
             if self.shape == 'random':
-                if self.signal_type == 'pose':
+                if self.signal_type == 'PoseStamped':
                     PoseStamp = PoseStamped()
                     PoseStamp.header.stamp = self.get_clock().now().to_msg()
                     if self.signal_field == 'position.x':
                         PoseStamp.pose.position.x = random.uniform(-self.range, self.range)
-                        PoseStamp.pose.position.y = self.output.pose.position.y
-                        PoseStamp.pose.position.z = self.output.pose.position.z
+                        PoseStamp.pose.position.y = self.input.pose.position.y
+                        PoseStamp.pose.position.z = self.input.pose.position.z
                     if self.signal_field == 'position.y':
-                        PoseStamp.pose.position.x = self.output.pose.position.x
+                        PoseStamp.pose.position.x = self.input.pose.position.x
                         PoseStamp.pose.position.y = random.uniform(-self.range, self.range)
-                        PoseStamp.pose.position.z = self.output.pose.position.z
+                        PoseStamp.pose.position.z = self.input.pose.position.z
                     if self.signal_field == 'position.z':
-                        PoseStamp.pose.position.x = self.output.pose.position.x
-                        PoseStamp.pose.position.y = self.output.pose.position.y
+                        PoseStamp.pose.position.x = self.input.pose.position.x
+                        PoseStamp.pose.position.y = self.input.pose.position.y
                         if self.robot == 'dron':
                             PoseStamp.pose.position.z = random.uniform(1.0-self.range, 1.0+self.range)
                         else:
@@ -152,9 +152,9 @@ class OpenLoop(Node):
                     self.path.poses.append(PoseStamp)
                     self.path_publisher.publish(self.path)
                     self.target = PoseStamp
-                elif self.signal_type == 'twist':
+                elif self.signal_type == 'Twist':
                     if self.signal_field == 'linear.x' or self.signal_field == 'full':
-                        self.target.linear.x = random.uniform(0.0, self.range)
+                        self.target.linear.x = random.uniform(-self.range, self.range)
                     if self.signal_field == 'linear.y' or self.signal_field == 'full':
                         self.target.linear.y = random.uniform(-self.range, self.range)
                     if self.signal_field == 'linear.z' or self.signal_field == 'full':
@@ -170,12 +170,12 @@ class OpenLoop(Node):
                 self.t_ready = Timer(t, self._ready)
                 self.t_ready.start()
             elif self.shape == 'rele':
-                if self.signal_type == 'pose':
+                if self.signal_type == 'PoseStamped':
                     PoseStamp = PoseStamped()
                     PoseStamp.header.frame_id = "map"
                     PoseStamp.header.stamp = self.get_clock().now().to_msg()
                     if self.signal_field == 'position.x':
-                        error = -self.output.pose.position.x
+                        error = -self.input.pose.position.x
                         if not self.rele:
                             if error > self.range/2:
                                 PoseStamp.pose.position.x = self.range
@@ -193,7 +193,7 @@ class OpenLoop(Node):
                         PoseStamp.pose.position.y = 0.0
                         PoseStamp.pose.position.z = 1.0
                     if self.signal_field == 'position.y':
-                        error = -self.output.pose.position.y
+                        error = -self.input.pose.position.y
                         if not self.rele:
                             if error > self.dseta:
                                 PoseStamp.pose.position.y = self.range
