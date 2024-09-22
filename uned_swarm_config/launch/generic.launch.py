@@ -105,6 +105,7 @@ def get_ros2_nodes(context, *args):
     #     Robots     #
     #----------------#
     physical_crazyflie_list = ''
+    physical_khepera_list = ''
     for robot in documents['Robots']:
         if 'dron' in documents['Robots'][robot]['name']:
             robot_description = os.path.join(general_package_dir, 'resources', 'crazyflie.urdf')

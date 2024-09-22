@@ -23,6 +23,7 @@ setup(
             'centralized_formation_controller = uned_swarm_task.centralized_formation_controller:main',
             'system_identification = uned_swarm_task.system_identification:main',
             'open_loop_signal = uned_swarm_task.open_loop_signal:main',
+            'swarm_reconfiguration = uned_swarm_task.swarm_reconfiguration:main',
         ],
     },
 )
