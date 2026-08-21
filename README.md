@@ -1,5 +1,7 @@
 # uned_multi_agent_ros_pkg
 
+> 📖 Para entender las ramas de este repo y la guía de contribución, consulta la rama [`doc`](https://github.com/Robotic-Park-Lab/uned_multi_agent_ros_pkg/tree/doc).
+
 Repositorio para el desarrollo de funcionalidades multi-agente en Robotic Park Lab: ficheros de configuración y lanzamiento que combinan robots de distintos repositorios (Crazyflie 2.1, Khepera IV, LIMO, DJI Tello…), y los nodos de tarea/control que coordinan varios agentes a la vez. Se llamó `uned_swarm_ros_pkg` hasta 2026-08; se renombró porque el enfoque no es exclusivo de enjambres de UAVs.
 
 #### Estructura
