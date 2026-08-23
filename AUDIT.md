@@ -1,6 +1,6 @@
 # Auditoría — uned_multi_agent_ros_pkg (2026-08-23)
 
-Checklist fundamentada en inspección real de `humble-dev`: lectura completa de los 3 paquetes (`uned_swarm_config`, `uned_swarm_driver`, `uned_swarm_task`), sus `package.xml`/`setup.py`, y los archivos de lanzamiento y `.yaml` de `resources/`. Primera auditoría de este repositorio dentro del pase repo-by-repo (a diferencia de Crazyflie/Khepera, no ha habido todavía una restructuración de código — esta pasada es solo documentación bilingüe + hallazgos, sin tocar código; los puntos de abajo están **sin resolver**, a la espera de que decidas cuáles abordar).
+Checklist fundamentada en inspección real de `humble-dev`: lectura completa de los 3 paquetes (`uned_swarm_config`, `uned_swarm_driver`, `uned_swarm_task`), sus `package.xml`/`setup.py`, los archivos de lanzamiento y `.yaml` de `resources/`, más un `colcon build`/`colcon test` real y aislado de los 3 paquetes. Primera auditoría de este repositorio dentro del pase repo-by-repo (a diferencia de Crazyflie/Khepera, no ha habido todavía una restructuración de código — esta pasada es solo documentación bilingüe + hallazgos, sin tocar código; los puntos de abajo están **sin resolver**, a la espera de que decidas cuáles abordar).
 
 `benchmark` está bloqueada y fuera de alcance — no se ha tocado ni leído nada de ella en esta pasada.
 
@@ -29,10 +29,13 @@ Checklist fundamentada en inspección real de `humble-dev`: lectura completa de 
 - [ ] **`AC10_Sensor_Webots.launch.py`** además hace `get_package_share_directory('uned_crazyflie_webots')` — ese paquete ROS ya no existe, se absorbió en `uned_crazyflie_driver` durante la reestructuración del repositorio de Crazyflie (2026-08-22). Este lanzamiento fallaría también por esa razón, independientemente del punto anterior.
 - [ ] No está claro si estos dos archivos son código muerto que conviene retirar (ya cubierto por el `generic.launch.py` parametrizado) o si el experimento "AC10" sigue siendo relevante y merece sus propios `resources/AC10_RoboticPark.*` reconstruidos — **decisión tuya**, no se ha tocado ninguno de los dos archivos en esta pasada.
 
-## 6 — Sin tests funcionales
+## 6 — Sin tests funcionales, y lint en rojo (verificado con `colcon build`/`colcon test` reales)
 
-- [ ] Los 3 paquetes solo tienen los tests de lint estándar (`ament_copyright`/`ament_flake8`/`ament_pep257` para los `ament_python`; `ament_lint_auto`/`ament_lint_common` para `uned_swarm_config`). Ninguna de las matemáticas de control (`PIDController` de `tello_gazebo_driver.py`/`centralized_formation_controller.py`, el controlador de posición de `turtlebot_driver.py`, la lógica de reconfiguración de `swarm_reconfiguration.py`) tiene cobertura unitaria — mismo tipo de deuda que ya se resolvió en Crazyflie/Khepera extrayendo la lógica pura y testeándola con `pytest`, no intentado aquí.
+Los 3 paquetes **compilan limpio** (`colcon build` real, sin errores). Pero `colcon test` real muestra que el lint está en rojo en 2 de los 3:
 
-## No verificado (sin entorno para probarlo en este sandbox)
+- [ ] **`uned_swarm_driver`**: falla `test_copyright` y falla `test_flake8` con **140 avisos de estilo** (principalmente en `tello_gazebo_driver.py`: imports sin usar, líneas >99 caracteres, espacios/operadores mal formateados, dos variables asignadas y nunca usadas — `delta` en `dt_pose_callback`, `L` en `IPC_controller`, la misma clase de hallazgo que ya se documentó como real en Crazyflie/Khepera, no simple ruido de estilo). `test_pep257` sí pasa.
+- [ ] **`uned_swarm_task`**: falla `test_copyright`, falla `test_pep257`, y falla `test_flake8` con **410 avisos de estilo** — el peor de los 3 paquetes, concentrado sobre todo en `centralized_formation_controller.py` (669 líneas).
+- [ ] **`uned_swarm_config`**: no tiene ningún test real registrado (ni siquiera se genera un resultado de test) — su `CMakeLists.txt` no activa `ament_lint_auto`/`ament_lint_common` de forma efectiva pese a declararlos en `package.xml`.
+- [ ] Ninguna de las matemáticas de control (`PIDController` de `tello_gazebo_driver.py`/`centralized_formation_controller.py`, el controlador de posición de `turtlebot_driver.py`, la lógica de reconfiguración de `swarm_reconfiguration.py`) tiene cobertura unitaria — mismo tipo de deuda que ya se resolvió en Crazyflie/Khepera extrayendo la lógica pura y testeándola con `pytest`, no intentado aquí.
 
-- No se ha ejecutado `colcon build`/`colcon test` real de este repositorio en esta pasada (a diferencia de Crazyflie/Khepera, donde sí había un entorno ROS 2 Humble completo disponible) — los hallazgos de arriba son de lectura de código, no de compilación real. Si vuelves a esta rama con un entorno disponible, vale la pena confirmar que los 3 paquetes compilan limpio antes de fiarte de que no hay más sorpresas.
+Verificado con un `colcon build`/`colcon test` real y aislado (workspace de verificación aparte, para no interferir con el `uned_swarm_ros_pkg` que todavía queda clonado localmente con el nombre antiguo) — no una suposición a partir de leer el código.
