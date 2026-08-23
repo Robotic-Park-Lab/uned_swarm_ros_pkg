@@ -2,6 +2,10 @@
 
 Esta rama (`doc`) no contiene código: solo explica para qué sirve cada rama del repositorio y cómo contribuir. Este repo se llamó `uned_swarm_ros_pkg` hasta 2026-08.
 
+📋 **[AUDIT.md](AUDIT.md)** — checklist de la auditoría de `humble-dev` (2026-08-23).
+
+💡 **[IDEAS_FUTURAS.md](IDEAS_FUTURAS.md)** — documento vivo para ideas y trabajo futuro que no son bugs pendientes de la auditoría.
+
 ## Ramas de este repositorio
 
 | Rama | Propósito |
